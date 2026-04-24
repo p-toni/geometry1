@@ -1,11 +1,14 @@
+import { resolveShader } from '../../shaders';
 import type { BlockRendererProps } from './types';
 
 export function Embed({ item }: BlockRendererProps) {
+  const shader = resolveShader(item.content);
+  const srcDoc = shader ?? item.content;
   return (
     <iframe
       title={item.label}
       sandbox="allow-scripts"
-      srcDoc={item.content}
+      srcDoc={srcDoc}
       className="h-full w-full rounded-[6px] border border-ink/10 bg-white"
     />
   );

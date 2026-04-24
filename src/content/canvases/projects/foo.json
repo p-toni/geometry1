@@ -34,8 +34,8 @@
       "cols": 14,
       "rows": 8,
       "color": 5,
-      "label": "embed",
-      "content": "<div style='height:100%;display:grid;place-items:center;background:#faf6ee;color:#2a2420;font-family:Georgia,serif'><strong>Sandboxed embed</strong></div>"
+      "label": "sequin wave",
+      "content": "@shader:sequinWave"
     },
     {
       "id": "project-md",
