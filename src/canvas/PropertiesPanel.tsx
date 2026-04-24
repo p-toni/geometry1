@@ -57,6 +57,8 @@ export function PropertiesPanel() {
         'absolute top-3 z-50 grid w-[280px] gap-3 rounded-[8px] border border-ink/10 bg-paper/95 p-3 shadow-xl backdrop-blur',
         panelSide,
       )}
+      onClick={(event) => event.stopPropagation()}
+      onPointerDown={(event) => event.stopPropagation()}
     >
       <div className="flex items-center justify-between">
         <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2">
