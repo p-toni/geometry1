@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { WandSparkles, X } from 'lucide-react';
 import { BLOCK_TYPES, COLORS, GRID_COLS, GRID_ROWS, IS_OWNER } from '../constants';
+import { cn } from '../lib/cn';
 import { useCanvasStore } from '../store/canvasStore';
 import type { BlockType, ColorToken, Item } from '../types';
 
@@ -35,6 +36,7 @@ export function PropertiesPanel() {
   if (!selectedId || !selectedItem) return null;
 
   const update = (patch: Partial<Item>) => updateItem(selectedId, patch);
+  const panelSide = selectedItem.col + selectedItem.cols > GRID_COLS - 10 ? 'left-3' : 'right-3';
 
   const generate = async () => {
     if (!IS_OWNER || selectedItem.type !== 'image' || !prompt.trim()) return;
@@ -50,7 +52,12 @@ export function PropertiesPanel() {
   };
 
   return (
-    <aside className="absolute right-3 top-3 z-50 grid w-[280px] gap-3 rounded-[8px] border border-ink/10 bg-paper/95 p-3 shadow-xl backdrop-blur">
+    <aside
+      className={cn(
+        'absolute top-3 z-50 grid w-[280px] gap-3 rounded-[8px] border border-ink/10 bg-paper/95 p-3 shadow-xl backdrop-blur',
+        panelSide,
+      )}
+    >
       <div className="flex items-center justify-between">
         <span className="font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2">
           {selectedItem.id}

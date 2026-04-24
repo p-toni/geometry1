@@ -93,6 +93,7 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
       data-testid={`block-${item.type}`}
       className={cn(
         'absolute left-0 top-0 overflow-hidden rounded-[8px] border p-3 shadow-sm outline-none',
+        item.type === 'link' && 'p-2',
         'touch-none select-none',
         isSelected ? 'border-accent-ink ring-2 ring-accent/40' : 'border-ink/10',
       )}
@@ -131,7 +132,7 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
         </span>
       </div>
 
-      <div className="h-full overflow-hidden pt-8">
+      <div className={cn('h-full overflow-hidden', item.type === 'link' ? 'pt-6' : 'pt-8')}>
         <Renderer item={item} cell={cell} {...values} />
       </div>
 

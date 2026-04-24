@@ -42,12 +42,26 @@ const blockIcons: Record<BlockType, typeof Heading1> = {
 };
 
 function selectorForItem(item: Item): Control {
+  const withCurrentValue = (options: { label: string; value: string }[]) => {
+    if (options.some((option) => option.value === item.content)) return options;
+    return [{ label: 'current', value: item.content }, ...options];
+  };
+
   if (item.type === 'link') {
     return {
       id: createId('selector'),
       kind: 'selector',
       value: item.content,
-      options: canvasSlugOptions,
+      options: withCurrentValue(canvasSlugOptions),
+    };
+  }
+
+  if (item.type !== 'markdown') {
+    return {
+      id: createId('selector'),
+      kind: 'selector',
+      value: item.content,
+      options: [{ label: 'current', value: item.content }],
     };
   }
 
@@ -55,7 +69,7 @@ function selectorForItem(item: Item): Control {
     id: createId('selector'),
     kind: 'selector',
     value: item.content,
-    options: markdownSources,
+    options: withCurrentValue(markdownSources),
   };
 }
 
