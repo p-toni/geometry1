@@ -7,4 +7,5 @@ export interface BlockRendererProps {
   sliderValue: number;
   selectorValue: string | null;
   alignValue: 'left' | 'center' | 'right';
+  fitEnabled: boolean;
 }

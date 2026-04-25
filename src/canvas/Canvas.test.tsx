@@ -23,6 +23,8 @@ function allTypesCanvas(): CanvasModel {
       'embed',
       'image',
       'link',
+      'shader',
+      'voxel',
     ].map((type, index) => ({
       id: `${type}-${index}`,
       type: type as CanvasModel['items'][number]['type'],
@@ -41,7 +43,11 @@ function allTypesCanvas(): CanvasModel {
               ? '<strong>Embed</strong>'
               : type === 'markdown'
                 ? 'Markdown'
-                : 'Text',
+                : type === 'shader'
+                  ? '@gradient'
+                  : type === 'voxel'
+                    ? '{"shapes":[]}'
+                    : 'Text',
     })),
   };
 }
@@ -59,7 +65,7 @@ describe('Canvas', () => {
       </MemoryRouter>,
     );
 
-    expect(screen.getAllByTestId(/block-/)).toHaveLength(10);
+    expect(screen.getAllByTestId(/block-/)).toHaveLength(12);
   });
 
   it('shows the demo chip after the first mutation', async () => {

@@ -8,7 +8,9 @@ export type BlockType =
   | 'code'
   | 'embed'
   | 'image'
-  | 'link';
+  | 'link'
+  | 'shader'
+  | 'voxel';
 
 export type ColorToken = 0 | 1 | 2 | 3 | 4 | 5;
 
@@ -29,12 +31,14 @@ export type SelectorControl = {
 };
 export type ActionControl = { id: string; kind: 'action' };
 export type AlignControl = { id: string; kind: 'align'; value: 'left' | 'center' | 'right' };
+export type FitControl = { id: string; kind: 'fit'; value: boolean };
 export type Control =
   | ToggleControl
   | SliderControl
   | SelectorControl
   | ActionControl
-  | AlignControl;
+  | AlignControl
+  | FitControl;
 
 export interface Item {
   id: string;

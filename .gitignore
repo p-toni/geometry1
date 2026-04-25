@@ -6,3 +6,5 @@ coverage
 .DS_Store
 *.tsbuildinfo
 node_modules/.tmp
+.claude/
+.playwright-mcp/

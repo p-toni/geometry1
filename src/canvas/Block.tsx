@@ -23,6 +23,7 @@ import { useDrag } from './hooks/useDrag';
 import { useResize } from './hooks/useResize';
 import { Action } from './controls/Action';
 import { Align } from './controls/Align';
+import { Fit } from './controls/Fit';
 import { Toggle } from './controls/Toggle';
 import {
   Code,
@@ -35,6 +36,8 @@ import {
   Markdown,
   P,
   Quote,
+  Shader,
+  Voxel,
   type BlockRendererProps,
 } from './blocks';
 
@@ -49,6 +52,8 @@ const renderers = {
   embed: Embed,
   image: Image,
   link: Link,
+  shader: Shader,
+  voxel: Voxel,
 } satisfies Record<Item['type'], (props: BlockRendererProps) => ReactElement>;
 
 const CHROME_HEIGHT = 28;
@@ -60,6 +65,7 @@ function controlValues(controls: Control[] | undefined) {
     selectorValue: controls?.find((control) => control.kind === 'selector')?.value ?? null,
     alignValue:
       controls?.find((c): c is AlignControl => c.kind === 'align')?.value ?? ('left' as const),
+    fitEnabled: controls?.find((control) => control.kind === 'fit')?.value ?? false,
   };
 }
 
@@ -81,6 +87,7 @@ function ControlChip({
   if (control.kind === 'toggle') return <Toggle itemId={itemId} control={control} />;
   if (control.kind === 'action') return <Action itemId={itemId} control={control} />;
   if (control.kind === 'align') return <Align itemId={itemId} control={control} />;
+  if (control.kind === 'fit') return <Fit itemId={itemId} control={control} />;
 
   return (
     <span
@@ -276,11 +283,11 @@ export function Block({
             </span>
           </div>
           {(item.controls ?? []).filter(
-            (c) => c.kind === 'toggle' || c.kind === 'align' || c.kind === 'action',
+            (c) => c.kind === 'toggle' || c.kind === 'align' || c.kind === 'action' || c.kind === 'fit',
           ).length > 0 ? (
             <div className="flex shrink-0 items-center gap-0.5">
               {(item.controls ?? [])
-                .filter((c) => c.kind === 'toggle' || c.kind === 'align' || c.kind === 'action')
+                .filter((c) => c.kind === 'toggle' || c.kind === 'align' || c.kind === 'action' || c.kind === 'fit')
                 .map((control) => (
                   <ControlChip
                     key={control.id}

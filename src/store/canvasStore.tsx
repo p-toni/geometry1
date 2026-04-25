@@ -300,6 +300,9 @@ function orderedControl(control: Control): Control {
   if (control.kind === 'align') {
     return { id: control.id, kind: 'align', value: control.value };
   }
+  if (control.kind === 'fit') {
+    return { id: control.id, kind: 'fit', value: control.value };
+  }
   return { id: control.id, kind: 'action' };
 }
 

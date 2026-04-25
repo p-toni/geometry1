@@ -68,6 +68,10 @@ function parseControl(value: unknown, path: string): Control {
     }
     return { id: value.id, kind: 'align', value: value.value as 'left' | 'center' | 'right' };
   }
+  if (value.kind === 'fit') {
+    if (typeof value.value !== 'boolean') throw new Error(`${path}.value must be boolean`);
+    return { id: value.id, kind: 'fit', value: value.value };
+  }
   throw new Error(`${path}.kind is invalid`);
 }
 

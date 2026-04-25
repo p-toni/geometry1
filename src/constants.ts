@@ -28,6 +28,8 @@ export const BLOCK_DEFAULT_COLORS: Record<BlockType, ColorToken> = {
   embed: 3,
   image: 0,
   link: 2,
+  shader: 5,
+  voxel: 0,
 };
 
 export const CARD_SURFACES: Record<
@@ -94,6 +96,18 @@ export const CARD_SURFACES: Record<
     border: 'var(--card-link-line)',
     accent: 'var(--card-link-accent)',
   },
+  shader: {
+    name: 'shader',
+    background: 'var(--card-code)',
+    border: 'var(--card-code-line)',
+    accent: 'var(--card-code-accent)',
+  },
+  voxel: {
+    name: 'voxel',
+    background: 'var(--card-media)',
+    border: 'var(--card-media-line)',
+    accent: 'var(--card-media-accent)',
+  },
 };
 
 export const BLOCK_TYPES: BlockType[] = [
@@ -107,6 +121,8 @@ export const BLOCK_TYPES: BlockType[] = [
   'embed',
   'image',
   'link',
+  'shader',
+  'voxel',
 ];
 
 export const BLOCK_DEFAULTS: Record<
@@ -151,4 +167,39 @@ export const BLOCK_DEFAULTS: Record<
       'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560"><rect width="800" height="560" fill="%23faf6ee"/><circle cx="280" cy="220" r="150" fill="%23fecdd3"/><circle cx="510" cy="310" r="170" fill="%23bfdbfe"/><path d="M130 410 C260 280 380 480 680 170" stroke="%23c8956c" stroke-width="42" fill="none" stroke-linecap="round"/></svg>',
   },
   link: { cols: 8, rows: 3, label: 'link', content: 'writing' },
+  shader: {
+    cols: 10,
+    rows: 8,
+    label: 'shader',
+    content: '@gradient',
+  },
+  voxel: {
+    cols: 10,
+    rows: 8,
+    label: 'voxel',
+    content: JSON.stringify(
+      {
+        tile: 14,
+        camera: { type: 'isometric', angle: 30 },
+        shapes: [
+          {
+            op: 'add',
+            type: 'box',
+            position: [0, 0, 0],
+            size: [4, 1, 4],
+            style: { fill: '#dbbba7', stroke: '#202124' },
+          },
+          {
+            op: 'add',
+            type: 'box',
+            position: [1, 1, 1],
+            size: [2, 3, 2],
+            style: { fill: '#ff7124', stroke: '#202124' },
+          },
+        ],
+      },
+      null,
+      2,
+    ),
+  },
 };

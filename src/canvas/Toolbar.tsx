@@ -1,6 +1,7 @@
 import {
   AlignCenter,
   Bot,
+  Boxes,
   Check,
   Code2,
   FilePlus,
@@ -10,6 +11,7 @@ import {
   Image as ImageIcon,
   Link as LinkIcon,
   ListFilter,
+  Maximize2,
   MousePointerClick,
   Pilcrow,
   Plus,
@@ -18,6 +20,7 @@ import {
   Save,
   Shapes,
   SlidersHorizontal,
+  Sparkles,
   ToggleLeft,
   Trash2,
   Type,
@@ -30,6 +33,7 @@ import { markdownSources } from '../content/markdownRegistry';
 import { createId } from '../lib/id';
 import { slugToPath } from '../lib/paths';
 import { canvasSlugOptions } from '../routes/canvasRegistry';
+import { shaderSelectorOptions } from '../lib/shaderRegistry';
 import { orderedCanvasForSave, useCanvasStore } from '../store/canvasStore';
 import type { BlockType, Canvas, Control, Item } from '../types';
 
@@ -44,20 +48,24 @@ const blockIcons: Record<BlockType, typeof Heading1> = {
   embed: MousePointerClick,
   image: ImageIcon,
   link: LinkIcon,
+  shader: Sparkles,
+  voxel: Boxes,
 };
 
 const blockGroups: { label: string; icon: typeof Heading1; types: BlockType[] }[] = [
   { label: 'text', icon: Type, types: ['h1', 'h2', 'h3', 'p', 'quote'] },
   { label: 'rich', icon: Shapes, types: ['markdown', 'code', 'embed', 'image'] },
+  { label: 'generative', icon: Sparkles, types: ['shader', 'voxel'] },
   { label: 'navigation', icon: LinkIcon, types: ['link'] },
 ];
 
 const controlSupport: Record<Control['kind'], BlockType[]> = {
   toggle: ['h1', 'h2', 'h3', 'p', 'quote', 'code', 'image', 'markdown'],
-  slider: ['h1', 'h2', 'h3', 'p', 'image'],
-  selector: ['markdown', 'link', 'code'],
-  action: ['markdown', 'code'],
+  slider: ['h1', 'h2', 'h3', 'p', 'image', 'shader', 'voxel'],
+  selector: ['markdown', 'link', 'code', 'shader', 'voxel'],
+  action: ['markdown', 'code', 'shader', 'voxel'],
   align: ['h1', 'h2', 'h3', 'p', 'quote', 'markdown'],
+  fit: ['h1', 'h2', 'h3', 'p', 'quote'],
 };
 
 function controlApplies(kind: Control['kind'], item: Item | undefined) {
@@ -75,6 +83,12 @@ function canAttachControl(kind: Control['kind'], item: Item | undefined) {
 function sliderForItem(item: Item): Control {
   if (item.type === 'h1' || item.type === 'h2' || item.type === 'h3') {
     return { id: createId('slider'), kind: 'slider', value: 1.0, min: 0.5, max: 2.0 };
+  }
+  if (item.type === 'shader') {
+    return { id: createId('slider'), kind: 'slider', value: 0.5, min: 0, max: 1 };
+  }
+  if (item.type === 'voxel') {
+    return { id: createId('slider'), kind: 'slider', value: 0, min: 0, max: 1 };
   }
   return { id: createId('slider'), kind: 'slider', value: 1.0, min: 0.1, max: 1.0 };
 }
@@ -108,6 +122,34 @@ function selectorForItem(item: Item): Control {
         { label: 'HTML', value: 'html' },
         { label: 'JSON', value: 'json' },
         { label: 'Shell', value: 'bash' },
+      ],
+    };
+  }
+
+  if (item.type === 'shader') {
+    const value = shaderSelectorOptions.some((option) => option.value === item.content)
+      ? item.content
+      : (shaderSelectorOptions[0]?.value ?? '@gradient');
+    return {
+      id: createId('selector'),
+      kind: 'selector',
+      value,
+      affectsContent: true,
+      options: shaderSelectorOptions,
+    };
+  }
+
+  if (item.type === 'voxel') {
+    return {
+      id: createId('selector'),
+      kind: 'selector',
+      value: 'isometric',
+      affectsContent: false,
+      options: [
+        { label: 'Isometric', value: 'isometric' },
+        { label: 'Oblique', value: 'oblique' },
+        { label: 'Orthographic', value: 'orthographic' },
+        { label: 'Perspective', value: 'perspective' },
       ],
     };
   }
@@ -221,7 +263,9 @@ export function Toolbar({
             ? selectorForItem(selectedItem)
             : kind === 'align'
               ? { id: createId('align'), kind: 'align', value: 'left' }
-              : { id: createId('action'), kind: 'action' };
+              : kind === 'fit'
+                ? { id: createId('fit'), kind: 'fit', value: true }
+                : { id: createId('action'), kind: 'action' };
     addControl(selectedId, control);
   };
 
@@ -321,6 +365,16 @@ export function Toolbar({
             onClick={() => attachControl('align')}
           >
             <AlignCenter size={15} />
+          </button>
+          <button
+            type="button"
+            title="Fit text"
+            aria-label="Add fit-text"
+            disabled={!canAttachControl('fit', selectedItem)}
+            className={disabledToolbarButtonClass}
+            onClick={() => attachControl('fit')}
+          >
+            <Maximize2 size={15} />
           </button>
         </ExpandingGroup>
         <button
