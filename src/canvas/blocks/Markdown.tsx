@@ -1,4 +1,5 @@
 import { lazy, Suspense, useEffect, useState } from 'react';
+import { useCanvasStore } from '../../store/canvasStore';
 import type { BlockRendererProps } from './types';
 
 const MarkdownRuntime = lazy(() => import('./MarkdownRuntime'));
@@ -6,6 +7,7 @@ const MarkdownRuntime = lazy(() => import('./MarkdownRuntime'));
 export function Markdown({ item, selectorValue }: BlockRendererProps) {
   const source = selectorValue ?? item.content;
   const [markdown, setMarkdown] = useState('');
+  const openMarkdownSource = useCanvasStore((state) => state.openMarkdownSource);
   const isRemote = source.startsWith('/');
 
   useEffect(() => {
@@ -31,9 +33,12 @@ export function Markdown({ item, selectorValue }: BlockRendererProps) {
   }, [isRemote, item.refreshKey, source]);
 
   return (
-    <div className="markdown-body h-full overflow-auto pr-1 text-[15px] leading-relaxed">
+    <div className="markdown-body h-full overflow-auto pr-2">
       <Suspense fallback={<p>Loading...</p>}>
-        <MarkdownRuntime markdown={isRemote ? markdown : source} />
+        <MarkdownRuntime
+          markdown={isRemote ? markdown : source}
+          onOpenContent={(href) => openMarkdownSource(item.id, href)}
+        />
       </Suspense>
     </div>
   );

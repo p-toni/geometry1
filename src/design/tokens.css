@@ -1,20 +1,42 @@
 :root {
-  --paper: #faf6ee;
-  --paper-2: #f4eee1;
-  --ink: #2a2420;
-  --ink-2: #5c524a;
-  --line: #ece4d3;
-  --accent: #c8956c;
-  --accent-ink: #8a5a38;
+  --paper: #f8f9ff;
+  --paper-2: #eff4ff;
+  --ink: #0b1c30;
+  --ink-2: #464554;
+  --line: #c7c4d7;
+  --accent: #6063ee;
+  --accent-ink: #4648d4;
+  --outline: #767586;
+  --inverse-surface: #213145;
+  --inverse-on-surface: #eaf1ff;
 
-  --block-amber: #fde68a;
-  --block-rose: #fecdd3;
-  --block-blue: #bfdbfe;
-  --block-green: #a7f3d0;
-  --block-purple: #e9d5ff;
-  --block-stone: #e7e5e4;
+  --block-amber: #e1e0ff;
+  --block-rose: #d3e4fe;
+  --block-blue: #dae2fd;
+  --block-green: #e0e3e5;
+  --block-purple: #c0c1ff;
+  --block-stone: #ffffff;
 
-  --font-display: 'Fraunces Variable', Georgia, serif;
+  --card-heading: #e1e0ff;
+  --card-heading-line: #c0c1ff;
+  --card-heading-accent: #4648d4;
+  --card-reading: #ffffff;
+  --card-reading-line: #dce9ff;
+  --card-reading-accent: #565e74;
+  --card-link: #dae2fd;
+  --card-link-line: #bec6e0;
+  --card-link-accent: #4648d4;
+  --card-quote: #e0e3e5;
+  --card-quote-line: #c4c7c9;
+  --card-quote-accent: #595c5e;
+  --card-code: #eff4ff;
+  --card-code-line: #bec6e0;
+  --card-code-accent: #565e74;
+  --card-media: #f8f9ff;
+  --card-media-line: #d3e4fe;
+  --card-media-accent: #6063ee;
+
+  --font-display: 'Manrope', Inter, ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'JetBrains Mono Variable', 'SF Mono', monospace;
 
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);

@@ -6,7 +6,7 @@ export function StatusBar({ cell }: { cell: number }) {
   const count = useCanvasStore((state) => state.canvas.items.length);
 
   return (
-    <footer className="flex h-[var(--footer-h)] items-center justify-between border-t border-line bg-paper/95 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2">
+    <footer className="flex h-[var(--footer-h)] items-center justify-between border-t border-line/80 bg-white/80 px-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2 shadow-[0_-8px_24px_rgba(11,28,48,0.04)] backdrop-blur-xl">
       <span>
         {GRID_COLS}x{GRID_ROWS} · {Math.round(cell)}px
       </span>

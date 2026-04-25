@@ -7,69 +7,109 @@
     {
       "id": "writing-title",
       "type": "h2",
-      "col": 2,
-      "row": 2,
-      "cols": 13,
-      "rows": 3,
-      "color": 1,
+      "col": 1,
+      "row": 1,
+      "cols": 8,
+      "rows": 2,
+      "color": 0,
       "label": "writing",
-      "content": "Writing desk"
+      "content": "Writing"
     },
     {
-      "id": "writing-md",
+      "id": "writing-reader",
       "type": "markdown",
-      "col": 4,
-      "row": 6,
-      "cols": 14,
-      "rows": 9,
+      "col": 13,
+      "row": 1,
+      "cols": 19,
+      "rows": 18,
       "color": 5,
-      "label": "essay",
-      "content": "/content/writing.md",
+      "label": "read",
+      "content": "/content/12-allowed-ignorance.md",
       "controls": [
         {
-          "id": "writing-md-source",
+          "id": "writing-reader-source",
           "kind": "selector",
-          "value": "/content/writing.md",
+          "value": "/content/12-allowed-ignorance.md",
           "options": [
-            { "label": "writing", "value": "/content/writing.md" },
-            { "label": "about", "value": "/content/about.md" },
-            { "label": "project", "value": "/content/project.md" }
+            {
+              "label": "On Digital Minimalism",
+              "value": "/content/01-on-digital-minimalism.md"
+            },
+            {
+              "label": "The Instrument Metaphor",
+              "value": "/content/02-the-instrument-metaphor.md"
+            },
+            {
+              "label": "Constraints as Liberation",
+              "value": "/content/03-constraints-as-liberation.md"
+            },
+            {
+              "label": "About Me",
+              "value": "/content/04-about-me.md"
+            },
+            {
+              "label": "Increasing Returns",
+              "value": "/content/05-increasing-returns.md"
+            },
+            {
+              "label": "Ilya",
+              "value": "/content/06-ilya.md"
+            },
+            {
+              "label": "Co-owning The Loop",
+              "value": "/content/07-co-owning-the-loop.md"
+            },
+            {
+              "label": "Bounded Me",
+              "value": "/content/08-bounded-me.md"
+            },
+            {
+              "label": "Me + AI",
+              "value": "/content/09-me-plus-ai.md"
+            },
+            {
+              "label": "Geometry Over Retrieval",
+              "value": "/content/10-geometry-over-retrieval.md"
+            },
+            {
+              "label": "Weak Geometry",
+              "value": "/content/11-weak-geometry.md"
+            },
+            {
+              "label": "Allowed Ignorance",
+              "value": "/content/12-allowed-ignorance.md"
+            }
           ]
         },
         {
-          "id": "writing-md-refresh",
+          "id": "writing-reader-refresh",
           "kind": "action"
         }
-      ]
-    },
-    {
-      "id": "writing-code",
-      "type": "code",
-      "col": 22,
-      "row": 5,
-      "cols": 12,
-      "rows": 8,
-      "color": 2,
-      "label": "source",
-      "content": "export function snap(value: number) {\n  return Math.round(value);\n}\n\nexport function cell(width: number, height: number) {\n  return Math.min(width / 40, height / 20);\n}\n",
-      "controls": [
-        {
-          "id": "writing-code-raw",
-          "kind": "toggle",
-          "value": false
-        }
-      ]
+      ],
+      "refreshKey": 2
     },
     {
       "id": "writing-home",
       "type": "link",
-      "col": 26,
-      "row": 15,
-      "cols": 7,
-      "rows": 3,
+      "col": 35,
+      "row": 1,
+      "cols": 4,
+      "rows": 2,
       "color": 0,
       "label": "home",
-      "content": "home"
+      "content": "home",
+      "linkIcon": "home"
+    },
+    {
+      "id": "writing-index",
+      "type": "markdown",
+      "col": 1,
+      "row": 4,
+      "cols": 8,
+      "rows": 15,
+      "color": 2,
+      "label": "pieces",
+      "content": "/content/writing.md"
     }
   ]
 }

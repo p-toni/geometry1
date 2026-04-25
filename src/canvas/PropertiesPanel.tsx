@@ -1,6 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { WandSparkles, X } from 'lucide-react';
-import { BLOCK_TYPES, COLORS, GRID_COLS, GRID_ROWS, IS_OWNER } from '../constants';
+import { BLOCK_TYPES, CARD_SURFACES, COLORS, GRID_COLS, GRID_ROWS, IS_OWNER } from '../constants';
 import { cn } from '../lib/cn';
 import { LinkIcon, LINK_ICON_OPTIONS } from '../lib/linkIcons';
 import { useCanvasStore } from '../store/canvasStore';
@@ -20,7 +20,7 @@ function Field({ label, children }: { label: string; children: ReactNode }) {
 }
 
 function inputClass() {
-  return 'rounded-[6px] border border-ink/10 bg-paper px-2 py-1.5 font-display text-[14px] normal-case tracking-normal text-ink outline-none focus:border-accent-ink';
+  return 'rounded-[8px] border border-line bg-white/80 px-2 py-1.5 font-display text-[14px] normal-case tracking-normal text-ink outline-none transition focus:border-accent focus:ring-2 focus:ring-accent/20';
 }
 
 export function PropertiesPanel() {
@@ -55,7 +55,7 @@ export function PropertiesPanel() {
   return (
     <aside
       className={cn(
-        'absolute top-3 z-50 grid w-[280px] gap-3 rounded-[8px] border border-ink/10 bg-paper/95 p-3 shadow-xl backdrop-blur',
+        'absolute top-3 z-50 grid w-[280px] gap-3 rounded-[16px] border border-line/80 bg-white/80 p-3 shadow-[0_24px_60px_rgba(11,28,48,0.16)] backdrop-blur-xl',
         panelSide,
       )}
       onClick={(event) => event.stopPropagation()}
@@ -105,7 +105,7 @@ export function PropertiesPanel() {
             className={inputClass()}
             type="number"
             min={0}
-            max={GRID_COLS - 1}
+            max={GRID_COLS}
             value={selectedItem.col}
             onChange={(event) => update({ col: asNumber(event.target.value) })}
           />
@@ -115,7 +115,7 @@ export function PropertiesPanel() {
             className={inputClass()}
             type="number"
             min={0}
-            max={GRID_ROWS - 1}
+            max={GRID_ROWS}
             value={selectedItem.row}
             onChange={(event) => update({ row: asNumber(event.target.value) })}
           />
@@ -142,18 +142,27 @@ export function PropertiesPanel() {
         </Field>
       </div>
 
-      <div className="flex gap-1">
-        {COLORS.map((color) => (
-          <button
-            key={color.token}
-            type="button"
-            title={color.name}
-            aria-label={color.name}
-            className="h-7 flex-1 rounded-[6px] border border-ink/10 outline-offset-2"
-            style={{ backgroundColor: color.hex }}
-            onClick={() => update({ color: color.token as ColorToken })}
-          />
-        ))}
+      <div className="grid gap-1">
+        <div className="flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2">
+          <span>card color</span>
+          <span>default: {CARD_SURFACES[selectedItem.type].name}</span>
+        </div>
+        <div className="flex gap-1">
+          {COLORS.map((color) => (
+            <button
+              key={color.token}
+              type="button"
+              title={color.name}
+              aria-label={color.name}
+              className={cn(
+                'h-7 flex-1 rounded-[6px] border border-ink/10 outline-offset-2 transition',
+                selectedItem.color === color.token && 'ring-2 ring-accent ring-offset-1 ring-offset-white',
+              )}
+              style={{ backgroundColor: color.hex }}
+              onClick={() => update({ color: color.token as ColorToken })}
+            />
+          ))}
+        </div>
       </div>
 
       <Field label="content">

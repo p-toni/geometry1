@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Grip, ListFilter, SlidersHorizontal } from 'lucide-react';
 import { useState, type PointerEvent as ReactPointerEvent, type ReactElement } from 'react';
-import { COLORS } from '../constants';
+import { CARD_SURFACES, COLORS } from '../constants';
 import { spring } from '../design/motion';
 import { cn } from '../lib/cn';
 import { useCanvasStore } from '../store/canvasStore';
@@ -132,7 +132,6 @@ function ControlChip({
 function BlockChrome({
   item,
   isSelected,
-  isActive,
   openControlId,
   setOpenControlId,
   onDragPointerDown,
@@ -140,7 +139,6 @@ function BlockChrome({
 }: {
   item: Item;
   isSelected: boolean;
-  isActive: boolean;
   openControlId: string | null;
   setOpenControlId: (id: string | null) => void;
   onDragPointerDown: (event: ReactPointerEvent<HTMLElement>) => void;
@@ -164,9 +162,6 @@ function BlockChrome({
         onClick={(event) => {
           event.stopPropagation();
           onSelect();
-        }}
-        style={{
-          fontVariationSettings: `'opsz' 9, 'SOFT' ${isActive ? 100 : 0}, 'WONK' 0`,
         }}
       >
         <span className="truncate font-semibold">{item.label}</span>
@@ -205,6 +200,8 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
   const isDragging = dragState?.id === item.id;
   const isResizing = resizeState?.id === item.id;
   const color = COLORS.find((entry) => entry.token === item.color) ?? COLORS[0];
+  const surface = CARD_SURFACES[item.type];
+  const cardBackground = `color-mix(in srgb, ${color.hex} 62%, ${surface.background})`;
   const Renderer = renderers[item.type];
   const values = controlValues(item.controls);
   const renderCol = isDragging ? dragState.ghostCol : item.col;
@@ -220,11 +217,28 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
   if (isMobile) {
     return (
       <article
-        className="relative min-h-40 overflow-hidden rounded-[8px] border border-ink/10 p-4 shadow-sm"
-        style={{ backgroundColor: color.hex }}
+        className="relative min-h-40 overflow-hidden rounded-[16px] border border-ink/10 p-4 shadow-[0_4px_16px_rgba(11,28,48,0.05)]"
+        style={{
+          background: cardBackground,
+        }}
       >
-        <div className="mb-3 font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2">
-          {item.label}
+        <div className="mb-3 flex items-center justify-between gap-2">
+          <div className="min-w-0 truncate font-mono text-[10px] uppercase tracking-[0.12em] text-ink-2">
+            {item.label}
+          </div>
+          {(item.controls ?? []).length > 0 ? (
+            <div className="flex shrink-0 items-center gap-0.5">
+              {(item.controls ?? []).map((control) => (
+                <ControlChip
+                  key={control.id}
+                  itemId={item.id}
+                  control={control}
+                  isOpen={openControlId === control.id}
+                  setOpenControlId={setOpenControlId}
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
         <Renderer item={item} cell={cell} {...values} />
       </article>
@@ -260,8 +274,7 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
       <BlockChrome
         item={item}
         isSelected={isSelected}
-        isActive={isActiveGesture}
-        openControlId={isSelected ? openControlId : null}
+        openControlId={openControlId}
         setOpenControlId={setOpenControlId}
         onDragPointerDown={onDragPointerDown}
         onSelect={() => {
@@ -272,14 +285,14 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
 
       <div
         className={cn(
-          'absolute left-0 right-0 overflow-hidden rounded-[8px] border p-3 shadow-sm',
+          'absolute left-0 right-0 overflow-hidden rounded-[16px] border p-3 shadow-[0_4px_16px_rgba(11,28,48,0.05)]',
           item.type === 'link' && 'p-2',
           isSelected ? 'border-accent-ink ring-2 ring-accent/40' : 'border-ink/10',
         )}
         style={{
           top: chromeOffset,
           height: cellToPx(renderRows, cell),
-          backgroundColor: color.hex,
+          background: cardBackground,
         }}
       >
         <Renderer item={item} cell={cell} {...values} />

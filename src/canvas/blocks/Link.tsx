@@ -16,7 +16,7 @@ export function Link({ item }: BlockRendererProps) {
       type="button"
       data-no-drag="true"
       className={cn(
-        'group flex h-full w-full rounded-[6px] border border-ink/10 bg-paper/55 text-left transition hover:border-accent-ink hover:bg-paper/70',
+        'group flex h-full w-full rounded-[12px] border border-line/80 bg-white/55 text-left transition hover:border-accent hover:bg-white/80',
         isCompact ? 'items-end gap-2 p-2' : 'items-stretch gap-3 p-3',
       )}
       whileHover={{ y: -2 }}
@@ -29,7 +29,7 @@ export function Link({ item }: BlockRendererProps) {
     >
       <span
         className={cn(
-          'flex shrink-0 items-center justify-center rounded-[6px] border border-ink/10 bg-paper text-accent-ink shadow-sm transition group-hover:border-accent-ink',
+          'flex shrink-0 items-center justify-center rounded-[10px] border border-line/80 bg-white text-accent-ink shadow-sm transition group-hover:border-accent',
           isCompact ? 'h-9 w-9' : 'h-full min-h-16 w-16',
         )}
         aria-hidden="true"
@@ -40,10 +40,9 @@ export function Link({ item }: BlockRendererProps) {
         <span className="flex min-w-0 items-start justify-between gap-2">
           <span
             className={cn(
-              'min-w-0 truncate font-display leading-none tracking-normal',
+              'min-w-0 truncate font-display font-bold leading-none tracking-normal',
               isCompact ? 'text-[18px]' : 'text-[28px]',
             )}
-            style={{ fontVariationSettings: `'opsz' 72, 'SOFT' 30, 'WONK' 1` }}
           >
             {item.label}
           </span>

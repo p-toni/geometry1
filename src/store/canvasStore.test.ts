@@ -44,18 +44,26 @@ describe('createCanvasStore', () => {
     expect(store.getState().hasDiverged).toBe(true);
   });
 
+  it('uses semantic default colors for new items', () => {
+    const store = createCanvasStore(seedCanvas());
+    store.getState().addItem('markdown');
+    store.getState().addItem('link');
+    expect(store.getState().canvas.items.at(-2)).toMatchObject({ type: 'markdown', color: 5 });
+    expect(store.getState().canvas.items.at(-1)).toMatchObject({ type: 'link', color: 2 });
+  });
+
   it('updates items and clamps grid values', () => {
     const store = createCanvasStore(seedCanvas());
     store.getState().updateItem('a', { col: 99, row: 99, cols: 8, rows: 8 });
-    expect(store.getState().canvas.items[0]).toMatchObject({ col: 39, row: 19 });
+    expect(store.getState().canvas.items[0]).toMatchObject({ col: 40, row: 20 });
   });
 
   it('allows items to resize to the full canvas regardless of position', () => {
     const store = createCanvasStore(seedCanvas());
-    store.getState().updateItem('a', { col: 39, row: 19, cols: 99, rows: 99 });
+    store.getState().updateItem('a', { col: 40, row: 20, cols: 99, rows: 99 });
     expect(store.getState().canvas.items[0]).toMatchObject({
-      col: 39,
-      row: 19,
+      col: 40,
+      row: 20,
       cols: 40,
       rows: 20,
     });
@@ -98,6 +106,46 @@ describe('createCanvasStore', () => {
     store.getState().addControl('a', { id: 's', kind: 'selector', value: 'one', options: [] });
     store.getState().updateControl('a', { id: 's', kind: 'selector', value: 'two', options: [] });
     expect(store.getState().canvas.items[0].content).toBe('two');
+  });
+
+  it('opens content links in the primary markdown reader', () => {
+    const canvas = seedCanvas();
+    canvas.items.push({
+      id: 'main-reader',
+      type: 'markdown',
+      col: 0,
+      row: 0,
+      cols: 10,
+      rows: 10,
+      color: 0,
+      label: 'reader',
+      content: '/content/one.md',
+      controls: [
+        {
+          id: 'source',
+          kind: 'selector',
+          value: '/content/one.md',
+          options: [],
+        },
+      ],
+    });
+    canvas.items.push({
+      id: 'index',
+      type: 'markdown',
+      col: 20,
+      row: 0,
+      cols: 10,
+      rows: 10,
+      color: 1,
+      label: 'index',
+      content: '/content/index.md',
+    });
+    const store = createCanvasStore(canvas);
+    store.getState().openMarkdownSource('index', '/content/two.md');
+    const reader = store.getState().canvas.items.find((item) => item.id === 'main-reader');
+    expect(reader).toMatchObject({ content: '/content/two.md' });
+    expect(reader?.controls?.[0]).toMatchObject({ kind: 'selector', value: '/content/two.md' });
+    expect(store.getState().selectedId).toBeNull();
   });
 
   it('ignores duplicate controls of the same kind on an item', () => {

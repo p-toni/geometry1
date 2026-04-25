@@ -9,13 +9,92 @@ export const MOBILE_BREAKPOINT = 768;
 export const IS_OWNER = import.meta.env.DEV;
 
 export const COLORS: { token: ColorToken; name: string; className: string; hex: string }[] = [
-  { token: 0, name: 'amber', className: 'bg-block-amber', hex: '#fde68a' },
-  { token: 1, name: 'rose', className: 'bg-block-rose', hex: '#fecdd3' },
-  { token: 2, name: 'blue', className: 'bg-block-blue', hex: '#bfdbfe' },
-  { token: 3, name: 'green', className: 'bg-block-green', hex: '#a7f3d0' },
-  { token: 4, name: 'purple', className: 'bg-block-purple', hex: '#e9d5ff' },
-  { token: 5, name: 'stone', className: 'bg-block-stone', hex: '#e7e5e4' },
+  { token: 0, name: 'primary mist', className: 'bg-block-amber', hex: '#e1e0ff' },
+  { token: 1, name: 'canvas blue', className: 'bg-block-rose', hex: '#d3e4fe' },
+  { token: 2, name: 'navigation blue', className: 'bg-block-blue', hex: '#dae2fd' },
+  { token: 3, name: 'neutral chip', className: 'bg-block-green', hex: '#e0e3e5' },
+  { token: 4, name: 'indigo glow', className: 'bg-block-purple', hex: '#c0c1ff' },
+  { token: 5, name: 'white card', className: 'bg-block-stone', hex: '#ffffff' },
 ];
+
+export const BLOCK_DEFAULT_COLORS: Record<BlockType, ColorToken> = {
+  h1: 0,
+  h2: 0,
+  h3: 0,
+  p: 5,
+  quote: 3,
+  markdown: 5,
+  code: 4,
+  embed: 4,
+  image: 1,
+  link: 2,
+};
+
+export const CARD_SURFACES: Record<
+  BlockType,
+  { name: string; background: string; border: string; accent: string }
+> = {
+  h1: {
+    name: 'display',
+    background: 'var(--card-heading)',
+    border: 'var(--card-heading-line)',
+    accent: 'var(--card-heading-accent)',
+  },
+  h2: {
+    name: 'display',
+    background: 'var(--card-heading)',
+    border: 'var(--card-heading-line)',
+    accent: 'var(--card-heading-accent)',
+  },
+  h3: {
+    name: 'display',
+    background: 'var(--card-heading)',
+    border: 'var(--card-heading-line)',
+    accent: 'var(--card-heading-accent)',
+  },
+  p: {
+    name: 'reading',
+    background: 'var(--card-reading)',
+    border: 'var(--card-reading-line)',
+    accent: 'var(--card-reading-accent)',
+  },
+  markdown: {
+    name: 'reading',
+    background: 'var(--card-reading)',
+    border: 'var(--card-reading-line)',
+    accent: 'var(--card-reading-accent)',
+  },
+  quote: {
+    name: 'quote',
+    background: 'var(--card-quote)',
+    border: 'var(--card-quote-line)',
+    accent: 'var(--card-quote-accent)',
+  },
+  code: {
+    name: 'code',
+    background: 'var(--card-code)',
+    border: 'var(--card-code-line)',
+    accent: 'var(--card-code-accent)',
+  },
+  embed: {
+    name: 'embed',
+    background: 'var(--card-code)',
+    border: 'var(--card-code-line)',
+    accent: 'var(--card-code-accent)',
+  },
+  image: {
+    name: 'media',
+    background: 'var(--card-media)',
+    border: 'var(--card-media-line)',
+    accent: 'var(--card-media-accent)',
+  },
+  link: {
+    name: 'navigation',
+    background: 'var(--card-link)',
+    border: 'var(--card-link-line)',
+    accent: 'var(--card-link-accent)',
+  },
+};
 
 export const BLOCK_TYPES: BlockType[] = [
   'h1',

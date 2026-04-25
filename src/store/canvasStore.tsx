@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, type ReactNode } from 'react';
 import { useStore } from 'zustand';
 import { createStore, type StoreApi } from 'zustand/vanilla';
-import { BLOCK_DEFAULTS, GRID_COLS, GRID_ROWS } from '../constants';
+import { BLOCK_DEFAULT_COLORS, BLOCK_DEFAULTS, GRID_COLS, GRID_ROWS } from '../constants';
 import { clampItemPosition, clampItemSize } from '../canvas/hooks/cellMath';
 import { createId } from '../lib/id';
 import type { BlockType, Canvas, Control, Item } from '../types';
@@ -15,6 +15,7 @@ export interface CanvasState {
   select: (id: string | null) => void;
   addItem: (type: BlockType) => void;
   updateItem: (id: string, patch: Partial<Item>) => void;
+  openMarkdownSource: (fromItemId: string, source: string) => void;
   deleteItem: (id: string) => void;
   addControl: (id: string, control: Control) => void;
   updateControl: (itemId: string, control: Control) => void;
@@ -72,7 +73,7 @@ export function createCanvasStore(initialCanvas: Canvas): CanvasStoreApi {
           row: position.row,
           cols: defaults.cols,
           rows: defaults.rows,
-          color: (state.canvas.items.length % 6) as Item['color'],
+          color: BLOCK_DEFAULT_COLORS[type],
           label: defaults.label,
           content: defaults.content,
           linkIcon: type === 'link' ? 'link' : undefined,
@@ -93,6 +94,28 @@ export function createCanvasStore(initialCanvas: Canvas): CanvasStoreApi {
         },
         hasDiverged: true,
       })),
+    openMarkdownSource: (fromItemId, source) =>
+      set((state) => {
+        const fromItem = state.canvas.items.find((item) => item.id === fromItemId);
+        const preferred =
+          state.canvas.items.find((item) => item.type === 'markdown' && item.id.includes('reader')) ??
+          fromItem;
+        if (!preferred || preferred.type !== 'markdown') return state;
+        const targetId = preferred.id;
+        return {
+          canvas: {
+            ...state.canvas,
+            items: state.canvas.items.map((item) => {
+              if (item.id !== targetId) return item;
+              const controls = item.controls?.map((control) =>
+                control.kind === 'selector' ? { ...control, value: source } : control,
+              );
+              return { ...item, content: source, controls };
+            }),
+          },
+          hasDiverged: true,
+        };
+      }),
     deleteItem: (id) =>
       set((state) => ({
         canvas: { ...state.canvas, items: state.canvas.items.filter((item) => item.id !== id) },

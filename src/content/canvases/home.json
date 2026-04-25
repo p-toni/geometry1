@@ -1,88 +1,87 @@
 {
   "version": 1,
   "slug": "home",
-  "title": "Geometry",
+  "title": "toni.ltd",
   "background": "paper",
   "items": [
     {
       "id": "home-title",
-      "type": "h1",
-      "col": 2,
-      "row": 2,
-      "cols": 15,
-      "rows": 4,
+      "type": "h2",
+      "col": 1,
+      "row": 1,
+      "cols": 6,
+      "rows": 2,
       "color": 0,
-      "label": "home",
-      "content": "Geometry"
+      "label": "toni.ltd",
+      "content": "Toni Inc."
     },
     {
-      "id": "home-copy",
-      "type": "p",
-      "col": 3,
-      "row": 8,
-      "cols": 10,
-      "rows": 4,
+      "id": "home-about",
+      "type": "markdown",
+      "col": 1,
+      "row": 4,
+      "cols": 19,
+      "rows": 8,
       "color": 5,
-      "label": "bio",
-      "content": "A personal website composed as a set of draggable, resizable, grid-aligned canvases."
+      "label": "about",
+      "content": "/content/about.md"
     },
     {
-      "id": "home-quote",
-      "type": "quote",
-      "col": 21,
-      "row": 3,
-      "cols": 11,
+      "id": "image-mod97nib-v87fo5",
+      "type": "image",
+      "col": 23,
+      "row": 4,
+      "cols": 6,
       "rows": 4,
       "color": 1,
-      "label": "note",
-      "content": "Warm paper, serif display type, and a fixed 40 by 20 structure."
+      "label": "image",
+      "content": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 560\"><rect width=\"800\" height=\"560\" fill=\"%23faf6ee\"/><circle cx=\"280\" cy=\"220\" r=\"150\" fill=\"%23fecdd3\"/><circle cx=\"510\" cy=\"310\" r=\"170\" fill=\"%23bfdbfe\"/><path d=\"M130 410 C260 280 380 480 680 170\" stroke=\"%23c8956c\" stroke-width=\"42\" fill=\"none\" stroke-linecap=\"round\"/></svg>"
     },
     {
-      "id": "home-image",
-      "type": "image",
-      "col": 22,
-      "row": 10,
-      "cols": 12,
-      "rows": 7,
-      "color": 2,
-      "label": "sketch",
-      "content": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 560'><rect width='800' height='560' fill='%23faf6ee'/><circle cx='240' cy='220' r='145' fill='%23fecdd3'/><circle cx='520' cy='330' r='160' fill='%23a7f3d0'/><path d='M110 410 C260 250 410 500 690 160' stroke='%23c8956c' stroke-width='46' fill='none' stroke-linecap='round'/></svg>",
-      "controls": [
-        {
-          "id": "home-image-opacity",
-          "kind": "slider",
-          "value": 1,
-          "min": 0.2,
-          "max": 1
-        },
-        {
-          "id": "home-image-fit",
-          "kind": "toggle",
-          "value": false
-        }
-      ]
-    },
-    {
-      "id": "home-writing",
-      "type": "link",
-      "col": 4,
-      "row": 15,
-      "cols": 8,
-      "rows": 3,
+      "id": "embed-mod94fni-d6ryxp",
+      "type": "embed",
+      "col": 30,
+      "row": 4,
+      "cols": 9,
+      "rows": 14,
       "color": 3,
-      "label": "writing",
-      "content": "writing"
+      "label": "embed",
+      "content": "@shader:sequinWave"
     },
     {
       "id": "home-project",
       "type": "link",
-      "col": 13,
-      "row": 15,
-      "cols": 9,
-      "rows": 3,
-      "color": 4,
+      "col": 1,
+      "row": 13,
+      "cols": 5,
+      "rows": 2,
+      "color": 2,
       "label": "project",
-      "content": "projects/foo"
+      "content": "/projects/foo",
+      "linkIcon": "briefcase"
+    },
+    {
+      "id": "home-writing",
+      "type": "link",
+      "col": 7,
+      "row": 13,
+      "cols": 5,
+      "rows": 2,
+      "color": 2,
+      "label": "writing",
+      "content": "/writing",
+      "linkIcon": "pen"
+    },
+    {
+      "id": "home-quote",
+      "type": "quote",
+      "col": 1,
+      "row": 16,
+      "cols": 19,
+      "rows": 2,
+      "color": 2,
+      "label": "thesis",
+      "content": "Build products from first principles: expose constraints, instrument the loop, and use AI to search the solution space faster."
     }
   ]
 }

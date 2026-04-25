@@ -11,7 +11,7 @@
       "row": 2,
       "cols": 12,
       "rows": 3,
-      "color": 3,
+      "color": 0,
       "label": "project",
       "content": "Project Foo"
     },
@@ -44,7 +44,7 @@
       "row": 10,
       "cols": 13,
       "rows": 7,
-      "color": 2,
+      "color": 5,
       "label": "notes",
       "content": "/content/project.md"
     },
@@ -55,7 +55,7 @@
       "row": 15,
       "cols": 8,
       "rows": 3,
-      "color": 1,
+      "color": 2,
       "label": "home",
       "content": "home"
     }

@@ -23,8 +23,8 @@ export function cellToPx(cellValue: number, cell: number) {
 
 export function clampItemPosition(col: number, row: number) {
   return {
-    col: clamp(snapToCell(col), 0, GRID_COLS - 1),
-    row: clamp(snapToCell(row), 0, GRID_ROWS - 1),
+    col: clamp(snapToCell(col), 0, GRID_COLS),
+    row: clamp(snapToCell(row), 0, GRID_ROWS),
   };
 }
 

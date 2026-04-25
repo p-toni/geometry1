@@ -36,7 +36,7 @@ describe('cellMath', () => {
 
   it('clamps item position to the 40 by 20 grid', () => {
     expect(clampItemPosition(-4, -2)).toEqual({ col: 0, row: 0 });
-    expect(clampItemPosition(50, 50)).toEqual({ col: 39, row: 19 });
+    expect(clampItemPosition(50, 50)).toEqual({ col: 40, row: 20 });
   });
 
   it('clamps item size to the full grid', () => {
