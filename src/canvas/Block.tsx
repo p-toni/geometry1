@@ -1,7 +1,19 @@
+function getContrastColor(hex: string): string {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  const toLinear = (c: number) => {
+    const s = c / 255;
+    return s <= 0.04045 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const luminance = 0.2126 * toLinear(r) + 0.7152 * toLinear(g) + 0.0722 * toLinear(b);
+  return luminance > 0.179 ? 'var(--ink)' : '#ffffff';
+}
+
 import { motion } from 'framer-motion';
 import { Grip, ListFilter, SlidersHorizontal } from 'lucide-react';
 import { useState, type PointerEvent as ReactPointerEvent, type ReactElement } from 'react';
-import { CARD_SURFACES, COLORS } from '../constants';
+import { COLORS } from '../constants';
 import { spring } from '../design/motion';
 import { cn } from '../lib/cn';
 import { useCanvasStore } from '../store/canvasStore';
@@ -38,7 +50,7 @@ const renderers = {
   link: Link,
 } satisfies Record<Item['type'], (props: BlockRendererProps) => ReactElement>;
 
-const CHROME_HEIGHT = 25;
+const CHROME_HEIGHT = 28;
 
 function controlValues(controls: Control[] | undefined) {
   return {
@@ -60,22 +72,23 @@ function ControlChip({
   setOpenControlId: (id: string | null) => void;
 }) {
   const updateControl = useCanvasStore((state) => state.updateControl);
-  const iconClass = 'h-6 w-6 rounded-t-[4px] rounded-b-none border border-ink/10 bg-paper/95';
+  const iconClass =
+    'inline-flex h-5 w-5 items-center justify-center rounded-sm text-ink-2 transition hover:bg-ink/10 hover:text-ink';
 
   if (control.kind === 'toggle') return <Toggle itemId={itemId} control={control} />;
   if (control.kind === 'action') return <Action itemId={itemId} control={control} />;
 
   return (
-    <span className="relative inline-flex" data-no-drag="true" onPointerDown={(event) => event.stopPropagation()}>
+    <span
+      className="relative inline-flex"
+      data-no-drag="true"
+      onPointerDown={(event) => event.stopPropagation()}
+    >
       <button
         type="button"
         aria-label={control.kind === 'slider' ? 'Open slider' : 'Open selector'}
         title={control.kind === 'slider' ? 'Slider' : 'Selector'}
-        className={cn(
-          'inline-flex items-center justify-center text-ink-2 shadow-sm transition hover:border-accent-ink hover:text-ink',
-          iconClass,
-          isOpen && 'border-accent-ink text-accent-ink',
-        )}
+        className={cn(iconClass, isOpen && 'bg-accent/10 text-accent-ink')}
         onClick={(event) => {
           event.stopPropagation();
           setOpenControlId(isOpen ? null : control.id);
@@ -87,7 +100,9 @@ function ControlChip({
         <span className="absolute left-0 top-full z-50 mt-1 rounded-[6px] border border-ink/10 bg-paper p-2 shadow-lg">
           {control.kind === 'slider' ? (
             <label className="inline-flex h-6 items-center gap-2" title="Slider">
-              <span className="font-mono text-[10px] text-ink-2">{control.value.toFixed(2)}</span>
+              <span className="font-mono text-[10px] text-ink-2">
+                {control.value.toFixed(2)}
+              </span>
               <input
                 aria-label="Slider"
                 type="range"
@@ -111,7 +126,9 @@ function ControlChip({
                   type="button"
                   className={cn(
                     'rounded-[4px] px-2 py-1 text-left font-mono text-[10px] transition hover:bg-paper-2',
-                    option.value === control.value ? 'bg-paper-2 text-accent-ink' : 'text-ink-2',
+                    option.value === control.value
+                      ? 'bg-paper-2 text-accent-ink'
+                      : 'text-ink-2',
                   )}
                   onPointerDown={(event) => event.stopPropagation()}
                   onClick={(event) => {
@@ -147,48 +164,70 @@ function BlockChrome({
   onSelect: () => void;
 }) {
   const liftInside = item.row === 0;
+  const hasControls = (item.controls ?? []).length > 0;
 
   return (
     <div
       className={cn(
-        'pointer-events-none absolute left-0 z-30 flex max-w-full items-end gap-1',
+        'pointer-events-none absolute left-0 z-30 flex max-w-full items-end',
         liftInside ? 'top-1' : 'top-0',
       )}
     >
       <div
         className={cn(
-          'pointer-events-auto flex h-6 min-w-0 max-w-[min(280px,100%)] cursor-grab items-center gap-2 rounded-t-[4px] rounded-b-none border border-ink/10 bg-paper/95 px-2 font-mono text-[10px] uppercase tracking-[0.08em] text-ink-2 shadow-sm active:cursor-grabbing',
-          isSelected && 'border-accent-ink bg-paper text-ink',
+          'pointer-events-auto flex h-6 min-w-0 max-w-[min(320px,100%)] items-stretch overflow-hidden rounded-lg border bg-paper/95 shadow-sm backdrop-blur-sm',
+          isSelected ? 'border-accent-ink' : 'border-ink/15',
         )}
-        onPointerDown={onDragPointerDown}
-        onClick={(event) => {
-          event.stopPropagation();
-          onSelect();
-        }}
       >
-        <span className="truncate font-semibold">{item.label}</span>
-        <span className="shrink-0 text-ink-2/80">
-          {item.cols}&times;{item.rows}
-        </span>
-      </div>
-      {(item.controls ?? []).length > 0 && (
-        <div className="pointer-events-auto flex h-6 shrink-0 items-center gap-0.5 rounded-t-[4px] rounded-b-none border border-ink/10 bg-paper/90 px-1 shadow-sm">
-          {(item.controls ?? []).map((control) => (
-            <ControlChip
-              key={control.id}
-              itemId={item.id}
-              control={control}
-              isOpen={openControlId === control.id}
-              setOpenControlId={setOpenControlId}
-            />
-          ))}
+        {/* Label + drag handle */}
+        <div
+          className={cn(
+            'flex cursor-grab items-center gap-2 px-2.5 font-mono text-[10px] uppercase tracking-[0.1em] active:cursor-grabbing',
+            isSelected ? 'text-ink' : 'text-ink-2',
+          )}
+          onPointerDown={onDragPointerDown}
+          onClick={(event) => {
+            event.stopPropagation();
+            onSelect();
+          }}
+        >
+          <span className="truncate font-semibold">{item.label}</span>
+          <span className="shrink-0 opacity-40">
+            {item.cols}×{item.rows}
+          </span>
         </div>
-      )}
+
+        {/* Divider + controls */}
+        {hasControls && (
+          <>
+            <span className="my-1 w-px shrink-0 bg-ink/15" />
+            <div className="flex items-center gap-0.5 px-1">
+              {(item.controls ?? []).map((control) => (
+                <ControlChip
+                  key={control.id}
+                  itemId={item.id}
+                  control={control}
+                  isOpen={openControlId === control.id}
+                  setOpenControlId={setOpenControlId}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
 
-export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMobile: boolean }) {
+export function Block({
+  item,
+  cell,
+  isMobile,
+}: {
+  item: Item;
+  cell: number;
+  isMobile: boolean;
+}) {
   const selectedId = useCanvasStore((state) => state.selectedId);
   const dragState = useCanvasStore((state) => state.dragState);
   const resizeState = useCanvasStore((state) => state.resizeState);
@@ -197,8 +236,8 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
   const isDragging = dragState?.id === item.id;
   const isResizing = resizeState?.id === item.id;
   const color = COLORS.find((entry) => entry.token === item.color) ?? COLORS[0];
-  const surface = CARD_SURFACES[item.type];
-  const cardBackground = `color-mix(in srgb, ${color.hex} 62%, ${surface.background})`;
+  const cardBackground = color.hex;
+  const textColor = getContrastColor(color.hex);
   const Renderer = renderers[item.type];
   const values = controlValues(item.controls);
   const renderCol = isDragging ? dragState.ghostCol : item.col;
@@ -217,6 +256,7 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
         className="relative flex min-h-20 flex-col overflow-hidden rounded-[16px] border border-ink/10 p-3 shadow-[0_4px_16px_rgba(11,28,48,0.05)]"
         style={{
           background: cardBackground,
+          color: textColor,
           aspectRatio: `${item.cols} / ${item.rows}`,
           maxHeight: '60vh',
         }}
@@ -299,6 +339,7 @@ export function Block({ item, cell, isMobile }: { item: Item; cell: number; isMo
           top: chromeOffset,
           height: cellToPx(renderRows, cell),
           background: cardBackground,
+          color: textColor,
         }}
       >
         <Renderer item={item} cell={cell} {...values} />

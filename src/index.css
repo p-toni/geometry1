@@ -37,7 +37,7 @@ body {
   color: var(--ink);
   font-family: var(--font-display);
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.55;
   text-rendering: optimizeLegibility;
 }
 
@@ -53,7 +53,8 @@ button {
 }
 
 ::selection {
-  background: var(--block-purple);
+  background: var(--accent);
+  color: var(--ink);
 }
 
 .font-variation-soft {
@@ -62,13 +63,13 @@ button {
 
 .canvas-grid {
   background-image:
-    linear-gradient(to right, rgb(11 28 48 / 0.06) 1px, transparent 1px),
-    linear-gradient(to bottom, rgb(11 28 48 / 0.06) 1px, transparent 1px);
+    linear-gradient(to right, rgb(32 33 36 / 0.07) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(32 33 36 / 0.07) 1px, transparent 1px);
   background-size: var(--cell) var(--cell);
 }
 
 .markdown-body {
-  color: var(--ink);
+  color: inherit;
   font-size: 16px;
   line-height: 1.62;
   overflow-wrap: anywhere;
@@ -150,7 +151,7 @@ button {
 }
 
 .markdown-body em {
-  color: color-mix(in srgb, var(--ink) 82%, var(--ink-2));
+  color: color-mix(in srgb, currentColor 80%, transparent);
 }
 
 .markdown-body a,
@@ -182,7 +183,7 @@ button {
   margin: 0 0 1.1em;
   border-left: 3px solid var(--accent);
   padding-left: 0.85rem;
-  color: var(--ink-2);
+  color: color-mix(in srgb, currentColor 65%, transparent);
   font-style: italic;
 }
 
@@ -198,7 +199,7 @@ button {
 
 .markdown-body code {
   border-radius: 4px;
-  background: rgb(11 28 48 / 0.08);
+  background: color-mix(in srgb, currentColor 10%, transparent);
   padding: 0.08rem 0.32rem;
   font-family: var(--font-mono);
   font-size: 0.82em;
@@ -207,7 +208,7 @@ button {
 .markdown-body pre {
   overflow: auto;
   border-radius: 8px;
-  background: rgb(11 28 48 / 0.08);
+  background: color-mix(in srgb, currentColor 8%, transparent);
   padding: 0.85rem;
   margin-block: 0 1rem;
   line-height: 1.55;
@@ -224,7 +225,7 @@ button {
   height: auto;
   margin: 1rem auto;
   border-radius: 8px;
-  border: 1px solid rgb(11 28 48 / 0.1);
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
 }
 
 .markdown-body table {
@@ -255,12 +256,12 @@ button {
 }
 
 .markdown-body th {
-  color: var(--ink);
+  color: inherit;
   font-weight: 700;
 }
 
 .markdown-body td {
-  color: var(--ink-2);
+  color: color-mix(in srgb, currentColor 65%, transparent);
 }
 
 .markdown-body th:last-child,

@@ -11,7 +11,7 @@ export function Action({ itemId, control }: { itemId: string; control: ActionCon
       aria-label="Refresh block"
       title={`Refresh ${control.id}`}
       data-no-drag="true"
-      className="inline-flex h-6 w-6 items-center justify-center rounded-t-[4px] rounded-b-none border border-ink/10 bg-paper/95 text-ink-2 shadow-sm transition hover:border-accent-ink hover:text-ink"
+      className="inline-flex h-5 w-5 items-center justify-center rounded-sm text-ink-2 transition hover:bg-ink/10 hover:text-ink"
       onPointerDown={(event) => event.stopPropagation()}
       onClick={(event) => {
         event.stopPropagation();

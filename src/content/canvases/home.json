@@ -11,42 +11,31 @@
       "row": 1,
       "cols": 6,
       "rows": 2,
-      "color": 0,
+      "color": 4,
       "label": "toni.ltd",
       "content": "Toni Inc."
+    },
+    {
+      "id": "embed-mod94fni-d6ryxp",
+      "type": "embed",
+      "col": 30,
+      "row": 2,
+      "cols": 8,
+      "rows": 17,
+      "color": 5,
+      "label": "embed",
+      "content": "@shader:sequinWave"
     },
     {
       "id": "home-about",
       "type": "markdown",
       "col": 1,
       "row": 4,
-      "cols": 19,
+      "cols": 18,
       "rows": 8,
       "color": 5,
       "label": "about",
       "content": "/content/about.md"
-    },
-    {
-      "id": "image-mod97nib-v87fo5",
-      "type": "image",
-      "col": 23,
-      "row": 4,
-      "cols": 6,
-      "rows": 4,
-      "color": 1,
-      "label": "image",
-      "content": "data:image/svg+xml;utf8,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 800 560\"><rect width=\"800\" height=\"560\" fill=\"%23faf6ee\"/><circle cx=\"280\" cy=\"220\" r=\"150\" fill=\"%23fecdd3\"/><circle cx=\"510\" cy=\"310\" r=\"170\" fill=\"%23bfdbfe\"/><path d=\"M130 410 C260 280 380 480 680 170\" stroke=\"%23c8956c\" stroke-width=\"42\" fill=\"none\" stroke-linecap=\"round\"/></svg>"
-    },
-    {
-      "id": "embed-mod94fni-d6ryxp",
-      "type": "embed",
-      "col": 30,
-      "row": 4,
-      "cols": 9,
-      "rows": 14,
-      "color": 3,
-      "label": "embed",
-      "content": "@shader:sequinWave"
     },
     {
       "id": "home-project",
@@ -55,7 +44,7 @@
       "row": 13,
       "cols": 5,
       "rows": 2,
-      "color": 2,
+      "color": 0,
       "label": "project",
       "content": "/projects/foo",
       "linkIcon": "briefcase"
@@ -67,21 +56,10 @@
       "row": 13,
       "cols": 5,
       "rows": 2,
-      "color": 2,
+      "color": 1,
       "label": "writing",
       "content": "/writing",
       "linkIcon": "pen"
-    },
-    {
-      "id": "home-quote",
-      "type": "quote",
-      "col": 1,
-      "row": 16,
-      "cols": 19,
-      "rows": 2,
-      "color": 2,
-      "label": "thesis",
-      "content": "Build products from first principles: expose constraints, instrument the loop, and use AI to search the solution space faster."
     }
   ]
 }

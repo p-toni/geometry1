@@ -9,24 +9,24 @@ export const MOBILE_BREAKPOINT = 768;
 export const IS_OWNER = import.meta.env.DEV;
 
 export const COLORS: { token: ColorToken; name: string; className: string; hex: string }[] = [
-  { token: 0, name: 'warm amber', className: 'bg-block-amber', hex: '#fde3a7' },
-  { token: 1, name: 'soft rose', className: 'bg-block-rose', hex: '#fac9d3' },
-  { token: 2, name: 'sky blue', className: 'bg-block-blue', hex: '#c5dbf7' },
-  { token: 3, name: 'mint', className: 'bg-block-green', hex: '#c9e6cf' },
-  { token: 4, name: 'lavender', className: 'bg-block-purple', hex: '#d4c8f5' },
-  { token: 5, name: 'stone', className: 'bg-block-stone', hex: '#ece5d3' },
+  { token: 0, name: 'pale cashmere', className: 'bg-block-amber', hex: '#e8dfd5' },
+  { token: 1, name: 'cinnamon ice', className: 'bg-block-rose', hex: '#dbbba7' },
+  { token: 2, name: 'burning orange', className: 'bg-block-blue', hex: '#ff7124' },
+  { token: 3, name: 'blue estate', className: 'bg-block-green', hex: '#3b4883' },
+  { token: 4, name: 'wahoo', className: 'bg-block-purple', hex: '#272d4e' },
+  { token: 5, name: 'noble black', className: 'bg-block-stone', hex: '#202124' },
 ];
 
 export const BLOCK_DEFAULT_COLORS: Record<BlockType, ColorToken> = {
-  h1: 0,
-  h2: 0,
-  h3: 0,
-  p: 5,
-  quote: 3,
-  markdown: 5,
+  h1: 3,
+  h2: 3,
+  h3: 3,
+  p: 1,
+  quote: 1,
+  markdown: 0,
   code: 4,
-  embed: 4,
-  image: 1,
+  embed: 3,
+  image: 0,
   link: 2,
 };
 
@@ -109,7 +109,10 @@ export const BLOCK_TYPES: BlockType[] = [
   'link',
 ];
 
-export const BLOCK_DEFAULTS: Record<BlockType, Pick<Item, 'cols' | 'rows' | 'label' | 'content'>> = {
+export const BLOCK_DEFAULTS: Record<
+  BlockType,
+  Pick<Item, 'cols' | 'rows' | 'label' | 'content'>
+> = {
   h1: { cols: 12, rows: 3, label: 'headline', content: 'Geometry' },
   h2: { cols: 10, rows: 2, label: 'section', content: 'A warm grid for loose thoughts' },
   h3: { cols: 8, rows: 2, label: 'note', content: 'Small heading' },
@@ -117,7 +120,8 @@ export const BLOCK_DEFAULTS: Record<BlockType, Pick<Item, 'cols' | 'rows' | 'lab
     cols: 10,
     rows: 4,
     label: 'paragraph',
-    content: 'Write directly into the canvas, move the block, and keep the published JSON small.',
+    content:
+      'Write directly into the canvas, move the block, and keep the published JSON small.',
   },
   quote: {
     cols: 10,
@@ -130,7 +134,7 @@ export const BLOCK_DEFAULTS: Record<BlockType, Pick<Item, 'cols' | 'rows' | 'lab
     cols: 12,
     rows: 7,
     label: 'code',
-    content: "export const cell = Math.min(width / 40, height / 20);\n",
+    content: 'export const cell = Math.min(width / 40, height / 20);\n',
   },
   embed: {
     cols: 12,

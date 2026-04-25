@@ -9,18 +9,18 @@
       "type": "h2",
       "col": 1,
       "row": 1,
-      "cols": 8,
+      "cols": 7,
       "rows": 2,
-      "color": 0,
+      "color": 4,
       "label": "writing",
       "content": "Writing"
     },
     {
       "id": "writing-reader",
       "type": "markdown",
-      "col": 13,
+      "col": 9,
       "row": 1,
-      "cols": 19,
+      "cols": 22,
       "rows": 18,
       "color": 5,
       "label": "read",
@@ -91,11 +91,11 @@
     {
       "id": "writing-home",
       "type": "link",
-      "col": 35,
+      "col": 34,
       "row": 1,
       "cols": 4,
       "rows": 2,
-      "color": 0,
+      "color": 2,
       "label": "home",
       "content": "home",
       "linkIcon": "home"
@@ -105,9 +105,9 @@
       "type": "markdown",
       "col": 1,
       "row": 4,
-      "cols": 8,
+      "cols": 7,
       "rows": 15,
-      "color": 2,
+      "color": 1,
       "label": "pieces",
       "content": "/content/writing.md"
     }
