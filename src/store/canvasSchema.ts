@@ -51,7 +51,13 @@ function parseControl(value: unknown, path: string): Control {
       }
       return { label: option.label, value: option.value };
     });
-    return { id: value.id, kind: 'selector', value: value.value, options };
+    return {
+      id: value.id,
+      kind: 'selector',
+      value: value.value,
+      options,
+      ...(value.affectsContent === false ? { affectsContent: false as const } : {}),
+    };
   }
   if (value.kind === 'action') {
     return { id: value.id, kind: 'action' };

@@ -99,6 +99,7 @@ function selectorForItem(item: Item): Control {
       id: createId('selector'),
       kind: 'selector',
       value: 'typescript',
+      affectsContent: false,
       options: [
         { label: 'TypeScript', value: 'typescript' },
         { label: 'JavaScript', value: 'javascript' },

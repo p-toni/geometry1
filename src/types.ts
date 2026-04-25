@@ -25,6 +25,7 @@ export type SelectorControl = {
   kind: 'selector';
   value: string;
   options: { label: string; value: string }[];
+  affectsContent?: boolean;
 };
 export type ActionControl = { id: string; kind: 'action' };
 export type AlignControl = { id: string; kind: 'align'; value: 'left' | 'center' | 'right' };

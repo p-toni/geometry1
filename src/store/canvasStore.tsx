@@ -151,7 +151,10 @@ export function createCanvasStore(initialCanvas: Canvas): CanvasStoreApi {
             const controls = (item.controls ?? []).map((existing) =>
               existing.id === control.id ? control : existing,
             );
-            const content = control.kind === 'selector' ? control.value : item.content;
+            const content =
+              control.kind === 'selector' && control.affectsContent !== false
+                ? control.value
+                : item.content;
             return { ...item, controls, content };
           }),
         },
@@ -291,6 +294,7 @@ function orderedControl(control: Control): Control {
       kind: 'selector',
       value: control.value,
       options: control.options.map((option) => ({ label: option.label, value: option.value })),
+      ...(control.affectsContent === false ? { affectsContent: false as const } : {}),
     };
   }
   if (control.kind === 'align') {
