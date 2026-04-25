@@ -21,16 +21,17 @@ export function cellToPx(cellValue: number, cell: number) {
   return cellValue * cell;
 }
 
-export function clampItemPosition(col: number, row: number) {
-  return {
-    col: clamp(snapToCell(col), 0, GRID_COLS),
-    row: clamp(snapToCell(row), 0, GRID_ROWS),
-  };
-}
-
 export function clampItemSize(cols: number, rows: number) {
   return {
     cols: clamp(snapToCell(cols), 1, GRID_COLS),
     rows: clamp(snapToCell(rows), 1, GRID_ROWS),
+  };
+}
+
+export function clampItemPosition(col: number, row: number, cols = 1, rows = 1) {
+  const size = clampItemSize(cols, rows);
+  return {
+    col: clamp(snapToCell(col), 0, GRID_COLS - size.cols),
+    row: clamp(snapToCell(row), 0, GRID_ROWS - size.rows),
   };
 }

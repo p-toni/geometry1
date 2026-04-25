@@ -93,11 +93,13 @@ function ControlChip({
                 type="range"
                 min={control.min}
                 max={control.max}
-                step={(control.max - control.min) / 100}
+                step={Math.max((control.max - control.min) / 100, Number.EPSILON)}
                 value={control.value}
                 className="h-4 w-24 accent-[var(--accent-ink)]"
                 onChange={(event) => {
-                  updateControl(itemId, { ...control, value: Number(event.target.value) });
+                  const next = Number(event.target.value);
+                  if (!Number.isFinite(next)) return;
+                  updateControl(itemId, { ...control, value: next });
                 }}
               />
             </label>
