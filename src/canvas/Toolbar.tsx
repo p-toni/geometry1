@@ -214,7 +214,7 @@ export function Toolbar({
     if (!selectedId || !selectedItem || !canAttachControl(kind, selectedItem)) return;
     const control: Control =
       kind === 'toggle'
-        ? { id: createId('toggle'), kind: 'toggle', value: true }
+        ? { id: createId('toggle'), kind: 'toggle', value: false }
         : kind === 'slider'
           ? sliderForItem(selectedItem)
           : kind === 'selector'

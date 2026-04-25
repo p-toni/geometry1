@@ -101,7 +101,10 @@ function ControlChip({
         {control.kind === 'slider' ? <SlidersHorizontal size={12} /> : <ListFilter size={12} />}
       </button>
       {isOpen && (
-        <span className="absolute left-0 top-full z-50 mt-1 rounded-[6px] border border-ink/10 bg-paper p-2 shadow-lg">
+        <span
+          className="absolute left-0 top-full z-50 mt-1 rounded-[6px] border border-ink/10 bg-paper p-2 shadow-lg"
+          onClick={(event) => event.stopPropagation()}
+        >
           {control.kind === 'slider' ? (
             <label className="inline-flex h-6 items-center gap-2" title="Slider">
               <span className="font-mono text-[10px] text-ink-2">
@@ -272,17 +275,21 @@ export function Block({
               {item.cols}&times;{item.rows}
             </span>
           </div>
-          {(item.controls ?? []).length > 0 ? (
+          {(item.controls ?? []).filter(
+            (c) => c.kind === 'toggle' || c.kind === 'align' || c.kind === 'action',
+          ).length > 0 ? (
             <div className="flex shrink-0 items-center gap-0.5">
-              {(item.controls ?? []).map((control) => (
-                <ControlChip
-                  key={control.id}
-                  itemId={item.id}
-                  control={control}
-                  isOpen={openControlId === control.id}
-                  setOpenControlId={setOpenControlId}
-                />
-              ))}
+              {(item.controls ?? [])
+                .filter((c) => c.kind === 'toggle' || c.kind === 'align' || c.kind === 'action')
+                .map((control) => (
+                  <ControlChip
+                    key={control.id}
+                    itemId={item.id}
+                    control={control}
+                    isOpen={openControlId === control.id}
+                    setOpenControlId={setOpenControlId}
+                  />
+                ))}
             </div>
           ) : null}
         </div>

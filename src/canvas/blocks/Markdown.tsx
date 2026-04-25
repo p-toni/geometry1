@@ -12,6 +12,7 @@ export function Markdown({ item, selectorValue, toggled, alignValue }: BlockRend
 
   useEffect(() => {
     let active = true;
+    setMarkdown('');
 
     if (isRemote) {
       fetch(source)
@@ -30,7 +31,7 @@ export function Markdown({ item, selectorValue, toggled, alignValue }: BlockRend
     return () => {
       active = false;
     };
-  }, [isRemote, item.refreshKey, source]);
+  }, [source, item.refreshKey]);
 
   if (toggled) {
     return (

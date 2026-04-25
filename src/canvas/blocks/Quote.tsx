@@ -8,7 +8,9 @@ export function Quote({ item, toggled, alignValue }: BlockRendererProps) {
         'text-[20px] font-medium leading-snug',
         alignValue === 'left'
           ? 'border-l-4 border-accent pl-4'
-          : 'border-t-2 border-accent pt-3',
+          : alignValue === 'right'
+            ? 'border-r-4 border-accent pr-4'
+            : 'border-t-2 border-accent pt-3',
       )}
       style={{ textAlign: alignValue }}
     >
