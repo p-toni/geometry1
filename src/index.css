@@ -20,22 +20,27 @@
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
+html {
   height: 100%;
 }
 
 body {
   margin: 0;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
   font-size: 17px;
   line-height: 1.65;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100%;
 }
 
 button,

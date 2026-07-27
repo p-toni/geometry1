@@ -1,6 +1,8 @@
 # geometry
 
-toni.ltd as a single living field — hand-placed nodes, lens search, read panel, constellation descent.
+toni.ltd as a continuous editorial home — compressible thesis, writing / work /
+play from the content pool, soft-routed essay sheets with the figure block
+pipeline.
 
 ## Quick start
 
@@ -16,7 +18,6 @@ pnpm dev          # http://localhost:5173
 |---------|---------|
 | `pnpm dev` | Local dev server |
 | `pnpm pool:build` | Rebuild `public/pool.json` after content edits |
-| `pnpm pool:migrate` | Re-seed all content from v1 MDX (one-time / recovery) |
 | `pnpm test` | Vitest unit tests |
 | `pnpm typecheck` | TypeScript |
 | `pnpm build` | Production static export → `dist/` |
@@ -24,28 +25,28 @@ pnpm dev          # http://localhost:5173
 
 ## Authoring
 
-See [AGENTS.md](./AGENTS.md) for the content schema, block types, and figure registry.
+See [AGENTS.md](./AGENTS.md).
 
-- **Content:** `content/{cluster}/{id}.md` with YAML frontmatter
-- **Positions:** `src/pool/field.ts` (hand-placed coordinates)
-- **Build:** `scripts/buildPool.ts` → `public/pool.json` + `src/pool/generated.ts`
+- **Content:** `content/{cluster}/{id}.md`
+- **Home lists:** derived from pool clusters
+- **Essays:** `/writing/:id` → sheet chrome + `FigureReader` body blocks
+
+## Architecture
+
+- React 19 + Vite + TypeScript
+- Home: `src/home/` (layout, page, thesis, sheet, progressive effects)
+- Routes: `/`, `/writing/:id` (sheet overlay); unknown paths → `/`
+- Design tokens: single source in `src/design/tokens.css`
+- Progressive CE: `public/vendor/` (signal marks, field-hero, thinking-orb,
+  particle-scroll, asciify)
+- Spatial FieldApp package removed; editorial home is the only product surface
 
 ## Deploy
-
-Static Vite build deployed through Cloudflare Pages:
 
 ```bash
 pnpm build
 pnpm deploy
 ```
 
-Cloudflare Pages serves `dist/`; project settings live in `wrangler.jsonc`.
-
-## Architecture
-
-- React 19 + Vite + TypeScript, single route `/`
-- URL state: `?read=`, `?full=1`, `?q=`, `?now=1`, viewport `x/y/z`
-- Essay bodies: markdown → typed `Block[]` → twelve Figure components
-- Constellation: `struct` frontmatter sections → radial descent overlay
-
-v1 (grid canvas + MDX widgets) is retired. Historical spec lives in the `spec-v1` node.
+Cloudflare Pages serves `dist/`. SPA fallback: `public/_redirects`.  
+HTML-in-Canvas origin trial: `index.html` meta tags + `public/_headers` (`Origin-Trial`).

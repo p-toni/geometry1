@@ -7,7 +7,7 @@ import { buildFieldGraph } from './buildFieldGraph';
 import { edgeFamily, edgeStroke, isBoundaryEdge } from './fieldSchema';
 import { layoutFieldGraph } from './layoutFieldGraph';
 import { projectContrast, projectLadder } from './projectBlock';
-import { loadEssayStructure } from '../field/loadEssayStructure';
+import { loadEssayStructure } from './loadEssayStructure';
 import { parseBlocks } from './parseBlocks';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');

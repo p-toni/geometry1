@@ -8,6 +8,12 @@ export default defineConfig({
   resolve: {
     alias: { '@': resolve(__dirname, 'src') },
   },
+  // Keep 5173 so the Chrome html-in-canvas origin-trial token for
+  // http://localhost:5173 matches (see index.html).
+  server: {
+    port: 5173,
+    strictPort: true,
+  },
   test: {
     environment: 'jsdom',
     globals: true,

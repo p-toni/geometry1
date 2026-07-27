@@ -5,7 +5,7 @@ import { buildCitationFieldGraph, citationsFromBlocks } from './citation';
 import { diagramToFieldGraph } from './diagram';
 import { buildEssayGraph, essayGraphToFieldGraph } from './essayGraph';
 import { projectContrast, projectLadder } from './projectBlock';
-import { loadEssayStructure } from '../field/loadEssayStructure';
+import { loadEssayStructure } from './loadEssayStructure';
 
 function mergeGraph(target: FieldGraph, part: FieldGraph) {
   const nodeIds = new Set(target.nodes.map((n) => n.id));

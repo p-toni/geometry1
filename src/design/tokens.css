@@ -1,76 +1,96 @@
 :root {
-  --paper: #f6f4ef;
-  --paper-2: #f0ebe3;
-  --card: #faf8f4;
-  --field: #f0ebe3;
-  --ink: #1c1f24;
-  --muted: #6b7280;
-  --ink-2: #4a4f56;
-  --line: #ddd6cb;
-  --line-soft: #e8e2d8;
-  --line-hair: #f2ede6;
-  --signal: #1f4db8;
-  --fresh: #d4a53a;
+  /* Page */
+  --paper: #f4f1ea;
+  --paper-2: #efe9dc;
+  --card: #f4f1ea;
+  --field: #f4f1ea;
+  --ink: #24211d;
+  --body: #2c2823;
+  --now: #3f3a33;
+  --secondary: #5f594f;
+  --tertiary: #6b655c;
+  --muted: #8d8579;
+  --meta: #a49b8c;
+  --spine: #b0a695;
+  --line: #e4dfd3;
+  --line-soft: #e4dfd3;
+  --line-hair: #e4dfd3;
+  --thesis-rule: #ddd6c8;
+  --link-line: #cec6b6;
+  --compress-line: #e0d9ca;
+  --meter-border: #cec6b6;
+  --meter-empty: #efe9dc;
+  --play-plate: #eeeade;
+  --signal: #c2593a;
+  --fresh: #c2593a;
+  --accent: #c2593a;
+  --accent-line: #e0b3a4;
+  --hover-wash: rgba(232, 222, 208, 0.28);
+  --select: #e8ded0;
+  --header-icons: #9a917f;
 
-  /* Read surface — warm editorial accent; reserve --signal for field nav */
-  --read-accent: #9a7344;
-  --read-accent-deep: #7a5a30;
+  --read-accent: #c2593a;
+  --read-accent-deep: #a04830;
   --read-accent-tint: #f4efe6;
-  --read-accent-border: #d9cbb8;
-  --read-owned: #c2410c;
+  --read-accent-border: #e0b3a4;
+  --read-owned: #c2593a;
   --read-owned-tint: #fdf4ef;
   --read-owned-border: #e8c4b0;
 
-  /* Cluster temperature — ochre / cobalt-family / sage / mauve (gold is --fresh only) */
-  --cluster-writing: #9a7344;
-  --cluster-work: #4a68a8;
-  --cluster-play: #657963;
-  --cluster-you: #8a7578;
-  --kicker: #6b6660;
+  --cluster-writing: #c2593a;
+  --cluster-work: #5f594f;
+  --cluster-play: #6b655c;
+  --cluster-you: #8d8579;
+  --kicker: #a49b8c;
 
-  /* Canela stand-in — large headlines only (FIG.01 title, type-display) */
-  --font-display: 'Newsreader', 'Georgia', serif;
-  /* Söhne stand-in — body prose, navigation, captions */
-  --font-body: 'Inter', system-ui, sans-serif;
-  /* Registry UI labels — keep the small UI voice on Inter; mono + Newsreader carry identity */
-  --font-ui: var(--font-body);
-  --font-mono: 'Space Mono', 'SF Mono', monospace;
+  --font-display: 'Newsreader', Georgia, serif;
+  --font-body: 'Newsreader', Georgia, serif;
+  --font-ui: 'JetBrains Mono', ui-monospace, monospace;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
+  /* Layout — single measurement system for the home column */
+  --col: 660px;
+  --gutter: 28px;
+  --col-full: 716px;
+  --spine-gap: 20px;
+  --main-max: 1040px;
+  --scroll-offset: 72px;
+  --scroll-margin: 80px;
 
-  --shadow-raised: 0 2px 8px rgba(28, 31, 36, 0.08);
-  --shadow-lifted: 0 8px 20px rgba(28, 31, 36, 0.14);
-  --shadow-overlay: 0 16px 36px rgba(28, 31, 36, 0.24);
-  --shadow-inset: inset 0 2px 8px rgba(28, 31, 36, 0.09);
+  --radius-sm: 0;
+  --radius-md: 0;
+  --shadow-raised: none;
+  --shadow-lifted: none;
+  --shadow-overlay: none;
+  --shadow-inset: none;
 
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  /* Inverse of --ease-drawer for mirrored exit paths */
   --ease-drawer-out: cubic-bezier(1, 0, 0.68, 0.28);
   --motion-focus: 200ms;
   --motion-nav-open: 360ms;
   --motion-nav-hop: 280ms;
   --motion-sheet: 320ms;
   --motion-fade: 180ms;
-  /* Read prose — excerpt, masthead dek, and full essay body share one scale */
-  --prose-size: 16.5px;
-  --prose-leading: 1.78;
-  --prose-color: var(--ink);
-  --prose-paragraph-gap: 17px;
-  --prose-lead-size: 17px;
+
+  --prose-size: 19px;
+  --prose-leading: 1.72;
+  --prose-color: #2c2823;
+  --prose-paragraph-gap: 30px;
+  --prose-lead-size: 22px;
   --prose-lead-leading: 1.55;
-  --prose-lead-color: var(--muted);
-  --prose-inset-size: 14.5px;
+  --prose-lead-color: #6b655c;
+  --prose-inset-size: 16px;
   --prose-inset-leading: 1.55;
-  --prose-inset-color: var(--ink-2);
+  --prose-inset-color: #5f594f;
   --prose-sm-size: 13px;
   --prose-sm-leading: 1.5;
-  --prose-sm-color: var(--muted);
-  --prose-h2-size: 20px;
-  --prose-h3-size: 16px;
-  --prose-h3-color: var(--ink-2);
+  --prose-sm-color: #8d8579;
+  --prose-h2-size: 22px;
+  --prose-h3-size: 18px;
+  --prose-h3-color: #5f594f;
 
+  /* Sticky header: padding 13×2 + ~24px content ≈ 50 */
   --header-h: 50px;
   --status-h: 30px;
   --grid-opacity: 0.5;

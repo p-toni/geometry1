@@ -1,6 +1,12 @@
 # geometry — agent authoring guide
 
-This site is a single hand-placed field. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
+This site is a continuous editorial home (`src/home/`) fed by a content pool. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
+
+Home lists derive from pool clusters: **writing** → Writing section (featured = freshest by date), **work** → Work rows, **play** → Play rail. Essays open at `/writing/:id` as a sheet over home; the sheet renders full essay bodies via **FigureReader** (typed `Block[]`), not a parallel prose model.
+
+The spatial field UI was **removed** — product surface is `src/home/` only. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp).
+
+**Canvas UI ParticleScroll** (`src/home/canvasui/ParticleScroll.tsx`, from [canvasui.dev](https://canvasui.dev/docs/components/particle-scroll)): single scroller for the full home body; `startAt` keeps thesis/intro assembled. Requires Chrome html-in-canvas (origin trial meta + `public/_headers`); otherwise plain scrollable HTML.
 
 ## Workflow
 
