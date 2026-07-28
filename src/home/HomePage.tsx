@@ -324,8 +324,8 @@ export function HomePage() {
       swirl={60}
       stagger={0.7}
       fade={0.85}
-      settle={0.55}
-      smoothing={0.2}
+      settle={1.2}
+      smoothing={0.6}
     >
       {body}
     </ParticleScroll>

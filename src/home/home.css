@@ -602,14 +602,15 @@ html.home-mode #root {
   right: 0;
   bottom: -28px;
   z-index: 40;
-  width: 210px;
+  /* ~1.38× original 210×132 (20% then +15%) */
+  width: 290px;
   /* Occasional chrome — keep under 300ms, strong ease-out, no delay */
   animation: home-fade-in 200ms var(--ease-out-strong) both;
 }
 
 .home-dock field-hero {
   display: block;
-  height: 132px;
+  height: 182px;
 }
 
 @media (max-width: 1179px) {

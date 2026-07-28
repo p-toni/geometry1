@@ -8,7 +8,9 @@
    because the sketch relies on WebGL depth testing that no sort reproduces.
 
    Additions beyond the sketch, all after the sequence completes: the three
-   phase-4 tiles can be hovered (they lift out of the recess) and clicked. */
+   phase-4 tiles can be hovered (they lift out of the recess) and clicked.
+
+   Home dock: skip phase 1 (initial fall from sky); start at phase 2 slide. */
 (function () {
   const ZOOM = 2.3;
   const LOOK_AT = { x: 0, y: -200, z: 0 };
@@ -58,10 +60,11 @@
       });
       this.addEventListener('click', () => {
         if (this._hover) this.dispatchEvent(new CustomEvent('piece', { bubbles: true, detail: { id: this._hover } }));
-        else { this._frameCount = 0; this._phase = 1; this._phaseStart = 0; this._done = false; }
+        else { this._frameCount = 0; this._phase = 2; this._phaseStart = 0; this._done = false; }
       });
 
-      this._frameCount = 0; this._phase = 1; this._phaseStart = 0; this._done = false;
+      // Phase 1 = fall from sky — cut; open on phase 2 (slide into place).
+      this._frameCount = 0; this._phase = 2; this._phaseStart = 0; this._done = false;
       const loop = () => {
         this._raf = requestAnimationFrame(loop);
         try { this._draw(); } catch (err) { console.error('field-hero draw', err && err.stack || err); }

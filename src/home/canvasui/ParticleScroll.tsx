@@ -1,17 +1,14 @@
 /**
  * Particle Scroll — Canvas UI (https://canvasui.dev/docs/components/particle-scroll)
- * MIT, David Haz. Owned source (shadcn-style).
+ * MIT, David Haz.
  *
- * Official pattern: one fixed-height host, one overflow scroller inside.
- * Home uses it as the *only* page scroller (100dvh under the header) so there
- * is never a dual window/list scroll fight.
+ * Official: shaders (points), defaults, formation-line settle, layoutsubtree capture.
+ * Home anti-wash: BASE paints paper only for dissolving cells; assembled cells are
+ * fully transparent so live layoutsubtree DOM stays sharp (navbar-quality).
+ * Sand points still sample the capture texture (official motion).
+ * No idle-hide — below the formation line stays sand until scroll crosses it.
  *
- * Local forks:
- * - startAt: selector; rows above that element never dissolve
- * - anti-wash: assembled rows are transparent (live DOM type stays sharp);
- *   output canvas hides when fully settled
- *
- * Requires html-in-canvas. Without it, children scroll as normal HTML.
+ * Local: startAt, getContent / scrollTo / onReady.
  */
 "use client";
 
@@ -37,10 +34,6 @@ export interface ParticleScrollOptions {
   fade?: number;
   settle?: number;
   smoothing?: number;
-  /**
-   * CSS selector inside the scroll content. Rows above that element's bottom
-   * stay fully assembled (hero / CTA never turn to sand).
-   */
   startAt?: string;
 }
 
@@ -71,8 +64,8 @@ const DEFAULTS: Required<Omit<ParticleScrollOptions, "startAt">> & {
   swirl: 60,
   stagger: 0.7,
   fade: 0.85,
-  settle: 0.55,
-  smoothing: 0.2,
+  settle: 1.2,
+  smoothing: 0.6,
   startAt: "",
 };
 
@@ -100,12 +93,11 @@ void main () {
   gl_Position = vec4(aPos, 0.0, 1.0);
 }`;
 
-/** Official base pass — assembled cells sample the content capture. */
+/** Assembled transparent (sharp DOM). Dissolving = paper. Points draw sand. */
 const BASE_FRAG = `#version 300 es
 precision highp float;
 in vec2 vUv;
 out vec4 outColor;
-uniform sampler2D uContent;
 uniform sampler2D uRowTex;
 uniform vec2 uRes;
 uniform float uDensity;
@@ -125,9 +117,8 @@ void main () {
   int row = int(clamp(cell.y - uWinStart, 0.0, uRowCount - 1.0));
   float p = texelFetch(uRowTex, ivec2(row, 0), 0).r;
   float t = clamp((p - d) / max(1.0 - d, 1e-3), 0.0, 1.0);
-  float vis = step(0.9995, t) * step(px.x, uMaxX * uRes.x);
-  vec4 tex = texture(uContent, vec2(vUv.x, 1.0 - vUv.y));
-  outColor = vec4(mix(uBg, tex.rgb, vis * tex.a), uCover);
+  float assembled = step(0.9995, t) * step(px.x, uMaxX * uRes.x);
+  outColor = vec4(uBg, (1.0 - assembled) * uCover);
 }`;
 
 const POINT_VERT = `#version 300 es
@@ -235,9 +226,11 @@ void main () {
   vec4 tex = textureLod(uContent, uv, vLod);
   float circle = 1.0 - smoothstep(0.25, 0.5, length(o));
   float mask = mix(circle, 1.0, vMerge);
-  float a = vAlpha * mask * tex.a;
+  // Keep grains visible even if capture alpha is thin.
+  vec3 col = mix(vec3(0.14, 0.13, 0.11), tex.rgb, max(tex.a, 0.2));
+  float a = vAlpha * mask * max(tex.a, 0.55);
   if (a < 0.01) discard;
-  outColor = vec4(tex.rgb, a);
+  outColor = vec4(col, a);
 }`;
 
 export function supportsHtmlInCanvas(): boolean {
@@ -409,8 +402,9 @@ export function createParticleScroll(
       Math.max(0.05, content.clientWidth / Math.max(cssW, 1)),
     );
     if (htmlInCanvas) {
-      const sw = Math.max(1, Math.round(source.clientWidth * dpr));
-      const sh = Math.max(1, Math.round(source.clientHeight * dpr));
+      // Device-pixel capture → better grain colour; layoutsubtree still drives paint.
+      const sw = Math.max(1, Math.round(cssW * dpr));
+      const sh = Math.max(1, Math.round(cssH * dpr));
       if (source.width !== sw || source.height !== sh) {
         source.width = sw;
         source.height = sh;
@@ -440,28 +434,6 @@ export function createParticleScroll(
     gl.generateMipmap(gl.TEXTURE_2D);
   }
 
-  /**
-   * Anti-wash via scroll-end timer (not rowsAssembled).
-   * Sand while scrolling + short tail; then hide overlay so live DOM is crisp.
-   * Keep hide short — scroll is high-frequency; a 1s+ soft hang is a wash.
-   */
-  let scrollHideTimer = 0;
-  const EASE_OUT = "cubic-bezier(0.23, 1, 0.32, 1)";
-  function showSand() {
-    if (!htmlInCanvas) return;
-    output.style.opacity = "1";
-    output.style.transition = "none";
-    window.clearTimeout(scrollHideTimer);
-    // Brief post-scroll tail (~350ms), not full settle duration.
-    const hideAfter = 350;
-    scrollHideTimer = window.setTimeout(() => {
-      if (destroyed) return;
-      output.style.opacity = "0";
-      output.style.transition = `opacity 160ms ${EASE_OUT}`;
-    }, hideAfter);
-  }
-
-  /** Document Y below which dissolve is allowed (startAt gate). */
   function resolveStartY(): number {
     const sel = config.startAt;
     if (!sel) return 0;
@@ -477,28 +449,35 @@ export function createParticleScroll(
   function rowTargetFor(docRowY: number) {
     if (reducedMotion || !introDone) return 1;
     if (docRowY < resolveStartY()) return 1;
-    const ch = Math.max(output.clientHeight, 1);
-    const b = Math.max(config.band, 1);
+    const h = Math.max(output.clientHeight, 1);
+    const band = Math.max(config.band, 1);
     const max = content.scrollHeight - content.clientHeight;
-    let line = Math.min(Math.max(config.point, 0), 1) * ch;
+    let line = Math.min(Math.max(config.point, 0), 1) * h;
     if (max <= 1) {
-      line = ch + b;
+      line = h + band;
     } else {
       const endP = Math.min(
-        Math.max((scrollSmooth - (max - ch * 0.5)) / (ch * 0.5), 0),
+        Math.max((scrollSmooth - (max - h * 0.5)) / (h * 0.5), 0),
         1,
       );
-      line += (ch + b - line) * endP * endP;
+      line += (h + band - line) * endP * endP;
     }
     const vy = docRowY - scrollSmooth;
-    return Math.min(Math.max((line + b - vy) / b, 0), 1);
+    return Math.min(Math.max((line + band - vy) / band, 0), 1);
   }
 
-  function updateRows(dt: number, density: number, winStart: number, winLen: number) {
+  function updateRows(
+    dt: number,
+    density: number,
+    winStart: number,
+    winLen: number,
+  ) {
     const docRows = Math.max(1, Math.ceil(content.scrollHeight / density));
     if (rowProgress.length !== docRows) {
       const next = new Float32Array(docRows);
-      for (let i = 0; i < docRows; i++) next[i] = rowTargetFor((i + 0.5) * density);
+      for (let i = 0; i < docRows; i++) {
+        next[i] = rowTargetFor((i + 0.5) * density);
+      }
       rowProgress = next;
     }
     if (rowWindow.length !== winLen) rowWindow = new Float32Array(winLen);
@@ -525,9 +504,21 @@ export function createParticleScroll(
     rowWindow.fill(1);
     const from = Math.min(Math.max(winStart, 0), docRows);
     const to = Math.min(winStart + winLen, docRows);
-    if (to > from) rowWindow.set(rowProgress.subarray(from, to), from - winStart);
+    if (to > from) {
+      rowWindow.set(rowProgress.subarray(from, to), from - winStart);
+    }
     gl.bindTexture(gl.TEXTURE_2D, rowTex);
-    gl.texImage2D(gl.TEXTURE_2D, 0, gl.R32F, winLen, 1, 0, gl.RED, gl.FLOAT, rowWindow);
+    gl.texImage2D(
+      gl.TEXTURE_2D,
+      0,
+      gl.R32F,
+      winLen,
+      1,
+      0,
+      gl.RED,
+      gl.FLOAT,
+      rowWindow,
+    );
   }
 
   let lag = 0;
@@ -535,19 +526,21 @@ export function createParticleScroll(
 
   function render(dt: number) {
     uploadContent();
-    const cw = Math.max(output.clientWidth, 1);
-    const ch = Math.max(output.clientHeight, 1);
-    const dpr = output.width / cw;
+    const w = Math.max(output.clientWidth, 1);
+    const h = Math.max(output.clientHeight, 1);
+    const dpr = output.width / Math.max(w, 1);
     const density = Math.max(
       Math.max(config.density, 1),
-      Math.sqrt((cw * ch) / 800000),
+      Math.sqrt((w * h) / 800000),
     );
     const scrollTop = content.scrollTop;
-    const gridX = Math.ceil(cw / density);
+    const gridX = Math.ceil(w / density);
     const winStart = Math.floor(scrollTop / density);
-    const winLen = Math.ceil(ch / density) + 2;
+    const winLen = Math.ceil(h / density) + 2;
     const stagger = Math.min(Math.max(config.stagger, 0), 0.95);
     updateRows(dt, density, winStart, winLen);
+
+    if (reducedMotion || !htmlInCanvas) return;
 
     gl.bindFramebuffer(gl.FRAMEBUFFER, null);
     gl.viewport(0, 0, output.width, output.height);
@@ -556,29 +549,37 @@ export function createParticleScroll(
     gl.activeTexture(gl.TEXTURE0);
     gl.bindTexture(gl.TEXTURE_2D, contentTexture);
 
-    gl.disable(gl.BLEND);
+    gl.enable(gl.BLEND);
+    gl.blendFuncSeparate(
+      gl.SRC_ALPHA,
+      gl.ONE_MINUS_SRC_ALPHA,
+      gl.ONE,
+      gl.ONE_MINUS_SRC_ALPHA,
+    );
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
     gl.useProgram(base.program);
     gl.bindVertexArray(quadVao);
-    gl.uniform1i(base.uniforms.uContent!, 0);
     gl.uniform1i(base.uniforms.uRowTex!, 1);
-    gl.uniform2f(base.uniforms.uRes!, cw, ch);
+    gl.uniform2f(base.uniforms.uRes!, w, h);
     gl.uniform1f(base.uniforms.uDensity!, density);
     gl.uniform1f(base.uniforms.uRowCount!, winLen);
     gl.uniform1f(base.uniforms.uStagger!, stagger);
     gl.uniform1f(base.uniforms.uMaxX!, contentMaxX);
-    gl.uniform1f(base.uniforms.uCover!, htmlInCanvas ? 1 : 0);
+    gl.uniform1f(base.uniforms.uCover!, 1);
     gl.uniform1f(base.uniforms.uScroll!, scrollTop);
     gl.uniform1f(base.uniforms.uWinStart!, winStart);
     gl.uniform3f(base.uniforms.uBg!, bg[0], bg[1], bg[2]);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-    if (!htmlInCanvas || rowsAssembled) return;
-    gl.enable(gl.BLEND);
+    // Always draw points when anything is dissolving (official path).
+    if (rowsAssembled) return;
+
     gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ZERO, gl.ONE);
     gl.useProgram(points.program);
     gl.bindVertexArray(pointVao);
     gl.uniform1i(points.uniforms.uRowTex!, 1);
-    gl.uniform2f(points.uniforms.uRes!, cw, ch);
+    gl.uniform2f(points.uniforms.uRes!, w, h);
     gl.uniform2f(points.uniforms.uGrid!, gridX, winLen);
     gl.uniform1f(points.uniforms.uDensity!, density);
     gl.uniform1f(points.uniforms.uStagger!, stagger);
@@ -625,11 +626,10 @@ export function createParticleScroll(
     lag = Math.min(Math.max(lag, -400), 400);
     if (reducedMotion || Math.abs(lag) < 0.1) lag = 0;
     if (!introDone) {
-      // Arm dissolve quickly (or immediately on reduced-motion / no HIC).
       if (reducedMotion || !htmlInCanvas) introDone = true;
       else if (introReady) {
         introWait += delta;
-        if (introWait >= 0.12) introDone = true;
+        if (introWait >= 1) introDone = true;
       }
     }
     const tau = config.smoothing;
@@ -638,11 +638,13 @@ export function createParticleScroll(
     scrollSmooth += (scrollTop - scrollSmooth) * k;
     if (Math.abs(scrollTop - scrollSmooth) < 0.5) scrollSmooth = scrollTop;
     render(delta);
-    // Stop the loop when idle (even if lower rows remain sand below the line).
+
+    // Official: stop only when everything in view has crossed the formation line.
     if (
       !contentDirty &&
       scrollSmooth === scrollTop &&
       !rowsAnimating &&
+      rowsAssembled &&
       introDone &&
       lag === 0
     ) {
@@ -660,22 +662,34 @@ export function createParticleScroll(
   }
 
   wake = start;
-  output.style.opacity = "0";
-  // Hard pin — never inherit a restored mid-list scroll position.
   content.scrollTop = 0;
+  // Always composite WebGL (alpha holes for assembled). Hide only if reduced motion.
+  if (htmlInCanvas && !reducedMotion) {
+    output.style.visibility = "visible";
+    output.style.opacity = "1";
+    output.style.background = "transparent";
+  } else {
+    output.style.visibility = "hidden";
+    output.style.opacity = "0";
+  }
+  if (htmlInCanvas) paintable.requestPaint?.();
   start();
 
   function onScroll() {
-    if (htmlInCanvas) {
-      showSand();
-      paintable.requestPaint?.();
-    }
+    if (htmlInCanvas) paintable.requestPaint?.();
     start();
   }
   content.addEventListener("scroll", onScroll, { passive: true });
 
   function onMotionChange() {
     reducedMotion = motionQuery.matches;
+    if (reducedMotion) {
+      output.style.visibility = "hidden";
+      output.style.opacity = "0";
+    } else if (htmlInCanvas) {
+      output.style.visibility = "visible";
+      output.style.opacity = "1";
+    }
     start();
   }
   motionQuery.addEventListener("change", onMotionChange);
@@ -711,7 +725,6 @@ export function createParticleScroll(
     destroy() {
       destroyed = true;
       cancelAnimationFrame(raf);
-      window.clearTimeout(scrollHideTimer);
       content.removeEventListener("scroll", onScroll);
       observer.disconnect();
       intersection.disconnect();
@@ -741,7 +754,10 @@ export interface ParticleScrollProps extends ParticleScrollOptions {
 
 const emptySubscribe = () => () => {};
 
-/** The page scroller — host must have a definite height (e.g. flex child). */
+/**
+ * Official host: layoutsubtree canvas holds the scroller (required for capture).
+ * WebGL on top with transparent assembled cells → sharp live DOM + sand.
+ */
 export function ParticleScroll({
   children,
   className,
@@ -788,7 +804,6 @@ export function ParticleScroll({
     instanceRef.current?.setOptions(options);
   });
 
-  // Defeat browser scroll restoration that jumps mid-list.
   useEffect(() => {
     if ("scrollRestoration" in history) {
       const prev = history.scrollRestoration;
@@ -799,21 +814,29 @@ export function ParticleScroll({
     }
   }, []);
 
+  const paper = "var(--paper, #f4f1ea)";
+
   const contentStyle: CSSProperties = {
     position: "relative",
     width: "100%",
     height: "100%",
     overflow: "auto",
     overscrollBehavior: "contain",
-    // Hide the scrollbar — scroll still works (trackpad / wheel / keys).
     scrollbarWidth: "none",
     msOverflowStyle: "none",
+    background: paper,
   };
 
   return (
     <div
       className={className}
-      style={{ position: "relative", height: "100%", width: "100%", ...style }}
+      style={{
+        position: "relative",
+        height: "100%",
+        width: "100%",
+        background: paper,
+        ...style,
+      }}
       data-particle-host
     >
       <canvas
@@ -823,7 +846,14 @@ export function ParticleScroll({
         suppressHydrationWarning
         style={
           native
-            ? { position: "absolute", inset: 0, width: "100%", height: "100%" }
+            ? {
+                position: "absolute",
+                inset: 0,
+                width: "100%",
+                height: "100%",
+                zIndex: 1,
+                background: "transparent",
+              }
             : { display: "none" }
         }
       >
@@ -857,6 +887,8 @@ export function ParticleScroll({
           width: "100%",
           height: "100%",
           pointerEvents: "none",
+          zIndex: 2,
+          background: "transparent",
         }}
       />
     </div>
