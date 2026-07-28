@@ -1,6 +1,7 @@
 import { Fragment, type ReactNode } from 'react';
 import { splitInlineBacklinks } from '../lib/inlineBacklink';
 import { renderInlineMarkdown } from '../lib/inlineMarkdown';
+import type { Note } from './data';
 import type { DocItem } from './essayModel';
 import { CrackFigure, FlowDiagram, LateFailureFigure, RotationFigure } from './figures';
 import type { NoteControls } from './useReadingApparatus';
@@ -14,14 +15,24 @@ export function Prose({
   endMark,
   notes,
   hasNote,
+  resolveInline,
 }: {
   text: string;
   endMark: boolean;
   notes: NoteControls;
   hasNote: (id: string) => boolean;
+  /** Without a margin the note has nowhere to go, so it resolves under its own paragraph. */
+  resolveInline?: (id: string) => Note | null;
 }) {
   const parts = splitInlineBacklinks(text);
-  return (
+  const openHere =
+    resolveInline && notes.note
+      ? parts.some((p) => p.kind === 'backlink' && p.targetId === notes.note)
+        ? resolveInline(notes.note)
+        : null
+      : null;
+
+  const paragraph = (
     <p className="esys-p">
       {parts.map((part, i) => {
         if (part.kind === 'text') {
@@ -52,6 +63,19 @@ export function Prose({
         </>
       )}
     </p>
+  );
+
+  if (!openHere) return paragraph;
+  return (
+    <>
+      {paragraph}
+      <div className="esys-inline-note">
+        <div className="esys-kicker">{openHere.kind}</div>
+        <div className="esys-inline-note-term">{openHere.term}</div>
+        <p>{openHere.body}</p>
+        <div className="esys-inline-note-src">{openHere.src}</div>
+      </div>
+    </>
   );
 }
 
@@ -98,10 +122,12 @@ export function EssayBlock({
   item,
   notes,
   hasNote,
+  resolveInline,
 }: {
   item: DocItem;
   notes: NoteControls;
   hasNote: (id: string) => boolean;
+  resolveInline?: (id: string) => Note | null;
 }) {
   switch (item.t) {
     case 'section':
@@ -121,7 +147,15 @@ export function EssayBlock({
       );
 
     case 'prose':
-      return <Prose text={item.text} endMark={item.endMark} notes={notes} hasNote={hasNote} />;
+      return (
+        <Prose
+          text={item.text}
+          endMark={item.endMark}
+          notes={notes}
+          hasNote={hasNote}
+          resolveInline={resolveInline}
+        />
+      );
 
     case 'definition':
       return (

@@ -105,7 +105,13 @@ export function EssayReader() {
           )}
 
           {doc.items.map((item, i) => (
-            <EssayBlock key={i} item={item} notes={noteControls} hasNote={hasNote} />
+            <EssayBlock
+              key={i}
+              item={item}
+              notes={noteControls}
+              hasNote={hasNote}
+              resolveInline={railOn ? undefined : (targetId) => doc.notes[targetId] ?? null}
+            />
           ))}
 
           {!railOn && Object.keys(doc.notes).length > 0 && (

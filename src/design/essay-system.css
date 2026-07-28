@@ -808,8 +808,10 @@
   font-size: 11px;
   color: var(--accent);
   vertical-align: super;
-  padding-left: 2px;
   border-bottom: 0;
+  /* A single superscript digit is the smallest target in the system — pad it out. */
+  padding: 12px 8px 12px 10px;
+  margin: -12px -6px -12px -8px;
 }
 
 /* —— Specimens of the type scale —— */
@@ -1120,12 +1122,54 @@
 }
 
 .esys-colophon--foot a {
+  position: relative;
+  display: inline-block;
   border-bottom: 1px solid var(--rule);
+}
+
+.esys-colophon--foot a::after {
+  content: '';
+  position: absolute;
+  inset: -15px -6px;
 }
 
 .esys-colophon--foot a:hover {
   color: var(--accent);
   border-bottom-color: var(--accent);
+}
+
+/*
+ * A summoned reference with no margin to resolve into. Same card as the rail's, set
+ * under the paragraph that raised it — the "static sub-caption line" the system
+ * prescribes for figures, applied to references.
+ */
+.esys-inline-note {
+  margin: 4px 0 26px;
+  border-left: 2px solid var(--accent);
+  padding: 2px 0 2px 18px;
+  animation: esys-rise-in 200ms ease both;
+}
+
+.esys-inline-note-term {
+  margin-top: 7px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.esys-inline-note p {
+  margin: 6px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-inline-note-src {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
 }
 
 /* —— Navigation. Apparatus, so mono: the way back and the way onward. —— */
@@ -1137,6 +1181,9 @@
   text-transform: uppercase;
   color: var(--faint);
   white-space: nowrap;
+  /* 10px apparatus type still needs a finger-sized target; grow the box, not the layout. */
+  padding: 14px 6px;
+  margin: -14px -6px;
 }
 
 .esys-back:hover {
@@ -1156,6 +1203,7 @@
 .esys-back--rail {
   display: block;
   padding-bottom: 22px;
+  margin-bottom: 0;
 }
 
 .esys-footnav {
@@ -1225,6 +1273,8 @@
 
 .esys-step-link {
   display: inline-block;
+  padding: 4px 4px 6px;
+  margin: -4px -4px -6px;
   font-size: 16px;
   line-height: 1.4;
   color: var(--soft);

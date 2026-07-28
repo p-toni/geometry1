@@ -649,6 +649,18 @@ function FiguresSection() {
   );
 }
 
+const ACCENT = '#c2593a';
+const INK = '#221f1b';
+
+/**
+ * B1: the resting state is the figure. Untouched, Fig. 11 must be exactly Fig. 4 — the
+ * odd one out in accent. Once a panel is taken, the accent follows the reader's hand.
+ */
+function accentPanel(panel: number | null, i: number, pct: string): string {
+  if (panel === null) return pct.startsWith('−') ? ACCENT : INK;
+  return panel === i ? ACCENT : INK;
+}
+
 /** §07 — a figure may move and may be operated; neither may be why it exists. */
 function BehaviourSection({ controls }: { controls: FigureControls }) {
   const { curves, revealed, railOn, interval, panel } = controls;
@@ -762,10 +774,12 @@ function BehaviourSection({ controls }: { controls: FigureControls }) {
                 onBlur={() => controls.setPanel((c) => (c === i ? null : c))}
                 onClick={() => controls.setPanel((c) => (c === i ? null : i))}
               >
-                <Sparkpanel path={p.path} stroke={panel === i ? '#c2593a' : '#221f1b'} />
+                <Sparkpanel path={p.path} stroke={accentPanel(panel, i, p.pct)} />
                 <div
                   className="esys-multiple-label"
-                  style={panel === i ? { color: '#c2593a' } : undefined}
+                  style={
+                    accentPanel(panel, i, p.pct) === ACCENT ? { color: ACCENT } : undefined
+                  }
                 >
                   {p.label} · {p.pct}
                 </div>
