@@ -314,18 +314,18 @@ export function HomePage() {
         apiRef.current = api;
         api.getContent().scrollTop = 0;
       }}
-      point={0.68}
-      band={420}
+      point={0.72}
+      band={360}
       density={2}
       size={1.25}
-      spread={220}
-      gravity={0.35}
-      drift={0.7}
-      swirl={60}
-      stagger={0.7}
-      fade={0.85}
-      settle={1.2}
-      smoothing={0.6}
+      spread={200}
+      gravity={0.4}
+      drift={0.5}
+      swirl={50}
+      stagger={0.65}
+      fade={0.8}
+      settle={0.8}
+      smoothing={0.35}
     >
       {body}
     </ParticleScroll>
