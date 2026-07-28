@@ -282,3 +282,65 @@ export function buildEssayDocument(node: PoolNode, pool: Record<string, PoolNode
     wordCount: countWords(items),
   };
 }
+
+export interface Onward {
+  id: string;
+  title: string;
+  rel: string;
+  /** The target's own lens or hook, so the reader knows what they'd be going to. */
+  gloss: string;
+}
+
+export interface EssayNavigation {
+  /** Essays this one points at, in authored order. */
+  onward: Onward[];
+  /** Neighbours in the writing timeline, for readers who want the next thing regardless. */
+  older: Onward | null;
+  newer: Onward | null;
+}
+
+function toOnward(node: PoolNode, rel: string): Onward {
+  return {
+    id: node.id,
+    title: node.title,
+    rel,
+    gloss: node.struct?.lens ?? node.excerpt[0] ?? '',
+  };
+}
+
+/**
+ * Where a reader can go from here: the essay's own outbound links first, then its
+ * neighbours in the writing timeline.
+ *
+ * Args:
+ *   node: The essay being read.
+ *   pool: All pool nodes.
+ *
+ * Returns:
+ *   Onward links and timeline neighbours, each resolved to a real node.
+ */
+export function buildNavigation(node: PoolNode, pool: Record<string, PoolNode>): EssayNavigation {
+  const onward: Onward[] = [];
+  for (const [targetId, rel] of node.links) {
+    const target = pool[targetId];
+    if (target) onward.push(toOnward(target, rel));
+  }
+
+  const timeline = Object.values(pool)
+    .filter((n) => n.cluster === node.cluster)
+    .sort((a, b) => b.date.localeCompare(a.date));
+  const here = timeline.findIndex((n) => n.id === node.id);
+  const newerNode = here > 0 ? timeline[here - 1] : undefined;
+  const olderNode = here >= 0 ? timeline[here + 1] : undefined;
+
+  // A neighbour the essay already points at is not a second destination.
+  const alreadyOnward = new Set(onward.map((o) => o.id));
+  const step = (n: PoolNode | undefined, rel: string) =>
+    n && !alreadyOnward.has(n.id) ? toOnward(n, rel) : null;
+
+  return {
+    onward,
+    newer: step(newerNode, 'newer'),
+    older: step(olderNode, 'older'),
+  };
+}

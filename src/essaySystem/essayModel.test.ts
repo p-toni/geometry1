@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { generatedPool } from '../pool/generated';
-import { buildEssayDocument, buildNotes } from './essayModel';
+import { buildEssayDocument, buildNavigation, buildNotes } from './essayModel';
 
 const node = generatedPool.nodes['allowed-ignorance']!;
 const doc = buildEssayDocument(node, generatedPool.nodes);
@@ -145,6 +145,57 @@ describe('coverage across the whole pool', () => {
         .filter((i) => i.t === 'comparison')
         .map((i) => (i as { table: number }).table);
       expect(tables).toEqual(tables.map((_, i) => i + 1));
+    }
+  });
+});
+
+describe('buildNavigation', () => {
+  const nodes = Object.values(generatedPool.nodes);
+
+  it('resolves the essay’s own outbound links with their relation', () => {
+    const nav = buildNavigation(node, generatedPool.nodes);
+    expect(nav.onward.map((o) => [o.id, o.rel])).toEqual([
+      ['increasing-returns', 'cites'],
+      ['geometry-retrieval', 'theme'],
+      ['weak-geometry', 'leads to'],
+    ]);
+    for (const o of nav.onward) expect(o.title).toBeTruthy();
+  });
+
+  it('walks the timeline by date within the cluster', () => {
+    const nav = buildNavigation(node, generatedPool.nodes);
+    // allowed-ignorance is 2026-04-11, between weak-geometry and tools-need-edges.
+    expect(nav.newer?.id).toBe('tools-need-edges');
+    // weak-geometry is the older neighbour but is already a "leads to" link, so the
+    // timeline drops it rather than offering the same essay twice.
+    expect(nav.onward.some((o) => o.id === 'weak-geometry')).toBe(true);
+    expect(nav.older).toBeNull();
+  });
+
+  it('never offers the same destination twice', () => {
+    for (const n of nodes) {
+      const nav = buildNavigation(n, generatedPool.nodes);
+      const ids = [...nav.onward, nav.older, nav.newer].filter(Boolean).map((t) => t!.id);
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  });
+
+  it('leaves the ends of the timeline open', () => {
+    const writing = nodes
+      .filter((n) => n.cluster === 'writing')
+      .sort((a, b) => b.date.localeCompare(a.date));
+    expect(buildNavigation(writing[0]!, generatedPool.nodes).newer).toBeNull();
+    expect(buildNavigation(writing.at(-1)!, generatedPool.nodes).older).toBeNull();
+  });
+
+  it('gives every node somewhere to go, and never to a missing target', () => {
+    for (const n of nodes) {
+      const nav = buildNavigation(n, generatedPool.nodes);
+      const targets = [...nav.onward, nav.older, nav.newer].filter(Boolean);
+      expect(targets.length).toBeGreaterThan(0);
+      for (const t of targets) expect(generatedPool.nodes[t!.id]).toBeDefined();
+      // Never offer a link back to the essay being read.
+      expect(targets.some((t) => t!.id === n.id)).toBe(false);
     }
   });
 });

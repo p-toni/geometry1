@@ -46,6 +46,7 @@ export function Rail({
   noteDetail,
   pinned,
   claimsTitle = 'The argument',
+  lead,
   children,
 }: {
   sections: RailSection[];
@@ -55,10 +56,13 @@ export function Rail({
   noteDetail: Note | null;
   pinned: boolean;
   claimsTitle?: string;
+  /** Rendered above everything else — the persistent way back. */
+  lead?: ReactNode;
   children?: ReactNode;
 }) {
   return (
     <aside className="esys-rail" aria-label="Margin apparatus">
+      {lead}
       {noteDetail && (
         <RailCard
           kicker={pinned ? `${noteDetail.kind} · pinned` : noteDetail.kind}

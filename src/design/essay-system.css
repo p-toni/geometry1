@@ -1131,6 +1131,123 @@
   border-bottom-color: var(--accent);
 }
 
+/* —— Navigation. Apparatus, so mono: the way back and the way onward. —— */
+
+.esys-back {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+}
+
+.esys-back:hover {
+  color: var(--accent);
+}
+
+.esys-back span {
+  display: inline-block;
+  transition: transform 160ms var(--ease-out, ease);
+}
+
+.esys-back:hover span {
+  transform: translateX(-3px);
+}
+
+/* Persistent return at the top of the margin (R2). */
+.esys-back--rail {
+  display: block;
+  padding-bottom: 22px;
+}
+
+.esys-footnav {
+  margin-top: 72px;
+  border-top: 1px solid var(--ink);
+  padding-top: 20px;
+}
+
+.esys-onward-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.esys-onward {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 18px;
+  padding: 15px 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+
+.esys-onward:first-child {
+  border-top: 0;
+}
+
+.esys-onward-rel {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.esys-onward-title {
+  display: block;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.esys-onward-gloss {
+  display: block;
+  margin-top: 4px;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-onward:hover .esys-onward-title {
+  color: var(--accent);
+}
+
+.esys-timeline {
+  margin-top: 26px;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.esys-timeline-newer {
+  text-align: right;
+}
+
+.esys-step-link {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-step-link:hover {
+  color: var(--accent);
+}
+
+.esys-step-rel {
+  display: block;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint-2);
+  padding-bottom: 5px;
+}
+
 /* Numbered stops (the "step" verb) sit in the flow, so they need the figure's rhythm. */
 .esys-rules--stops {
   margin: 40px 0 36px;
@@ -1253,6 +1370,20 @@
   .esys-note-row {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  .esys-onward {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .esys-timeline {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .esys-timeline-newer {
+    text-align: left;
   }
 }
 

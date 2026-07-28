@@ -3,7 +3,8 @@ import { Navigate, useParams } from 'react-router-dom';
 import '../design/essay-system.css';
 import { generatedPool } from '../pool/generated';
 import { EssayBlock } from './EssayBlocks';
-import { buildEssayDocument } from './essayModel';
+import { BackLink, EssayFootNav } from './EssayNav';
+import { buildEssayDocument, buildNavigation } from './essayModel';
 import { Rail } from './Rail';
 import { useReadingApparatus } from './useReadingApparatus';
 
@@ -32,12 +33,23 @@ export function EssayReader() {
     () => (node ? buildEssayDocument(node, generatedPool.nodes) : null),
     [node],
   );
+  const nav = useMemo(
+    () => (node ? buildNavigation(node, generatedPool.nodes) : null),
+    [node],
+  );
   const emptySpine = useMemo(() => ({ sections: [], claims: [] }), []);
   const apparatus = useReadingApparatus(doc?.spine ?? emptySpine, doc?.notes ?? {});
 
   useLayoutEffect(() => {
     document.documentElement.classList.remove('home-mode');
   }, []);
+
+  useLayoutEffect(() => {
+    // Router keeps scroll across navigations, which would open the next essay midway in.
+    // An in-page jump to a §NN or claim anchor must still land on it.
+    if (window.location.hash) return;
+    window.scrollTo(0, 0);
+  }, [id]);
 
   useEffect(() => {
     if (!doc) return;
@@ -70,13 +82,14 @@ export function EssayReader() {
           activeClaim={apparatus.activeClaim}
           noteDetail={noteDetail}
           pinned={pinned}
+          lead={<BackLink className="esys-back--rail" />}
         />
       )}
 
       <main className="esys-main">
         <article className="esys-specimen esys-specimen--standalone">
           <div className="esys-slug">
-            <a href="/">toni.ltd</a>
+            <BackLink />
             <div className="esys-hr" />
             <span>{longDate(node.date)}</span>
           </div>
@@ -108,6 +121,8 @@ export function EssayReader() {
               </dl>
             </div>
           )}
+
+          {nav && <EssayFootNav nav={nav} />}
 
           <div className="esys-colophon esys-colophon--foot">
             <div>
