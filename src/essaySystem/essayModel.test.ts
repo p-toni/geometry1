@@ -99,3 +99,52 @@ describe('buildNotes', () => {
     expect(notes).toEqual({});
   });
 });
+
+describe('coverage across the whole pool', () => {
+  const nodes = Object.values(generatedPool.nodes);
+
+  it('renders every block type any essay actually uses', () => {
+    // Types the model deliberately has no shape for, and why.
+    const ignored = new Set(['sidenote', 'backlink', 'citation', 'sources-ledger', 'table', 'steps', 'point-edge', 'curvature']);
+    const used = new Set<string>();
+    for (const node of nodes) for (const b of node.body) used.add(b.t);
+
+    const dropped: string[] = [];
+    for (const type of used) {
+      if (ignored.has(type)) continue;
+      const probe = nodes.find((n) => n.body.some((b) => b.t === type))!;
+      const before = buildEssayDocument(probe, generatedPool.nodes).items.length;
+      const without = {
+        ...probe,
+        body: probe.body.filter((b) => b.t !== type),
+      };
+      const after = buildEssayDocument(without, generatedPool.nodes).items.length;
+      if (before === after) dropped.push(type);
+    }
+    expect(dropped).toEqual([]);
+  });
+
+  it('builds a document for every node without throwing', () => {
+    for (const node of nodes) {
+      const doc = buildEssayDocument(node, generatedPool.nodes);
+      expect(doc.title).toBeTruthy();
+      // Anchors must be unique or the rail scrolls to the wrong place.
+      const ids = [...doc.spine.sections, ...doc.spine.claims].map((x) => x.id);
+      expect(new Set(ids).size).toBe(ids.length);
+    }
+  });
+
+  it('numbers figures and tables contiguously from 1 in every essay', () => {
+    for (const node of nodes) {
+      const doc = buildEssayDocument(node, generatedPool.nodes);
+      const figs = doc.items
+        .filter((i) => i.t === 'plate' || i.t === 'drawn' || i.t === 'motif' || i.t === 'diagram')
+        .map((i) => (i as { figure: number }).figure);
+      expect(figs).toEqual(figs.map((_, i) => i + 1));
+      const tables = doc.items
+        .filter((i) => i.t === 'comparison')
+        .map((i) => (i as { table: number }).table);
+      expect(tables).toEqual(tables.map((_, i) => i + 1));
+    }
+  });
+});

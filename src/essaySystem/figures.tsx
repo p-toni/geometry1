@@ -274,6 +274,113 @@ export function CrackFigure() {
   );
 }
 
+export interface FlowEdge {
+  from: string;
+  to: string;
+  speculative: boolean;
+}
+
+/**
+ * Conceptual diagram — unfilled boxes labelled inside, flow left to right, orthogonal
+ * connectors. Speculative edges drop to faint dashed. One accent event: the final arrow,
+ * or the return path where the flow closes into a loop.
+ */
+export function FlowDiagram({
+  nodes,
+  edges,
+  cyclic,
+}: {
+  nodes: string[];
+  edges: FlowEdge[];
+  cyclic: boolean;
+}) {
+  const n = nodes.length;
+  const gap = 24;
+  const x0 = 12;
+  const w = (656 - (n - 1) * gap) / n;
+  const boxY = cyclic ? 26 : 34;
+  const boxH = 40;
+  const midY = boxY + boxH / 2;
+  const font = n >= 6 ? 8.5 : 9.5;
+  const height = cyclic ? 150 : 110;
+
+  const left = (i: number) => x0 + i * (w + gap);
+  const speculativeAt = (i: number) => edges[i]?.speculative ?? false;
+
+  return (
+    <svg
+      viewBox={`0 0 680 ${height}`}
+      role="img"
+      aria-label={`${nodes.join(' to ')}${cyclic ? ', returning to the start' : ''}`}
+    >
+      {nodes.map((label, i) => (
+        <g key={`${label}-${i}`}>
+          <rect
+            x={left(i) + 0.5}
+            y={boxY + 0.5}
+            width={w - 1}
+            height={boxH}
+            fill="none"
+            stroke="#221f1b"
+          />
+          <text
+            x={left(i) + w / 2}
+            y={midY + 3.5}
+            textAnchor="middle"
+            fontFamily={MONO}
+            fontSize={font}
+            fill="#221f1b"
+          >
+            {label}
+          </text>
+        </g>
+      ))}
+
+      {nodes.slice(0, -1).map((_, i) => {
+        const from = left(i) + w;
+        const to = left(i + 1);
+        const last = i === n - 2;
+        const accent = last && !cyclic;
+        const stroke = accent ? '#c2593a' : speculativeAt(i) ? '#a89f8e' : '#221f1b';
+        return (
+          <g key={`edge-${i}`} stroke={stroke} fill="none">
+            <line
+              x1={from}
+              y1={midY}
+              x2={to}
+              y2={midY}
+              strokeDasharray={speculativeAt(i) && !accent ? '2 3' : undefined}
+            />
+            <path d={`M${to - 6} ${midY - 4} L${to} ${midY} L${to - 6} ${midY + 4}`} />
+          </g>
+        );
+      })}
+
+      {cyclic && (
+        <g stroke="#c2593a" fill="none">
+          <path
+            d={`M${left(n - 1) + w / 2} ${boxY + boxH} L${left(n - 1) + w / 2} 108 L${left(0) + w / 2} 108 L${left(0) + w / 2} ${boxY + boxH}`}
+          />
+          <path
+            d={`M${left(0) + w / 2 - 4} ${boxY + boxH + 7} L${left(0) + w / 2} ${boxY + boxH} L${left(0) + w / 2 + 4} ${boxY + boxH + 7}`}
+          />
+          <text
+            x={(left(0) + left(n - 1) + w) / 2}
+            y="126"
+            textAnchor="middle"
+            fontFamily={MONO}
+            fontSize="9.5"
+            stroke="none"
+            fill="#c2593a"
+          >
+            and round again
+          </text>
+        </g>
+      )}
+    </svg>
+  );
+}
+
 const SPARK_UP =
   'M0 8.5 L3.6 7.4 L7.2 6.7 L10.8 7.8 L14.4 7.6 L18 6.3 L21.6 6.7 L25.2 6 L28.8 4.8 L32.4 3.1 L36 3.3 L39.6 3 L43.2 3.5 L46.8 3 L50.4 3 L54 3';
 const SPARK_DOWN =

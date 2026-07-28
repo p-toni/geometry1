@@ -4,7 +4,6 @@ const VENDORS = [
   '/vendor/thinking-orb.js',
   '/vendor/signal-marks.js',
   '/vendor/field-hero.js',
-  '/vendor/asciify.js',
 ] as const;
 
 let loadPromise: Promise<void> | null = null;

@@ -1131,6 +1131,11 @@
   border-bottom-color: var(--accent);
 }
 
+/* Numbered stops (the "step" verb) sit in the flow, so they need the figure's rhythm. */
+.esys-rules--stops {
+  margin: 40px 0 36px;
+}
+
 /* Two-pole comparison: the owned column carries the accent. */
 .esys-table--compare table {
   table-layout: fixed;

@@ -2,7 +2,7 @@
 
 This site is a continuous editorial home (`src/home/`) fed by a content pool. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
 
-Home lists derive from pool clusters: **writing** → Writing section (featured = freshest by date), **work** → Work rows, **play** → Play rail. Essays open at `/writing/:id` as a sheet over home; the sheet renders full essay bodies via **FigureReader** (typed `Block[]`), not a parallel prose model.
+Home lists derive from pool clusters: **writing** → Writing section (featured = freshest by date), **work** → Work rows, **play** → Play rail. Essays open at `/read/:id` — the single reader, set in the **Essay System** (`src/essaySystem/`). It renders typed `Block[]` directly, not a parallel prose model. `/writing/:id` redirects there.
 
 The spatial field UI was **removed** — product surface is `src/home/` only. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp).
 
@@ -57,30 +57,33 @@ media: true          # play nodes with render placeholders
 
 ## Body → Blocks → Figures
 
-The markdown body (below `---`) is parsed by `src/lib/parseBlocks.ts` into typed `Block[]` atoms. Each block maps 1:1 to a Figure component (FIG.01–12).
+The markdown body (below `---`) is parsed by `src/lib/parseBlocks.ts` into typed `Block[]` atoms. `src/essaySystem/essayModel.ts` recasts those into the Essay System's closed set of shapes.
 
-| Markdown | Block type | Figure |
-|----------|------------|--------|
-| `## Heading` | `h` | — |
-| plain paragraph | `p` | — |
-| `> thesis: …` or `> **…**` | `thesis` | Thesis |
-| `> [aside\|honesty\|update] …` | `callout` | Callout |
-| `[[sidenote:anchor\|text]]` | `sidenote` | Sidenote |
-| `![caption](src)` | `plate` | Plate |
-| `\| table \|` (generic) | `table` | DiagnosticTable |
-| `\| type \| force \|` table | `edge-taxonomy` | EdgeTaxonomy |
-| `1. step` list | `steps` | ProtocolStepper |
-| `<!-- block:motif -->` | `motif` | LateFailure |
-| `<!-- block:point-edge -->` | `point-edge` | PointEdge |
-| `<!-- block:curvature -->` | `curvature` | Curvature |
-| `[[backlink:title\|rel\|targetId]]` | `backlink` | Backlink |
+| Markdown | Block type | Essay System form |
+|----------|------------|-------------------|
+| `## Heading` | `h` | §NN section mark, mirrored in the rail |
+| plain paragraph | `p` | Prose |
+| `> thesis: …` or `> **…**` | `thesis` | Claim CNN, mirrored in the rail |
+| `> [aside\|honesty\|update] …` | `callout` | Definition box |
+| `![caption](src)` | `plate` | Image plate (light polarity only) or drawn figure |
+| `:::contrast a \| b` | `contrast` | Comparison table, accent on the owned pole |
+| `\| type \| force \|` table | `edge-taxonomy` | Comparison table |
+| `1. step` list | `ladder` | Numbered stops (the "step" verb) |
+| `:::diagram` fence | `diagram` | Conceptual diagram, one accent event |
+| `<!-- block:motif -->` | `motif` | Late-failure figure |
+| `> pull: …` | `pull` | Pull quote |
+| `[[Title\|id]]` | inline | Summoned reference, resolves in the margin |
 
-Full essay chrome (title, date, cluster) is rendered by **Masthead** in `ReadPanel` — do not repeat `# Title` in the body. `FigureReader` renders body blocks only.
+Adding a `Block` type means adding its shape to `essayModel.ts`. A test asserts every
+block type any essay actually uses survives the recast — the reader must never silently
+drop content.
+
+Essay chrome (title, standfirst, date, colophon) is rendered by `EssayReader` — do not repeat `# Title` in the body.
 
 ## Reading modes
 
 1. **Excerpt** — `excerpt` frontmatter or first two `p` blocks
-2. **Full** — entire `body` via `FigureReader` (URL `?full=1`)
+2. **Full** — entire `body` at `/read/:id`, set in the Essay System
 3. **Constellation** — spatial argument descent from essay `##` / `###` sections (see below)
 
 ## Constellation (argument descent)

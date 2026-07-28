@@ -30,8 +30,19 @@ export type DocItem =
   | { t: 'drawn'; figure: number; kind: DrawnKind; caption: string }
   | { t: 'motif'; figure: number; caption: string }
   | {
+      t: 'diagram';
+      figure: number;
+      nodes: string[];
+      edges: { from: string; to: string; speculative: boolean }[];
+      cyclic: boolean;
+      caption: string;
+    }
+  | { t: 'pull'; text: string }
+  | { t: 'stops'; mode: 'level' | 'step' | 'gate'; rungs: { marker: string; term: string; body: string }[] }
+  | {
       t: 'comparison';
       table: number;
+      headers?: [string, string];
       poles: [string, string];
       ownedPole: 0 | 1;
       rows: { a: string; b: string }[];
@@ -192,6 +203,53 @@ export function buildEssayDocument(node: PoolNode, pool: Record<string, PoolNode
             'Late failure. The elegant map holds longer than the loose one, then gives way along the seam it stopped paying for. The accent marks the crack, not the decline.',
         });
         break;
+      case 'pull':
+        items.push({ t: 'pull', text: stripEmphasis(block.x) });
+        break;
+      case 'ladder':
+        items.push({
+          t: 'stops',
+          mode: block.mode,
+          rungs: block.rungs.map((r, i) => ({
+            marker: r.marker || String(i + 1).padStart(2, '0'),
+            term: r.term,
+            body: r.body,
+          })),
+        });
+        break;
+      case 'edge-taxonomy':
+        table += 1;
+        items.push({
+          t: 'comparison',
+          table,
+          headers: ['Edge', 'What it does'],
+          poles: ['Edge', 'What it does'],
+          ownedPole: 1,
+          rows: block.rows.map((r) => ({ a: r.type, b: r.force })),
+          caption:
+            'Taxonomy. Every edge listed with the work it performs; the second column carries the argument.',
+        });
+        break;
+      case 'diagram': {
+        figure += 1;
+        const first = block.nodes[0] ?? '';
+        const last = block.nodes[block.nodes.length - 1] ?? '';
+        items.push({
+          t: 'diagram',
+          figure,
+          nodes: block.nodes,
+          edges: block.edges.map((e) => ({
+            from: e.from,
+            to: e.to,
+            speculative: e.force === 'speculative',
+          })),
+          cyclic: block.cyclic,
+          caption: block.cyclic
+            ? `Loop. ${first} through ${last} and back; the accent closes the cycle. Dashed edges are the speculative ones.`
+            : `Flow. ${first} through ${last}, left to right. Dashed edges are speculative; the accent marks what the sequence is for.`,
+        });
+        break;
+      }
       case 'contrast':
         table += 1;
         items.push({

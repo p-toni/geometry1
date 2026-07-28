@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import { Outlet } from 'react-router-dom';
 import { SOCIAL } from './data';
 import { FieldDock } from './FieldDock';
 import './home.css';
@@ -42,7 +41,7 @@ function SiteHeader() {
 }
 
 /**
- * Shell for `/` and `/writing/:id`.
+ * Shell for `/`.
  *
  * Particle mode: root is a 100dvh column. Header is fixed chrome.
  * Main fills the rest; ParticleScroll inside is the only scrollport.
@@ -51,9 +50,6 @@ export function HomeLayout() {
   useEffect(() => {
     // Routes outside home scroll the document, so ownership of home-mode lives here.
     document.documentElement.classList.add('home-mode');
-    return () => {
-      document.body.classList.remove('is-sheet-open');
-    };
   }, []);
 
   return (
@@ -63,7 +59,6 @@ export function HomeLayout() {
         <HomePage />
       </main>
       <FieldDock />
-      <Outlet />
     </div>
   );
 }

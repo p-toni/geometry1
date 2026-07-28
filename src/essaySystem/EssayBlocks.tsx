@@ -2,7 +2,7 @@ import { Fragment, type ReactNode } from 'react';
 import { splitInlineBacklinks } from '../lib/inlineBacklink';
 import { renderInlineMarkdown } from '../lib/inlineMarkdown';
 import type { DocItem } from './essayModel';
-import { CrackFigure, LateFailureFigure, RotationFigure } from './figures';
+import { CrackFigure, FlowDiagram, LateFailureFigure, RotationFigure } from './figures';
 import type { NoteControls } from './useReadingApparatus';
 
 /**
@@ -66,7 +66,7 @@ function Figure({ children, caption }: { children: ReactNode; caption: ReactNode
 
 /** Comparison table (Table class): serif labels, one accented column, no verticals. */
 function Comparison({ item }: { item: Extract<DocItem, { t: 'comparison' }> }) {
-  const [a, b] = item.poles;
+  const [a, b] = item.headers ?? item.poles;
   return (
     <div className="esys-table esys-table--compare">
       <table>
@@ -177,6 +177,45 @@ export function EssayBlock({
             <LateFailureFigure />
           </div>
         </Figure>
+      );
+
+    case 'diagram':
+      return (
+        <Figure
+          caption={
+            <>
+              <b>Fig. {item.figure} — </b>
+              {item.caption}
+            </>
+          }
+        >
+          <div className="esys-plate esys-plate--diagram">
+            <FlowDiagram nodes={item.nodes} edges={item.edges} cyclic={item.cyclic} />
+          </div>
+        </Figure>
+      );
+
+    case 'pull':
+      return (
+        <div className="esys-pull">
+          <p>{item.text}</p>
+        </div>
+      );
+
+    case 'stops':
+      // The system's "step" verb: a sequence with an argument order, numbered stops.
+      return (
+        <div className="esys-rules esys-rules--stops">
+          {item.rungs.map((r) => (
+            <div className="esys-rule" key={r.marker + r.term}>
+              <div className="esys-rule-num">{r.marker}</div>
+              <div>
+                <div className="esys-rule-term">{r.term}</div>
+                {r.body && <p className="esys-rule-body">{r.body}</p>}
+              </div>
+            </div>
+          ))}
+        </div>
       );
 
     case 'comparison':

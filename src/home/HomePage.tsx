@@ -257,7 +257,7 @@ export function HomePage() {
       const t = e.target;
       if (t instanceof Element) {
         // Essay sheet / other overlays keep their own scroll.
-        if (t.closest('.home-sheet, .home-sheet-root, [data-no-home-wheel]')) {
+        if (t.closest('[data-no-home-wheel]')) {
           return;
         }
         // Horizontal rails — don't steal vertical intent if they're the target
@@ -276,7 +276,7 @@ export function HomePage() {
     return () => window.removeEventListener('wheel', onWheel);
   }, []);
 
-  const openEssay = (id: string) => navigate(`/writing/${id}`);
+  const openEssay = (id: string) => navigate(`/read/${id}`);
 
   /** Pin the CTA line to the top of the scrollport. */
   const scrollToWriting = () => {
