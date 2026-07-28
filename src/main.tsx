@@ -9,7 +9,11 @@ if (!rootNode) {
 }
 const container: HTMLElement = rootNode;
 
-document.documentElement.classList.add('home-mode');
+// Pre-set so home paints without a scroll-lock flash; HomeLayout owns it thereafter.
+const SYSTEM_ROUTE = /^\/(essay-system|read)(\/|$)/;
+if (!SYSTEM_ROUTE.test(window.location.pathname)) {
+  document.documentElement.classList.add('home-mode');
+}
 
 async function boot() {
   try {

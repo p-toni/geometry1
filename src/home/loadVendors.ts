@@ -9,7 +9,8 @@ const VENDORS = [
 
 let loadPromise: Promise<void> | null = null;
 
-function loadScript(src: string): Promise<void> {
+/** Load a `public/vendor/*.js` custom-element script once, shared across routes. */
+export function loadVendorScript(src: string): Promise<void> {
   return new Promise((resolve, reject) => {
     const existing = document.querySelector<HTMLScriptElement>(
       `script[data-home-vendor="${src}"]`,
@@ -35,7 +36,7 @@ function loadScript(src: string): Promise<void> {
 /** Load home custom-element scripts once. */
 export function loadHomeVendors(): Promise<void> {
   if (!loadPromise) {
-    loadPromise = Promise.all(VENDORS.map((src) => loadScript(src))).then(() => undefined);
+    loadPromise = Promise.all(VENDORS.map((src) => loadVendorScript(src))).then(() => undefined);
   }
   return loadPromise;
 }

@@ -49,6 +49,8 @@ function SiteHeader() {
  */
 export function HomeLayout() {
   useEffect(() => {
+    // Routes outside home scroll the document, so ownership of home-mode lives here.
+    document.documentElement.classList.add('home-mode');
     return () => {
       document.body.classList.remove('is-sheet-open');
     };

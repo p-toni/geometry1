@@ -39,6 +39,13 @@ declare module 'react' {
         contrast?: string;
         effect?: string;
       };
+      'plate-lattice': CEProps & {
+        ink?: string;
+        accent?: string;
+        amp?: string;
+        speed?: string;
+        threshold?: string;
+      };
       'particle-scroll': CEProps & {
         point?: string;
         band?: string;
