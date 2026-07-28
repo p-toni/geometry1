@@ -1,4 +1,4 @@
-import { memo, type Dispatch, type SetStateAction } from 'react';
+import { memo, type Dispatch, type ReactNode, type SetStateAction } from 'react';
 import { PANELS } from './data';
 import {
   DistributionFigure,
@@ -188,6 +188,29 @@ const TYPE_SCALE = [
       </div>
     ),
   },
+];
+
+/** Listing 1 — keywords clay, comments faint, everything else ink. No third colour. */
+const LISTING: (() => ReactNode)[] = [
+  () => <code className="esys-comment"># the edge is a parameter, not an accident</code>,
+  () => (
+    <code>
+      <span className="esys-kw">def</span> attend(world, edge):
+    </code>
+  ),
+  () => (
+    <code>
+      {'    '}seen = [x <span className="esys-kw">for</span> x <span className="esys-kw">in</span>{' '}
+      world <span className="esys-kw">if</span> edge.admits(x)]
+    </code>
+  ),
+  () => <code>{'    '}edge.log_refusals(world, seen)</code>,
+  () => (
+    <code>
+      {'    '}
+      <span className="esys-kw">return</span> compress(seen)
+    </code>
+  ),
 ];
 
 function SectionHead({ num, title, id }: { num: string; title: string; id?: string }) {
@@ -596,30 +619,14 @@ function FiguresSection() {
       <div className="esys-listing">
         <div className="esys-code">
           <ol>
-            <li>
-              <code className="esys-comment"># the edge is a parameter, not an accident</code>
-            </li>
-            <li>
-              <code>
-                <span className="esys-kw">def</span> attend(world, edge):
-              </code>
-            </li>
-            <li>
-              <code>
-                {'    '}seen = [x <span className="esys-kw">for</span> x{' '}
-                <span className="esys-kw">in</span> world <span className="esys-kw">if</span>{' '}
-                edge.admits(x)]
-              </code>
-            </li>
-            <li>
-              <code>{'    '}edge.log_refusals(world, seen)</code>
-            </li>
-            <li>
-              <code>
-                {'    '}
-                <span className="esys-kw">return</span> compress(seen)
-              </code>
-            </li>
+            {LISTING.map((line, i) => (
+              <li key={i}>
+                <span className="esys-code-ln" aria-hidden="true">
+                  {i + 1}
+                </span>
+                {line()}
+              </li>
+            ))}
           </ol>
         </div>
         <div className="esys-cap">

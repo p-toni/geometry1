@@ -1003,16 +1003,13 @@
   font-family: 'JetBrains Mono', ui-monospace, monospace;
   font-size: 12.5px;
   line-height: 1.9;
-  counter-reset: esys-line;
 }
 
 .esys-code li {
   display: contents;
-  counter-increment: esys-line;
 }
 
-.esys-code li::before {
-  content: counter(esys-line);
+.esys-code-ln {
   color: var(--tick);
   text-align: right;
   padding-right: 10px;
@@ -1258,20 +1255,32 @@
   table-layout: fixed;
 }
 
+/* Both poles are prose, so neither column takes Table 1's mono numeral treatment. */
 .esys-table--compare th,
-.esys-table--compare td {
+.esys-table--compare th + th,
+.esys-table--compare td,
+.esys-table--compare td + td {
+  font-family: 'Newsreader', Georgia, serif;
+  font-size: 17px;
+  line-height: 1.5;
   text-align: left;
-  padding-right: 20px;
+  padding: 13px 20px 13px 0;
+  color: var(--soft);
+  font-variant-numeric: normal;
+}
+
+.esys-table--compare th,
+.esys-table--compare th + th {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 12px 20px 10px 0;
 }
 
 .esys-table--compare th.is-accent {
   color: var(--accent);
-}
-
-.esys-table--compare td {
-  font-size: 17px;
-  line-height: 1.5;
-  color: var(--soft);
 }
 
 .esys-table--compare td.is-accent {
@@ -1370,6 +1379,21 @@
   .esys-note-row {
     grid-template-columns: 1fr;
     gap: 4px;
+  }
+
+  /*
+   * Drawn figures are labelled in 8.5–9.5px mono. Scaling a 680-wide viewBox into a
+   * ~330px column would render those labels at ~4px, so the figure keeps its drawn size
+   * and the plate scrolls instead — the same concession the code listing already makes.
+   * Small multiples are excluded: their panels are laid out by the grid, not the viewBox.
+   */
+  .esys-plate {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .esys-plate > svg {
+    min-width: 600px;
   }
 
   .esys-onward {
