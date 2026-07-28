@@ -1,14 +1,19 @@
 /**
- * Particle Scroll — Canvas UI (https://canvasui.dev/docs/components/particle-scroll)
- * MIT, David Haz.
+ * Particle Scroll — Canvas UI math + home anti-wash that keeps sand working.
  *
- * Official: shaders (points), defaults, formation-line settle, layoutsubtree capture.
- * Home anti-wash: BASE paints paper only for dissolving cells; assembled cells are
- * fully transparent so live layoutsubtree DOM stays sharp (navbar-quality).
- * Sand points still sample the capture texture (official motion).
- * No idle-hide — below the formation line stays sand until scroll crosses it.
+ * Capture (required for grain colour):
+ *   Content is a direct child of a layoutsubtree canvas. onpaint draws it with
+ *   drawElementImage into the source bitmap (device pixels). Outside-DOM capture
+ *   fails — drawElementImage only accepts canvas children.
  *
- * Local: startAt, getContent / scrollTo / onReady.
+ * Sharp assembled type (navbar-class, not soft WebGL):
+ *   Source 2d canvas is visible under the WebGL layer. BASE paints paper only for
+ *   dissolving rows and stays fully transparent where assembled, so the 2d
+ *   capture shows through. Sand is the point pass only.
+ *
+ * Settle: formation line only (no idle full-page hide).
+ *
+ * https://canvasui.dev/docs/components/particle-scroll — MIT, David Haz
  */
 "use client";
 
@@ -49,13 +54,9 @@ export interface ParticleScrollInstance {
   destroy: () => void;
   getContent: () => HTMLElement;
   scrollTo: (top: number, behavior?: ScrollBehavior) => void;
+  repaint: () => void;
 }
 
-/**
- * Defaults tuned for continuous home scroll (editorial, high frequency).
- * Same official knobs; slightly snappier reassembly + tighter scroll lag
- * so reading doesn't wait on a 1.2s row settle / 0.6s damp.
- */
 const DEFAULTS: Required<Omit<ParticleScrollOptions, "startAt">> & {
   startAt: string;
 } = {
@@ -98,7 +99,10 @@ void main () {
   gl_Position = vec4(aPos, 0.0, 1.0);
 }`;
 
-/** Assembled transparent (sharp DOM). Dissolving = paper. Points draw sand. */
+/**
+ * Assembled = transparent (source 2d canvas shows through → sharp type).
+ * Dissolving = paper cover so live capture does not double-print under sand.
+ */
 const BASE_FRAG = `#version 300 es
 precision highp float;
 in vec2 vUv;
@@ -204,7 +208,8 @@ void main () {
   vCenter = home;
   vSize = sizeCss;
   vAlpha = mix(uFade, 1.0, e);
-  vLod = (1.0 - e) * 1.5;
+  // Prefer sharp LOD 0; only soft-blur fully scattered grains.
+  vLod = (1.0 - e) * 0.75;
   vMerge = smoothstep(0.75, 0.97, t);
   gl_Position = vec4(
     pos.x / uRes.x * 2.0 - 1.0,
@@ -231,11 +236,9 @@ void main () {
   vec4 tex = textureLod(uContent, uv, vLod);
   float circle = 1.0 - smoothstep(0.25, 0.5, length(o));
   float mask = mix(circle, 1.0, vMerge);
-  // Keep grains visible even if capture alpha is thin.
-  vec3 col = mix(vec3(0.14, 0.13, 0.11), tex.rgb, max(tex.a, 0.2));
-  float a = vAlpha * mask * max(tex.a, 0.55);
+  float a = vAlpha * mask * tex.a;
   if (a < 0.01) discard;
-  outColor = vec4(col, a);
+  outColor = vec4(tex.rgb, a);
 }`;
 
 export function supportsHtmlInCanvas(): boolean {
@@ -255,6 +258,7 @@ export function createParticleScroll(
 ): ParticleScrollInstance | null {
   const config = { ...DEFAULTS, ...options };
   const { source, content, output } = elements;
+  const paintable = source as PaintableCanvas;
 
   const glOrNull = output.getContext("webgl2", {
     alpha: true,
@@ -267,7 +271,6 @@ export function createParticleScroll(
   const gl = glOrNull;
 
   const sourceCtx = source.getContext("2d") as ElementImageContext | null;
-  const paintable = source as PaintableCanvas;
   const htmlInCanvas = Boolean(
     sourceCtx &&
       typeof sourceCtx.drawElementImage === "function" &&
@@ -278,6 +281,7 @@ export function createParticleScroll(
   let wake = () => {};
 
   if (htmlInCanvas) {
+    // Only valid path: content must be a direct layoutsubtree child.
     paintable.onpaint = () => {
       try {
         sourceCtx!.reset?.();
@@ -285,7 +289,7 @@ export function createParticleScroll(
         contentDirty = true;
         wake();
       } catch {
-        /* ignore */
+        /* snapshot not ready yet; next paint retries */
       }
     };
   }
@@ -334,11 +338,8 @@ export function createParticleScroll(
 
   const contentTexture = gl.createTexture()!;
   gl.bindTexture(gl.TEXTURE_2D, contentTexture);
-  gl.texParameteri(
-    gl.TEXTURE_2D,
-    gl.TEXTURE_MIN_FILTER,
-    gl.LINEAR_MIPMAP_LINEAR,
-  );
+  // No mipmaps — LINEAR_MIPMAP_LINEAR washes body type into the sand sample.
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
@@ -353,7 +354,6 @@ export function createParticleScroll(
     gl.UNSIGNED_BYTE,
     new Uint8Array([0, 0, 0, 0]),
   );
-  gl.generateMipmap(gl.TEXTURE_2D);
 
   let contentMaxX = 1;
 
@@ -394,27 +394,29 @@ export function createParticleScroll(
 
   function syncCanvasSize() {
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const cssW = Math.max(1, output.clientWidth);
-    const cssH = Math.max(1, output.clientHeight);
+    const cssW = Math.max(1, content.clientWidth || output.clientWidth || 1);
+    const cssH = Math.max(1, content.clientHeight || output.clientHeight || 1);
     const width = Math.max(1, Math.round(cssW * dpr));
     const height = Math.max(1, Math.round(cssH * dpr));
+
     if (output.width !== width || output.height !== height) {
       output.width = width;
       output.height = height;
     }
-    contentMaxX = Math.min(
-      1,
-      Math.max(0.05, content.clientWidth / Math.max(cssW, 1)),
-    );
+    output.style.width = cssW + "px";
+    output.style.height = cssH + "px";
+
+    contentMaxX = 1;
+
     if (htmlInCanvas) {
-      // Device-pixel capture → better grain colour; layoutsubtree still drives paint.
-      const sw = Math.max(1, Math.round(cssW * dpr));
-      const sh = Math.max(1, Math.round(cssH * dpr));
-      if (source.width !== sw || source.height !== sh) {
-        source.width = sw;
-        source.height = sh;
+      // Device-pixel buffer so the visible 2d capture is not soft-upscaled.
+      if (source.width !== width || source.height !== height) {
+        source.width = width;
+        source.height = height;
       }
-      paintable.requestPaint?.();
+      source.style.width = cssW + "px";
+      source.style.height = cssH + "px";
+      paintable.requestPaint!();
     }
   }
 
@@ -426,6 +428,8 @@ export function createParticleScroll(
   let introWait = 0;
   let introReady = false;
   let scrollSmooth = content.scrollTop;
+  let lag = 0;
+  let lastScrollTop = content.scrollTop;
   syncCanvasSize();
   syncBgColor();
 
@@ -436,7 +440,6 @@ export function createParticleScroll(
     syncBgColor();
     gl.bindTexture(gl.TEXTURE_2D, contentTexture);
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
-    gl.generateMipmap(gl.TEXTURE_2D);
   }
 
   function resolveStartY(): number {
@@ -454,7 +457,7 @@ export function createParticleScroll(
   function rowTargetFor(docRowY: number) {
     if (reducedMotion || !introDone) return 1;
     if (docRowY < resolveStartY()) return 1;
-    const h = Math.max(output.clientHeight, 1);
+    const h = Math.max(content.clientHeight, 1);
     const band = Math.max(config.band, 1);
     const max = content.scrollHeight - content.clientHeight;
     let line = Math.min(Math.max(config.point, 0), 1) * h;
@@ -526,13 +529,10 @@ export function createParticleScroll(
     );
   }
 
-  let lag = 0;
-  let lastScrollTop = content.scrollTop;
-
   function render(dt: number) {
     uploadContent();
-    const w = Math.max(output.clientWidth, 1);
-    const h = Math.max(output.clientHeight, 1);
+    const w = Math.max(content.clientWidth, 1);
+    const h = Math.max(content.clientHeight, 1);
     const dpr = output.width / Math.max(w, 1);
     const density = Math.max(
       Math.max(config.density, 1),
@@ -577,7 +577,6 @@ export function createParticleScroll(
     gl.uniform3f(base.uniforms.uBg!, bg[0], bg[1], bg[2]);
     gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 
-    // Always draw points when anything is dissolving (official path).
     if (rowsAssembled) return;
 
     gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ZERO, gl.ONE);
@@ -635,6 +634,8 @@ export function createParticleScroll(
       else if (introReady) {
         introWait += delta;
         if (introWait >= 1) introDone = true;
+      } else {
+        paintable.requestPaint?.();
       }
     }
     const tau = config.smoothing;
@@ -644,7 +645,6 @@ export function createParticleScroll(
     if (Math.abs(scrollTop - scrollSmooth) < 0.5) scrollSmooth = scrollTop;
     render(delta);
 
-    // Official: stop only when everything in view has crossed the formation line.
     if (
       !contentDirty &&
       scrollSmooth === scrollTop &&
@@ -668,20 +668,25 @@ export function createParticleScroll(
 
   wake = start;
   content.scrollTop = 0;
-  // Always composite WebGL (alpha holes for assembled). Hide only if reduced motion.
   if (htmlInCanvas && !reducedMotion) {
     output.style.visibility = "visible";
     output.style.opacity = "1";
     output.style.background = "transparent";
+    source.style.visibility = "visible";
+    source.style.opacity = "1";
   } else {
     output.style.visibility = "hidden";
     output.style.opacity = "0";
   }
-  if (htmlInCanvas) paintable.requestPaint?.();
+  requestAnimationFrame(() => {
+    syncCanvasSize();
+    if (htmlInCanvas) paintable.requestPaint!();
+    start();
+  });
   start();
 
   function onScroll() {
-    if (htmlInCanvas) paintable.requestPaint?.();
+    if (htmlInCanvas) paintable.requestPaint!();
     start();
   }
   content.addEventListener("scroll", onScroll, { passive: true });
@@ -703,14 +708,14 @@ export function createParticleScroll(
     syncCanvasSize();
     start();
   });
-  observer.observe(output);
   observer.observe(content);
+  observer.observe(output);
 
   const intersection = new IntersectionObserver((entries) => {
     visible = entries[entries.length - 1]?.isIntersecting ?? true;
     if (visible) start();
   });
-  intersection.observe(output);
+  intersection.observe(content);
 
   return {
     setOptions(next) {
@@ -727,6 +732,10 @@ export function createParticleScroll(
     scrollTo(top, behavior = "auto") {
       content.scrollTo({ top: Math.max(0, top), behavior });
     },
+    repaint() {
+      if (htmlInCanvas) paintable.requestPaint!();
+      start();
+    },
     destroy() {
       destroyed = true;
       cancelAnimationFrame(raf);
@@ -734,6 +743,7 @@ export function createParticleScroll(
       observer.disconnect();
       intersection.disconnect();
       motionQuery.removeEventListener("change", onMotionChange);
+      if (htmlInCanvas) paintable.onpaint = null;
       gl.deleteTexture(contentTexture);
       gl.deleteTexture(rowTex);
       gl.deleteProgram(base.program);
@@ -745,7 +755,6 @@ export function createParticleScroll(
       gl.deleteBuffer(quad);
       gl.deleteVertexArray(quadVao);
       gl.deleteVertexArray(pointVao);
-      if (htmlInCanvas) paintable.onpaint = null;
     },
   };
 }
@@ -760,8 +769,8 @@ export interface ParticleScrollProps extends ParticleScrollOptions {
 const emptySubscribe = () => () => {};
 
 /**
- * Official host: layoutsubtree canvas holds the scroller (required for capture).
- * WebGL on top with transparent assembled cells → sharp live DOM + sand.
+ * Host: layoutsubtree source (capture + visible 2d type) under transparent
+ * WebGL sand. Without html-in-canvas, plain scrollable DOM.
  */
 export function ParticleScroll({
   children,
@@ -844,6 +853,12 @@ export function ParticleScroll({
       }}
       data-particle-host
     >
+      {/*
+        Source canvas is BOTH capture buffer and sharp assembled display.
+        layoutsubtree children are not natively painted — onpaint draws them
+        into this bitmap at device pixels; WebGL leaves assembled cells open
+        so this 2d layer shows through (no soft texture sample for body type).
+      */}
       <canvas
         ref={sourceRef}
         // @ts-expect-error experimental html-in-canvas attribute
@@ -857,7 +872,7 @@ export function ParticleScroll({
                 width: "100%",
                 height: "100%",
                 zIndex: 1,
-                background: "transparent",
+                background: paper,
               }
             : { display: "none" }
         }
@@ -873,6 +888,7 @@ export function ParticleScroll({
           </div>
         ) : null}
       </canvas>
+
       {!native ? (
         <div
           ref={contentRef}
@@ -883,6 +899,8 @@ export function ParticleScroll({
           {children}
         </div>
       ) : null}
+
+      {/* Sand only — transparent where assembled so source 2d type shows */}
       <canvas
         ref={outputRef}
         aria-hidden

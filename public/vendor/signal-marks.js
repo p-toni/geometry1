@@ -19,9 +19,10 @@
 
   // Hover replay only — keep under ~1.2s (not a 2.4s demo loop).
   const DUR = 1100;
-  // Floor so strokes survive device pixel rounding (0.7 CSS px disappears).
-  const MIN_STROKE = 1.15;
-  const MIN_DOT = 1.0;
+  // Floors in CSS px — converted to viewBox units via Pen.pxScale so hairlines
+  // stay crisp when the mark is drawn at 2× internal resolution.
+  const MIN_STROKE = 1.0;
+  const MIN_DOT = 0.85;
 
   function mulberry32(a) {
     return function () {
@@ -40,11 +41,13 @@
 
   /* One SVG node per drawn element, keyed and reused across frames. */
   class Pen {
-    constructor(svg, k) {
+    constructor(svg, k, pxScale) {
       this.svg = svg;
       // ink scale — geometry follows the mark size, weight follows it gently, so
       // a 58px mark stays a hairline drawing rather than a fattened one
       this.k = k || 1;
+      // viewBox units per CSS px (e.g. 2 when drawing at 2× internal res)
+      this.pxScale = pxScale || 1;
       this.nodes = new Map();
       this.used = new Set();
     }
@@ -68,7 +71,7 @@
       const el = this._node('d' + key, 'circle');
       el.setAttribute('cx', f2(x));
       el.setAttribute('cy', f2(y));
-      el.setAttribute('r', f2(Math.max(MIN_DOT, r * this.k)));
+      el.setAttribute('r', f2(Math.max(MIN_DOT * this.pxScale, r * this.k)));
       el.setAttribute('fill', color);
       el.setAttribute('opacity', f2(clamp01(alpha === undefined ? 1 : alpha)));
     }
@@ -77,7 +80,7 @@
       el.setAttribute('d', d);
       el.setAttribute('fill', 'none');
       el.setAttribute('stroke', color);
-      el.setAttribute('stroke-width', f2(Math.max(MIN_STROKE, w * this.k)));
+      el.setAttribute('stroke-width', f2(Math.max(MIN_STROKE * this.pxScale, w * this.k)));
       el.setAttribute('stroke-linecap', 'round');
       el.setAttribute('stroke-linejoin', 'round');
       el.setAttribute('opacity', f2(clamp01(alpha === undefined ? 1 : alpha)));
@@ -297,14 +300,19 @@
     _mount() {
       if (this._built) return;
       this._built = true;
-      const S = parseFloat(this.getAttribute('size')) || 34;
+      // CSS display size (matches type). Draw in a higher viewBox so hairlines
+      // stay sharp on retina instead of looking low-res at 24px.
+      const displayS = parseFloat(this.getAttribute('size')) || 34;
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      const pxScale = Math.max(2, dpr);
+      const S = Math.round(displayS * pxScale);
       this._S = S;
       this._kind = KINDS[this.getAttribute('kind')] || enclosure;
       this._accent = this.getAttribute('accent') || '#c2593a';
 
       this.style.display = 'block';
-      this.style.width = S + 'px';
-      this.style.height = S + 'px';
+      this.style.width = displayS + 'px';
+      this.style.height = displayS + 'px';
       this.style.flex = 'none';
       this.style.overflow = 'visible';
 
@@ -312,11 +320,14 @@
 
       this._svg = document.createElementNS(NS, 'svg');
       this._svg.setAttribute('viewBox', '0 0 ' + S + ' ' + S);
-      this._svg.setAttribute('width', String(S));
-      this._svg.setAttribute('height', String(S));
+      this._svg.setAttribute('width', String(displayS));
+      this._svg.setAttribute('height', String(displayS));
       this._svg.setAttribute('stroke-linecap', 'round');
       this._svg.setAttribute('stroke-linejoin', 'round');
-      this._svg.style.cssText = 'display:block;overflow:visible;width:100%;height:100%';
+      this._svg.setAttribute('shape-rendering', 'geometricPrecision');
+      this._svg.style.cssText =
+        'display:block;overflow:visible;width:100%;height:100%;' +
+        'shape-rendering:geometricPrecision;text-rendering:geometricPrecision';
       const label = this.getAttribute('label');
       if (label) {
         this._svg.setAttribute('role', 'img');
@@ -326,7 +337,8 @@
       }
       this.appendChild(this._svg);
 
-      this._pen = new Pen(this._svg, Math.sqrt(S / 34));
+      // Geometry scale from design baseline 34; pxScale keeps min stroke in CSS px.
+      this._pen = new Pen(this._svg, Math.sqrt(S / 34), pxScale);
       this._reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
 
       // Settled paint only — no enter timeline (avoids blink; enter was a no-op).

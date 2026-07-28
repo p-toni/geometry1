@@ -118,7 +118,6 @@ export function ThesisSection() {
       </div>
 
       <div className="home-spine home-thesis__toggle-row">
-        <div />
         <button type="button" className="home-thesis__toggle" onClick={compress}>
           {toggleLabel}
         </button>

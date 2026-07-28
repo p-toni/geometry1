@@ -151,7 +151,8 @@ html.home-mode #root {
 
 /* —— Thesis —— */
 .home-thesis {
-  padding-top: 40px;
+  /* Vertical page margin lives on .home-body (54px). */
+  padding-top: 0;
   /* No enter animation — was stacking with the particle-scroll mount flash */
 }
 
@@ -202,6 +203,7 @@ html.home-mode #root {
   flex-wrap: wrap;
   gap: 0 2px;
   flex-shrink: 0;
+  font-size: 11.5px;
   font-variant-numeric: tabular-nums;
   letter-spacing: 0.06em;
 }
@@ -242,6 +244,7 @@ html.home-mode #root {
 
 .home-thesis__meter-unit {
   margin-left: 0.75em;
+  font-size: 10px;
   color: var(--spine);
   letter-spacing: 0.12em;
 }
@@ -271,23 +274,34 @@ html.home-mode #root {
   margin: 0;
 }
 
+.home-thesis__premise,
+.home-thesis__line,
+.home-thesis__turn {
+  /* Newsreader opsz — matches 24px so glyphs don’t render as scaled 6pt mush */
+  font-optical-sizing: auto;
+  font-variation-settings: 'opsz' 24, 'wght' 320;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 .home-thesis__premise {
   margin: 0;
-  font-weight: 300;
+  font-weight: 320;
   color: var(--ink);
   text-wrap: pretty;
 }
 
 .home-thesis__line {
   margin: 0;
-  font-weight: 300;
+  font-weight: 320;
   color: var(--body);
   text-wrap: pretty;
 }
 
 .home-thesis__turn {
   margin: 0;
-  font-weight: 300;
+  font-weight: 320;
   font-style: italic;
   color: var(--ink);
   text-wrap: pretty;
@@ -302,6 +316,12 @@ html.home-mode #root {
 
 .home-thesis__toggle-row {
   padding-top: 26px;
+}
+
+/* Flush to content left margin (same edge as marks), not indented under type */
+.home-thesis__toggle-row .home-thesis__toggle {
+  grid-column: 1 / -1;
+  justify-self: start;
 }
 
 .home-thesis__toggle {
@@ -798,7 +818,7 @@ html.home-mode body.is-sheet-open {
   /* Content column — scroller itself is full-bleed for wheel hit-testing */
   max-width: var(--main-max);
   margin: 0 auto;
-  padding: 0 var(--gutter) 120px;
+  padding: 54px var(--gutter) 54px;
   box-sizing: border-box;
   width: 100%;
 }
