@@ -151,7 +151,7 @@ html.home-mode #root {
 
 /* —— Thesis —— */
 .home-thesis {
-  padding-top: 82px;
+  padding-top: 40px;
   /* No enter animation — was stacking with the particle-scroll mount flash */
 }
 
@@ -161,7 +161,8 @@ html.home-mode #root {
   width: 100%;
   display: grid;
   grid-template-columns: max-content 1fr;
-  column-gap: 20px;
+  /* Tight gutter: marks are 24px, flush to type */
+  column-gap: 14px;
 }
 
 .home-thesis__head {
@@ -181,7 +182,7 @@ html.home-mode #root {
 .home-thesis__meter-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 18px;
   font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.12em;
@@ -197,24 +198,52 @@ html.home-mode #root {
 
 .home-thesis__meter {
   display: flex;
-  gap: 3px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0 2px;
+  flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
 }
 
-.home-thesis__cell {
-  width: 15px;
-  height: 9px;
-  border: 1px solid var(--meter-border);
+.home-thesis__meter-step {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0;
+}
+
+.home-thesis__meter-arrow {
+  margin: 0 0.55em;
+  color: var(--spine);
+  opacity: 0.55;
+  letter-spacing: 0;
+}
+
+.home-thesis__count {
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: none;
+  color: var(--spine);
   cursor: pointer;
-  padding: 0;
-  background: var(--meter-empty);
+  border: none;
+  padding: 0 1px;
+  min-width: 1.25em;
+  text-align: center;
+  background: none;
 }
 
-.home-thesis__cell.is-on {
-  background: var(--ink);
+.home-thesis__count.is-on {
+  color: var(--ink);
 }
 
-.home-thesis__cell:hover {
-  border-color: var(--accent);
+.home-thesis__count:hover {
+  color: var(--accent);
+}
+
+.home-thesis__meter-unit {
+  margin-left: 0.75em;
+  color: var(--spine);
+  letter-spacing: 0.12em;
 }
 
 .home-thesis__body {
@@ -602,15 +631,15 @@ html.home-mode #root {
   right: 0;
   bottom: -28px;
   z-index: 40;
-  /* ~1.38× original 210×132 (20% then +15%) */
-  width: 290px;
+  /* Rounded width; height keeps prior aspect (~377:237) */
+  width: 400px;
   /* Occasional chrome — keep under 300ms, strong ease-out, no delay */
   animation: home-fade-in 200ms var(--ease-out-strong) both;
 }
 
 .home-dock field-hero {
   display: block;
-  height: 182px;
+  height: 251px;
 }
 
 @media (max-width: 1179px) {

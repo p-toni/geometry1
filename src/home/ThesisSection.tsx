@@ -85,18 +85,30 @@ export function ThesisSection() {
         <div className="home-thesis__label">Thesis</div>
         <div className="home-thesis__meter-row">
           <div className="home-thesis__rule" />
-          <span>{WORD_COUNT[level]} words</span>
-          <div className="home-thesis__meter" role="group" aria-label="Thesis resolution">
-            {([1, 2, 3, 4] as const).map((n) => (
-              <button
-                key={n}
-                type="button"
-                className={`home-thesis__cell${n <= level ? ' is-on' : ''}`}
-                title={`Resolution ${n} of 4 — ${WORD_COUNT[n]} words`}
-                onClick={() => setLevel(n)}
-                aria-pressed={n === level}
-              />
+          <div
+            className="home-thesis__meter"
+            role="group"
+            aria-label="Thesis word count"
+          >
+            {([4, 3, 2, 1] as const).map((n, i) => (
+              <span key={n} className="home-thesis__meter-step">
+                {i > 0 ? (
+                  <span className="home-thesis__meter-arrow" aria-hidden>
+                    →
+                  </span>
+                ) : null}
+                <button
+                  type="button"
+                  className={`home-thesis__count${n === level ? ' is-on' : ''}`}
+                  title={`${WORD_COUNT[n]} words`}
+                  onClick={() => setLevel(n)}
+                  aria-pressed={n === level}
+                >
+                  {WORD_COUNT[n]}
+                </button>
+              </span>
             ))}
+            <span className="home-thesis__meter-unit">words</span>
           </div>
         </div>
       </div>

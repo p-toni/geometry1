@@ -21,7 +21,7 @@ export const ROW_GAP = 18;
  * One type size for every row (premise / body / turn) and every compress level.
  * Compress only changes copy + word count.
  */
-const LINE = { size: 21, lh: 1.42 } as const;
+const LINE = { size: 24, lh: 1.36 } as const;
 
 export const TYPE_SCALE: Record<
   ThesisLevel,
@@ -37,8 +37,8 @@ export const TYPE_SCALE: Record<
   1: { premise: LINE, body: LINE, turn: LINE },
 };
 
-/** Shared mark size — matches LINE, not per-role scaling. */
-export const MARK_SIZE = Math.round(LINE.size * 1.2); // 25
+/** Shared mark size — matches type size. */
+export const MARK_SIZE = 24;
 
 const LABELS = [
   'A field larger than the frame that holds it',
