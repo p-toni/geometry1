@@ -45,21 +45,23 @@ function parseStructFromFile(rel: string) {
 }
 
 describe('buildPool struct round-trip', () => {
-  it('allowed-ignorance struct matches v2 single-spine argument moves', () => {
+  it('allowed-ignorance struct matches cut→crack plate spine', () => {
     const sections = parseStructFromFile('content/writing/allowed-ignorance.md');
     expect(sections.map((s) => s.label)).toEqual([
-      'Preamble',
-      'Thesis',
-      'Turn',
-      'Closing',
+      'Cut',
+      'Face',
+      'Rotation',
+      'Void',
+      'Crack',
     ]);
-    expect(sections[1]?.concepts).toContain('allowed cuts');
+    expect(sections[0]?.concepts).toContain('equivalence-making');
+    expect(sections[3]?.concepts).toContain('32 blocks');
   });
 
   it('generated pool preserves struct sections', async () => {
     const { generatedPool } = await import('../src/pool/generated.ts');
     const node = generatedPool.nodes['allowed-ignorance']!;
-    expect(node.struct?.sections).toHaveLength(4);
+    expect(node.struct?.sections).toHaveLength(5);
     expect(node.struct?.lens).toBe('understanding after the right omissions');
   });
 });

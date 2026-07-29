@@ -7,7 +7,7 @@ describe('fieldUrl trail', () => {
       {
         read: 'bounded-me',
         full: false,
-        trail: ['allowed-ignorance', 'increasing-returns'],
+        trail: ['allowed-ignorance', 'marginalia'],
         query: '',
         spatial: false,
         x: null,
@@ -16,10 +16,10 @@ describe('fieldUrl trail', () => {
       },
       {},
     );
-    expect(params.get('trail')).toBe('allowed-ignorance,increasing-returns');
+    expect(params.get('trail')).toBe('allowed-ignorance,marginalia');
     expect(parseFieldState(params).trail).toEqual([
       'allowed-ignorance',
-      'increasing-returns',
+      'marginalia',
     ]);
   });
 

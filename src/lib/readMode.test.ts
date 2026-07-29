@@ -4,8 +4,7 @@ import { effectiveReadFull, isWholePiece } from './readMode';
 
 describe('isWholePiece', () => {
   it('treats notes as whole pieces', () => {
-    expect(isWholePiece(pool.nodes.ilya!)).toBe(true);
-    expect(isWholePiece(pool.nodes['increasing-returns']!)).toBe(true);
+    expect(isWholePiece(pool.nodes.marginalia!)).toBe(true);
   });
 
   it('does not treat essays as whole pieces', () => {
@@ -17,7 +16,7 @@ describe('isWholePiece', () => {
 
 describe('effectiveReadFull', () => {
   it('ignores full flag for notes', () => {
-    expect(effectiveReadFull(pool.nodes.ilya, true)).toBe(false);
+    expect(effectiveReadFull(pool.nodes.marginalia, true)).toBe(false);
   });
 
   it('honors full flag for essays with body', () => {

@@ -29,36 +29,6 @@
       "conceptCount": 6
     },
     {
-      "id": "02-increasing-returns",
-      "title": "Increasing Returns",
-      "path": "essays/02-increasing-returns",
-      "kind": "essay",
-      "scope": "intra",
-      "method": "heuristic",
-      "inquiryCount": 2,
-      "conceptCount": 8
-    },
-    {
-      "id": "03-ilya",
-      "title": "Ilya",
-      "path": "essays/03-ilya",
-      "kind": "essay",
-      "scope": "intra",
-      "method": "heuristic",
-      "inquiryCount": 2,
-      "conceptCount": 5
-    },
-    {
-      "id": "04-co-owning-the-loop",
-      "title": "Co-owning The Loop",
-      "path": "essays/04-co-owning-the-loop",
-      "kind": "essay",
-      "scope": "intra",
-      "method": "heuristic",
-      "inquiryCount": 4,
-      "conceptCount": 15
-    },
-    {
       "id": "05-bounded-me",
       "title": "Bounded Me",
       "path": "essays/05-bounded-me",
@@ -117,6 +87,16 @@
       "method": "heuristic",
       "inquiryCount": 6,
       "conceptCount": 18
+    },
+    {
+      "id": "11-marginalia",
+      "title": "Marginalia",
+      "path": "essays/11-marginalia",
+      "kind": "essay",
+      "scope": "intra",
+      "method": "heuristic",
+      "inquiryCount": 2,
+      "conceptCount": 6
     },
     {
       "id": "spatial-reading",

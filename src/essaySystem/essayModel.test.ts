@@ -8,22 +8,26 @@ const doc = buildEssayDocument(node, generatedPool.nodes);
 describe('buildEssayDocument — allowed-ignorance', () => {
   it('numbers every heading into the rail spine', () => {
     expect(doc.spine.sections.map((s) => s.num)).toEqual([
-      '§01', '§02', '§03', '§04', '§05', '§06', '§07', '§08', '§09',
+      '§01', '§02', '§03', '§04', '§05',
     ]);
-    expect(doc.spine.sections[0]?.label).toBe('Preamble');
-    // The essay's own roman numbering is dropped; §NN replaces it.
-    expect(doc.spine.sections[2]?.label).toBe('Block');
+    expect(doc.spine.sections.map((s) => s.label)).toEqual([
+      'Cut',
+      'Face',
+      'Rotation',
+      'Void',
+      'Crack',
+    ]);
   });
 
   it('promotes each thesis to a numbered claim, stripped of emphasis marks', () => {
     const claims = doc.items.filter((i) => i.t === 'claim');
-    expect(claims).toHaveLength(2);
-    expect(doc.spine.claims.map((c) => c.num)).toEqual(['C01', 'C02']);
+    expect(claims).toHaveLength(1);
+    expect(doc.spine.claims.map((c) => c.num)).toEqual(['C01']);
     expect(claims[0]).toMatchObject({
       num: 'C01',
-      text: 'what did I remove, and did the object survive the cut?',
+      text: 'The removed material does not sit still. The void is exactly where a difference I stopped paying for waits to return as a fracture.',
     });
-    expect(claims[1]?.t === 'claim' && claims[1].text).not.toContain('*');
+    expect(claims[0]?.t === 'claim' && claims[0].text).not.toContain('*');
   });
 
   it('gives every section and claim a unique anchor the rail can reach', () => {
@@ -75,8 +79,9 @@ describe('buildEssayDocument — allowed-ignorance', () => {
     expect(marked[0]).toBe(prose[prose.length - 1]);
   });
 
-  it('reports a word count in the system target band', () => {
-    expect(doc.wordCount).toBeGreaterThan(1000);
+  it('reports a word count in the tightened plate-vessel band', () => {
+    // Contact rewrite cut preamble; the void plate is denser and shorter.
+    expect(doc.wordCount).toBeGreaterThan(600);
     expect(doc.wordCount).toBeLessThan(2400);
   });
 });
@@ -84,14 +89,9 @@ describe('buildEssayDocument — allowed-ignorance', () => {
 describe('buildNotes', () => {
   it('resolves inline references to real pool essays', () => {
     const notes = buildNotes(node.body, generatedPool.nodes);
-    expect(Object.keys(notes).sort()).toEqual([
-      'bounded-me',
-      'geometry-retrieval',
-      'me-plus-ai',
-      'weak-geometry',
-    ]);
-    expect(notes['bounded-me']).toMatchObject({ kind: 'Essay' });
-    expect(notes['bounded-me']?.body.length).toBeGreaterThan(0);
+    expect(Object.keys(notes).sort()).toEqual(['weak-geometry']);
+    expect(notes['weak-geometry']).toMatchObject({ kind: 'Essay' });
+    expect(notes['weak-geometry']?.body.length).toBeGreaterThan(0);
   });
 
   it('ignores references with no node behind them', () => {
@@ -155,21 +155,20 @@ describe('buildNavigation', () => {
   it('resolves the essay’s own outbound links with their relation', () => {
     const nav = buildNavigation(node, generatedPool.nodes);
     expect(nav.onward.map((o) => [o.id, o.rel])).toEqual([
-      ['increasing-returns', 'cites'],
-      ['geometry-retrieval', 'theme'],
-      ['weak-geometry', 'leads to'],
+      ['bounded-me', 'pairs'],
+      ['weak-geometry', 'theme'],
+      ['the-world-answers', 'leads to'],
     ]);
     for (const o of nav.onward) expect(o.title).toBeTruthy();
   });
 
   it('walks the timeline by date within the cluster', () => {
     const nav = buildNavigation(node, generatedPool.nodes);
-    // allowed-ignorance is 2026-04-11, between weak-geometry and tools-need-edges.
-    expect(nav.newer?.id).toBe('tools-need-edges');
-    // weak-geometry is the older neighbour but is already a "leads to" link, so the
-    // timeline drops it rather than offering the same essay twice.
+    // Contact rewrite dated allowed-ignorance to 2026-07-28 with five peers.
+    // It sorts first among that cohort, so there is no newer neighbour.
+    expect(nav.newer).toBeNull();
+    expect(nav.older?.id).toBeTruthy();
     expect(nav.onward.some((o) => o.id === 'weak-geometry')).toBe(true);
-    expect(nav.older).toBeNull();
   });
 
   it('never offers the same destination twice', () => {

@@ -3,528 +3,125 @@ id: me-plus-ai
 kind: essay
 cluster: writing
 title: me + AI
-date: 2026-01-24
-rank: 7
+date: 2026-07-18
+rank: 4
 excerpt:
-  - "A safety manual for keeping control in the human-AI loop."
+  - "I built six gates against drift, then started paying for all six on every thought."
 links:
-  - target: co-owning-the-loop
+  - target: geometry-retrieval
     rel: cites
-  - target: bounded-me
+  - target: weak-geometry
+    rel: theme
+  - target: the-world-answers
     rel: leads to
 struct:
-  lens: "feedback control inside human-AI coupling"
+  lens: "which instrument, when"
   sections:
-    - label: "The coupling gradient"
-      concepts: ["L0-L3", "drift"]
-    - label: "The verification gate"
-      concepts: ["R3+2+1", "topology gate"]
-    - label: "The physics of drift"
-      concepts: ["latency", "closure pressure"]
-    - label: "Flow control"
-      concepts: ["provenance", "hard stops"]
-    - label: "Earned resonance"
-      concepts: ["bidirectional steering", "surprise"]
-    - label: "Workflow"
-      concepts: ["scout", "verify", "rewrite"]
+    - label: "The tax"
+      concepts: ["stacking", "overhead"]
     - label: "Load order"
-      concepts: ["which gate when", "event-driven recovery"]
+      concepts: ["event-driven", "one gate"]
+    - label: "The instruments"
+      concepts: ["L0-L3", "R3+2+1"]
+    - label: "What the gates are for"
+      concepts: ["exchange", "feedback control"]
+    - label: "Encoding instead of remembering"
+      concepts: ["hooks", "institutional memory"]
+    - label: "The seam"
+      concepts: ["provenance", "co-authored"]
 ---
 
-I am not "using AI."
+## The tax
 
-I am regulating a coupled feedback system:
+I have a coupling gradient, a verification gate, a topology gate, a reconstruction test, a weakening test, and a contact protocol. Six instruments, each built because something real went wrong.
 
-me ↔ model ↔ environment ↔ me
+By July I was running all of them on everything.
 
-The upside is velocity.
+That is not caution. It is a second job. A stabilizer that fires on every thought has stopped stabilizing anything — it has become the dominant cost in the loop it was supposed to protect, and the loop routes around it the way any system routes around a checkpoint that never lets anything through cheaply.
 
-Faster search.
-Faster drafts.
-Faster iteration.
+On 18 July I stress-tested the framework against itself and the finding was not that a gate was wrong. Every gate was still right. The finding was that I had no rule for **which one fires when**, so the honest default was all of them, and the practical default was none.
 
-The danger is not only wrong answers.
+> [thesis|load order]
+> Stacking is how verification becomes heavier than the loop it was meant to protect. The gates are layered instruments with a load order, not a stack I run on every thought.
 
-The danger is fluent motion with no stable direction.
+## Load order
 
-The loop speeds up.
-My feedback control weakens.
-The map hardens before I can verify it.
+The correction is small and it is the whole essay. Each gate has a trigger. If I cannot name which gate I am in, I am probably stacking them.
 
-That is how the system gets tighter and wrong.
+| trigger | instrument |
+|---------|------------|
+| always present, no ceremony | weak grades on edges I am leaning on; cuts I can still name |
+| a decision | R3+2+1 from memory — thesis, reason, next action, two assumptions, one uncertainty |
+| structure not yet a thesis | topology gate — draw it, name the open edge, falsify one link |
+| an ownership claim | reconstruction — close the source, rebuild, run the tests in geometry over retrieval |
+| an external bet | contact — one probe, temporary closure on one edge, then downgrade or revise |
+| drift detected | recovery — close, rewrite, re-enter at L0 or L1 |
 
-So this is not a manifesto.
+The interval is event-driven. Not calendar-mandated. Nothing here runs on a timer, because a timer is how a gate becomes chrome.
 
-It is a control spec.
+## The instruments
 
-Goal:
+The gradient is the cheapest thing to hold, so it stays loaded.
 
-maximize information exchange without surrendering feedback control.
+**L0 — tool.** Execution only. Formatting, refactoring, transformation. No influence on belief.
 
-And without hardening belief faster than I can rebuild it from inside my own head.
+**L1 — scout.** The model expands the search space: options, counterexamples, alternate framings, failure modes. I keep the conclusion.
 
-> [thesis|control spec]
-> AI is useful when exchange rises with feedback control. If exchange rises faster than control, the loop does not get smarter. It gets tighter and wrong.
+**L2 — co-author.** The model writes. I constrain, audit, cut, compress. The output is a draft artifact, not an authority.
 
----
+**L3 — integrated.** The model is inside my decision loop. High bandwidth, high risk, sometimes the highest signal. Only with earned entry.
 
-### 1) The coupling gradient (where am I right now?)
+These are landmarks, not rooms. The useful question was never *what level am I at* but *which direction am I moving, and do I still know why*.
 
-Coupling is not a setting.
+The transitions worth watching:
 
-It is a gradient.
+1. **L1 → L2:** I stop rephrasing the output and start building on it.
+2. **L2 → L3:** the model's framing starts shaping the structure of my question.
+3. **Any → drift:** I feel pulled to prompt again rather than think.
+4. **Any → drift:** I cannot restate my position without referencing the output.
 
-It shifts mid-sentence.
+The goal is not to avoid L3. Unregulated L3 is the enemy; earned L3 is a capability, and over-damping is a real failure mode — a system so regulated it can no longer resonate. The goal is to never arrive there passively.
 
-**L0 — Tool**
+## What the gates are for
 
-Execution only.
-Formatting.
-Refactoring.
-Transformation.
+Four parameters decide whether coupling helps or hurts: **exchange** (bandwidth and persistence between me and the model), **feedback control** (how well I can monitor, interpret, constrain, reject), **latency** (how fast outputs alter my internal state), and **closure pressure** (how fast candidate structure hardens into belief).
 
-No influence on belief.
+High exchange with weak feedback control is the danger zone. Low latency makes it faster. Closure pressure makes it stick.
 
-**L1 — Scout**
+Models have a specific risk here: they are closure engines. They make the first coherent map feel more finished than it is.
 
-The model expands the search space.
+> pull: Increase exchange only when feedback control is increasing too.
 
-Options.
-Counterexamples.
-Alternative framings.
-Failure modes.
+Bennett's bound gives this a physics rather than a mood. Under the Chord assumptions a unified moment has a size limit, `D ≤ kvθ` — support diameter bounded by signal speed times the integration window. If links in the control loop exceed θ, the system fragments into two agents taking turns instead of one enlarged mind. In the BCI case, 10 ms round-trip is marginally feasible against a 20–50 ms candidate window. In cloud AI, raw speed is not enough: limited concurrency and serialized pipelines can break co-instantiation even when the links are fast.
 
-I keep the conclusion.
+L3 has a physics. It is not a matter of how integrated I feel.
 
-**L2 — Co-author**
+## Encoding instead of remembering
 
-The model writes.
+A load order I have to remember is another thing on the stack. So the load order should live in the repo, not in me.
 
-I constrain, audit, cut, and compress.
+This is what four skills in `.agents/skills/` are actually for, and why the first one landed on 30 June rather than as an afterthought. A skill file is a small piece of institutional memory: it reduces lore hunting, it pauses before risky moves, it makes boring important things hard to skip, and it lets a future session resume without reconstructing the room.
 
-The output is a draft artifact.
+Enough of them and the codebase starts pushing back when the loop gets sloppy. Tooling stops being decoration and becomes a nervous system — trust is not a vibe, it is accumulated evidence that the system catches me when attention drops.
 
-Not an authority.
+:::contrast assistant | loop partner
+- waits for tasks | notices system pressure
+- optimizes the next answer | preserves the next session
+- helps produce output | helps maintain conditions
+:::
 
-**L3 — Integrated**
+The partner does not need to be more human. It needs to make the work more answerable.
 
-The model is inside my decision loop.
+## The seam
 
-High bandwidth.
-High risk.
-Sometimes the highest signal.
+Three commits in this repo carry a `Co-Authored-By: Claude Opus 5` trailer. That is the provenance rule doing its actual job — not a verification UI, not site chrome, just a seam I left visible in the one place I cannot quietly edit later.
 
-Only with earned entry.
+The hard stops are unchanged, and they are not gates, because they never fire conditionally. **No identity outsourcing** — the model does not answer who I am or what I should value. **No reality arbitration** — it can summarize inputs, it cannot decide what happened. **Provenance is mandatory.** **Nothing is accepted until I can rebuild the core shape from memory**, whether that shape is a proposition or a topology.
 
-The levels are landmarks, not rooms.
+Everything else is a draft. No exceptions because the output sounds right, or sounds like me, or because I wanted it to be true.
 
-The real question is not:
+What I got wrong for a month was not the gates. It was believing that more verification is monotonically safer. It is not — past some density the verification becomes the thing I route around, and a gate I skip is worse than a gate I never built, because I still get to feel protected by it.
 
-what level am I at?
+One instrument, at its trigger. That is the whole discipline now.
 
-It is:
-
-which direction am I moving, and do I still know why?
-
-**Transition signals:**
-
-- **L1 -> L2:** I stop rephrasing the output and start building on it.
-- **L2 -> L3:** the model's framing starts shaping the structure of my question.
-- **Any -> drift:** I feel pulled to prompt again rather than think.
-- **Any -> drift:** I cannot restate my position without referencing the output.
-
-The goal is not to avoid L3.
-
-The goal is to never arrive there passively.
-
----
-
-### 2) The verification gate: R3+2+1 (mandatory)
-
-I am not allowed to increase coupling or finalize a piece unless I can pass this from memory:
-
-1. **Thesis:** what am I claiming?
-2. **Reason:** why do I believe it?
-3. **Next action:** what decision does this change?
-
-Then:
-
-- **+2 assumptions:** what must be true for this to hold?
-- **+1 uncertainty:** what am I least sure about?
-
-If I fail, I decouple.
-
-Drop to L1 or L0.
-
-Rebuild the core shape myself.
-
-No prompting my way out of confusion.
-
-**Topology exception**
-
-Some thinking is not ready to become a thesis.
-
-It is relational:
-
-nodes,
-edges,
-tensions,
-adjacencies,
-an open connection that has not crystallized yet.
-
-For that work, the gate changes:
-
-1. **Draw it:** can I sketch the structure from memory?
-2. **Name the open edge:** what connection am I still testing?
-3. **Falsify one link:** which relationship would break the map if wrong?
-
-If I can do this, the understanding is mine even before it becomes a proposition.
-
-If I cannot, I am holding a shape I was handed.
-
----
-
-### 3) The physics of drift (what it looks like)
-
-Drift is not a moral failure.
-
-It is a regime.
-
-When coupling tightens, four parameters matter:
-
-- **exchange:** how much bandwidth and persistence exists between me and the model.
-- **feedback control:** how well I can monitor, interpret, constrain, and reject.
-- **latency:** how quickly outputs alter my internal state.
-- **closure pressure:** how quickly candidate structure hardens into belief, workflow, or identity.
-
-High exchange with weak feedback control is the danger zone.
-
-Low latency makes it faster.
-
-Closure pressure makes it sticky.
-
-Errors do not just survive.
-
-They harden.
-
-Models have a specific risk here:
-
-they are closure engines.
-
-They make the first coherent map feel more finished than it is.
-
-So the design rule is simple:
-
-increase exchange only when feedback control is increasing too.
-
-If exchange rises faster than control, slow down.
-
-If closure hardens faster than verification, slow down.
-
-If the conversation feels impressive but I cannot redraw the map, slow down.
-
-The regulated hybrid is the target.
-
-Tight coupling.
-
-Strong feedback.
-
-Visible closure pressure.
-
----
-
-### 4) Flow control (what the model may and may not do)
-
-Everything the model generates is a draft until verified.
-
-No exceptions because the output sounds right.
-
-No exceptions because the output sounds like me.
-
-No exceptions because I wanted it to be true.
-
-Drafts can include:
-
-- outlines
-- maps
-- invariants
-- counterarguments
-- prose
-- plans
-- experiments
-- speculative frames
-
-All useful.
-
-None final.
-
-**Hard stops**
-
-- **No identity outsourcing.** The model does not answer who I am, what I value, or what I should believe.
-- **No reality arbitration.** The model can summarize inputs. It cannot decide what happened.
-- **Provenance is mandatory.** Nontrivial claims need a trace: observation, paper, artifact, or marked speculation.
-- **No sensitive data handling.**
-
-The important split is not permitted vs forbidden model roles.
-
-The split is:
-
-can verification help?
-
-If verification can help, the output enters the draft pipeline.
-
-If verification cannot help, the output is structurally unsafe.
-
----
-
-### 5) Earned resonance (when L3 is the goal)
-
-L3 is not the enemy.
-
-Unregulated L3 is the enemy.
-
-In drift, the model shapes me and I do not reshape the model's trajectory.
-
-In earned resonance, the coupling is bidirectional.
-
-I steer hard.
-The model returns structure I did not predict.
-I integrate or reject.
-The next prompt carries my full weight.
-
-**Conditions for earned L3:**
-
-- I entered deliberately, not by sliding from L2.
-- I can pass R3+2+1 or the topology gate at any point.
-- I can weaken or redraw the current map without needing the model to think for me again.
-- I am generating new questions, not only receiving answers.
-- The model is producing surprise that survives my audit.
-
-**Let it run when:**
-
-- I am mapping a territory before the thesis exists.
-- I am stress-testing a framework.
-- I am connecting domains I hold separately.
-
-**Pull back when:**
-
-- I defend the model's framing instead of testing it.
-- I prompt faster than I think.
-- The conversation feels impressive but leaves no internal geometry.
-- I cannot name the next action without asking again.
-
-Stabilizers have a failure mode too.
-
-Over-damping.
-
-A system so regulated it cannot resonate.
-
-Earned L3 is not a warning sign.
-
-It is a capability.
-
-But it requires the strongest feedback control I have.
-
----
-
-### 6) Geometry over retrieval
-
-The model is useful when it helps me extract structure that survives:
-
-- limited time and attention
-- chaotic weeks
-- context switching
-- repeated re-entry
-- future-me arriving tired
-
-When it works, structure crystallizes into geometry:
-
-adjacency,
-borders,
-distance,
-stable coordinates,
-edges I can test.
-
-When it fails, I get a smooth paragraph that creates no internal map.
-
-I care about structural signal.
-
-Not novelty.
-
-The goal is not text output.
-
-The goal is a navigable map in my head that reduces future compute.
-
-This is the bridge to [[Bounded Me|bounded-me]].
-
-The draft has to increase extractable structure for bounded-me.
-
-Otherwise it is only polish.
-
----
-
-### 7) Workflow (the only safe way I co-author)
-
-The only safe way I co-author:
-
-**Step 1 — Scout**
-
-Use the model to expand the search space.
-
-- candidate theses
-- alternate framings
-- counterexamples
-- failure modes
-- obvious placeholders
-
-No conclusions yet.
-
-**Step 2 — Verify**
-
-Me, not the model.
-
-- check nontrivial claims
-- mark observation vs citation vs speculation
-- delete borrowed confidence
-- weaken overcommitted edges
-
-**Step 3 — Rebuild**
-
-Close the model.
-
-Rewrite the core from memory.
-
-Or draw the topology and name the open edge.
-
-**Step 4 — Polish**
-
-Only after the core is mine.
-
-- clarity
-- compression
-- structure
-- no new claims introduced during polish
-
----
-
-### 8) Recovery protocol (when I detect drift)
-
-When I detect drift:
-
-1. Close the model.
-2. Write R3+2+1 from memory, or draw the topology.
-3. If I cannot, drop to L0 for one cycle.
-4. Resume at L1 with counterexamples and risk boundaries, not conclusions.
-
-My rule:
-
-I do not prompt my way out of confusion.
-
-I rewrite my way out.
-
----
-
-### 9) Load order (which gate when)
-
-The gates are not a stack I run on every thought.
-
-They are layered instruments.
-
-Using all of them at once is how a private stabilizer becomes tax.
-
-**Always present**
-
-- Weak grades on edges I am leaning on ([[Weak Geometry|weak-geometry]]).
-- Cuts I can name: what I collapsed, what I ignored ([[Allowed Ignorance|allowed-ignorance]]).
-
-**On a decision**
-
-R3+2+1 from memory.
-
-Thesis · reason · next action · two assumptions · one uncertainty.
-
-**On structure that is not yet a thesis**
-
-Topology gate.
-
-Draw it. Name the open edge. Falsify one link.
-
-**On an ownership claim**
-
-Reconstruction.
-
-Close the source. Rebuild. Run one or more of the geometry tests from [[Geometry Over Retrieval|geometry-retrieval]]. Weak geometry adds *relax*.
-
-**On an external bet**
-
-Contact from [[The World Answers|the-world-answers]].
-
-One probe.
-Temporary predictive closure on one edge.
-Then downgrade or revise.
-
-**On drift**
-
-Recovery, not a timer.
-
-Close → rewrite → re-enter at L0 or L1.
-
-The interval is event-driven.
-Not calendar-mandated.
-
-If I cannot name which gate I am in, I am probably stacking them — and stacking is how verification becomes heavier than the loop it was meant to protect.
-
-This is a private stabilizer.
-
-Not a scalable cognitive OS.
-Not a compliance surface for readers.
-
----
-
-### 10) Non-negotiable constraints
-
-**No identity outsourcing.**
-
-**No reality arbitration.**
-
-**Provenance is mandatory.**
-
-Not as chrome.
-As a cut I can still see.
-
-For any draft that left the loop coupled, I keep a one-line declaration:
-
-Source: human · assisted · co-authored.
-What was borrowed.
-What I rebuilt with the source closed.
-
-I do not need a verification UI.
-I need the seam to stay visible.
-
-**Inside-my-head rule.**
-
-No draft is accepted until I can rebuild the core shape from memory.
-
-Whether that shape is a proposition or a topology.
-
----
-
-### 11) A final constraint: this is for me
-
-I am not publishing a manifesto.
-
-I am installing a stabilizer.
-
-One that knows when to damp.
-
-One that knows when to let the system resonate.
-
-The piece succeeds if future-me can re-enter the space quickly, regain the geometry, and make better decisions with less compute.
-
-If I want to feel impressed, I can read papers.
-
-If I want to stay sane and compound, I follow the rules above.
-
-**Update (2026-03-15):** Bennett (2026) formalizes a latency ceiling for integrated hybrids under the Chord assumptions: if relevant links in the control loop exceed the integration window theta, the system can fragment into two agents taking turns rather than one enlarged mind. The bound D <= kvtheta converts a time budget into a spatial budget. In the BCI case study, 10 ms round-trip latency is marginally feasible for a 20-50 ms candidate window. In cloud AI, raw network speed is not enough: limited concurrency and serialized pipelines can fail co-instantiation even when links are fast. L3 has a physics. (Source: https://www.preprints.org/manuscript/202602.1708/v2)
-
-**Update (2026-07-18):** The gates above can be misread as simultaneous tax. Load order (§9) is the correction: which instrument when, event-driven recovery, no calendar cool-off. Provenance stays a one-line seam, not site chrome.
+I do not prompt my way out of confusion. I rewrite my way out — but only when something has actually gone wrong, and no longer as a tax on every sentence that goes right.

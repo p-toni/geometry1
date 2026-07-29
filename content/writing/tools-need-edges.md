@@ -3,99 +3,52 @@ id: tools-need-edges
 kind: essay
 cluster: writing
 title: tools need edges
-date: 2026-04-28
+date: 2026-07-28
 rank: 3
 excerpt:
-  - "A tool without constraints is not liberating. It is unfinished."
+  - "A control that looked like an affordance and did nothing. Edges are promises, and mine was lying."
 links:
-  - target: increasing-returns
-    rel: theme
-  - target: ilya
+  - target: marginalia
     rel: echoes
+  - target: me-plus-ai
+    rel: theme
 struct:
   lens: "constraints that return agency"
   sections:
+    - label: "The dead control"
+      concepts: ["aria-expanded", "no rail below 1260"]
+    - label: "An edge is a promise"
+      concepts: ["affordance", "feedback"]
     - label: "Possibility debt"
       concepts: ["infinite choice", "orientation"]
-    - label: "Less is incomplete"
-      concepts: ["minimalism", "agency"]
-    - label: "Good tools have edges"
-      concepts: ["constraints", "grip"]
+    - label: "Grip"
+      concepts: ["constraint", "skill"]
     - label: "Generative fog"
       concepts: ["AI abundance", "frames"]
-    - label: "Holdable"
-      concepts: ["agency", "holdable"]
 ---
 
-## Possibility debt
+## The dead control
 
-The tool says:
+On a phone, the summoned reference in my reader did nothing.
 
-you can do anything.
+Tapping one set `aria-expanded` and pinned it — the state was correct, the accessibility tree was correct, the component believed it had worked. But the note renders in the margin rail, and there is no rail below 1260px. Nothing appeared. Tap again and the invisible thing closed.
 
-At first, that feels like freedom.
+Below 600px the featured card on home was worse in a duller way: a 172px poster sitting beside its text, so at 375 the title and dek were sharing **121 pixels**. And the touch targets — the way back, the colophon link, the footnote superscript, the header icons, the thesis word-count buttons — were all **14 to 22 pixels tall**.
 
-A blank canvas.
-An endless feed.
-A thousand settings.
-A model that can answer anything.
+None of that is a bug in the sense of a wrong value. Every one of those is an edge that made a promise to the hand and did not keep it.
 
-Then the debt appears.
+## An edge is a promise
 
-Before doing the work, I have to invent the frame.
+I have been writing about edges as if they were mainly about *limits* — the tool declining to do everything, the constraint that narrows the field so action can start.
 
-This is the hidden cost of many digital tools. They do not only ask for attention. They ask for orientation. They hand me a possibility space and quietly make me responsible for its rules.
+The phone taught me the other half. An edge is not only a boundary. It is a claim about what will happen when you press it.
 
 > [thesis|tool theory]
-> A tool is not better because it permits more moves. It is better when its edges make the next meaningful move easier to find.
+> A tool is not better because it permits more moves. It is better when its edges make the next meaningful move easier to find — and an edge that invites a press it cannot answer is worse than no edge at all.
 
-## Less is incomplete
+The dead reference is the pure case. It looked pressable. It *was* pressable. It updated state. It just never returned anything to the person pressing it, which means for a month the interface was quietly teaching people that pressing does not work here.
 
-Minimalism notices the wound.
-
-Too many surfaces.
-Too much capture.
-Too many defaults designed against attention.
-
-So it says:
-
-choose less.
-turn things off.
-remove the unnecessary.
-
-That instinct is right.
-
-It is also incomplete.
-
-The deeper question is not only how to use less technology.
-
-It is how to design tools that return agency instead of consuming it.
-
-:::contrast less | edged
-- fewer surfaces | clearer affordances
-- attention protected by refusal | agency returned through grip
-- absence as discipline | constraint as instrument
-:::
-
-## Good tools have edges
-
-Good tools have edges.
-
-A haiku has edges.
-A piano has edges.
-A camera lens has edges.
-The OP-1 has edges.
-A command line has edges.
-
-The edge is not there to reduce expression.
-
-It gives the hand something to learn.
-It gives the mind something to push against.
-It gives the user a way to begin.
-
-The best tools do not hide complexity.
-
-They make complexity playable.
+A 20px target teaches the same lesson more slowly. You do not conclude *the target is small*. You conclude *I am clumsy*, and you stop reaching.
 
 | type | force |
 |------|-------|
@@ -103,81 +56,48 @@ They make complexity playable.
 | mode boundary | keeps state legible |
 | feedback loop | lets skill accumulate |
 | omission | prevents the tool from becoming the user's work |
+| broken promise | teaches the hand to stop trying |
 
-## Instrument theory
+The last row is the one I added after the phone.
 
-This is what teenage.engineering understands better than most software companies.
+## Possibility debt
 
-Maximum function, minimum form is not minimalism as decoration.
+The older argument still holds, and it is the reason the promise matters.
 
-It is a theory of agency.
+A tool that says *you can do anything* hands over a possibility space and quietly makes you responsible for its rules. Before doing the work, you have to invent the frame. That is the debt: not attention, **orientation**.
 
-Every visible element has to earn its place.
-Every control has to invite use.
-The interface should feel less like a maze and more like an instrument.
+Minimalism notices the wound — too many surfaces, too much capture, too many defaults designed against attention — and answers *choose less, turn things off*. The instinct is right and the answer is incomplete, because the deeper question is not how to use less technology. It is how to design tools that return agency instead of consuming it.
 
-An instrument is not powerful because it has infinite options.
+:::contrast less | edged
+- fewer surfaces | clearer affordances
+- attention protected by refusal | agency returned through grip
+- absence as discipline | constraint as instrument
+:::
 
-It is powerful because its limits become learnable.
+That distinction is also why I got the mobile reader wrong. I had been optimizing for *less* — strip the chrome, trust the prose — while the edges that remained were making promises nothing could keep. Fewer surfaces did not produce more agency. It produced a room full of dead switches.
 
-## Deferred design
+## Grip
 
-Bad software does the opposite.
+A good constraint is not a wall. It is a grip.
 
-It treats possibility as a feature.
+A haiku has edges. A piano has edges. A camera lens, a command line, the OP-1. The edge is not there to reduce expression — it gives the hand something to learn, the mind something to push against, the user a place to begin. *Maximum function, minimum form* is not decoration. It is a theory of agency: every control has to earn its place, and every control has to invite use it can actually deliver.
 
-More menus.
-More notifications.
-More modes.
-More surfaces.
-More things to manage.
+An instrument is not powerful because it has infinite options. It is powerful because its limits are learnable — which requires that pressing the same place twice does the same thing twice.
 
-It calls this power.
-
-But often it is only deferred design work passed to the user.
-
-The tool refuses to decide where the edge belongs.
-
-So the user pays the orientation cost every time.
-
-## A good constraint is a grip
-
-A good constraint is not a wall.
-
-It is a grip.
-
-It narrows the field just enough for action to start.
-It makes feedback legible.
-It lets skill accumulate.
-It creates a relationship between intention and result that the user can feel.
-
-> [thesis|operator]
-> The useful edge is the one the user can press against: enough boundary to begin, enough feedback to improve, enough room to develop skill.
+Bad software inverts this. More menus, more modes, more surfaces to manage, and it calls that power. Usually it is deferred design work handed to the user: the tool refusing to decide where the edge belongs, so the user pays the orientation cost on every visit.
 
 ## Generative fog
 
-AI makes this more important, not less.
-
-When software becomes generative, the possibility space expands too quickly.
-
-Without frames, evals, loops, memory, taste, and boundaries, the user is left steering fog.
+AI makes this more urgent, not less. When software becomes generative the possibility space expands faster than anyone can hold it, and without frames, evals, loops, memory, and boundaries the user is left steering fog.
 
 frames → evals → loops → memory → agency
 
-The model can produce more.
+The model can produce more. That does not mean I can hold more — [[Bounded Me|bounded-me]] is the whole reason. Abundance without edges becomes weather.
 
-That does not mean the user can hold more.
+And the failure I actually shipped scales badly here. A dead control in a reader costs one tap. A generative tool that appears to accept direction and quietly does not respond to it costs a whole working relationship, because the user cannot tell the difference between *I steered badly* and *the steering is not connected.*
 
-Abundance without edges becomes weather.
+The future of good tools will not be defined by how much they can generate. It will be defined by how well they preserve agency inside abundance — which starts with the smallest possible discipline:
 
-## Holdable
+**Press every edge you ship, on the smallest screen you support, with your actual hand.**
 
-The future of good tools will not be defined by how much they can generate.
-
-It will be defined by how well they preserve agency inside abundance.
-
-The point is not to make technology smaller.
-
-The point is to make it holdable.
-
-Tools need edges because humans do.
+The point is not to make technology smaller. It is to make it holdable. Tools need edges because humans do — and an edge is only real if it answers.

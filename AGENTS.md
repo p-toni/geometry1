@@ -36,7 +36,7 @@ id: allowed-ignorance
 kind: essay          # essay | note | project | doc | shader | voxel | sharp | link | about
 cluster: writing
 title: allowed ignorance
-date: today
+date: 2026-07-28     # real date — 'today' pins max freshness and cannot age
 rank: 0              # 0 = freshest; affects Now lens height
 excerpt:             # optional; auto-derived from first paragraphs if omitted
   - "One-line thesis or hook."

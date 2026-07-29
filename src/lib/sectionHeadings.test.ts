@@ -5,16 +5,18 @@ import { sectionHeadingsFromBody } from './sectionHeadings';
 import { sectionSlug } from './sectionSlug';
 
 describe('sectionHeadingsFromBody', () => {
-  it('uses h3 sections when essay has no h2 (me-plus-ai)', () => {
+  it('reads the six ## sections of me-plus-ai', () => {
     const node = generatedPool.nodes['me-plus-ai'];
     const headings = sectionHeadingsFromBody(node.body);
-    expect(headings.length).toBe(11);
-    expect(sectionSlug(headings[0]!.x)).toBe('the-coupling-gradient-where-am-i-right-now');
+    expect(headings.length).toBe(6);
+    expect(sectionSlug(headings[0]!.x)).toBe('the-tax');
+    expect(sectionSlug(headings[1]!.x)).toBe('load-order');
   });
 
   it('builds constellation digest for me-plus-ai', () => {
     const digest = buildConstellationDigest(generatedPool.nodes['me-plus-ai']);
-    expect(digest?.sections).toHaveLength(11);
-    expect(digest?.sections[0]?.slug).toBe('the-coupling-gradient-where-am-i-right-now');
+    expect(digest?.sections).toHaveLength(6);
+    expect(digest?.sections[0]?.slug).toBe('the-tax');
+    expect(digest?.sections.map((s) => s.slug)).toContain('the-seam');
   });
 });

@@ -83,28 +83,28 @@ describe('buildFieldGraph integration', () => {
     expect(layout.nodes.length).toBeGreaterThan(10);
   });
 
-  it('diagram + citation enrichment on geometry-retrieval', () => {
+  it('geometry-retrieval body still carries a geometry|retrieval contrast table', () => {
     const node = pool.nodes['geometry-retrieval']!;
-    const graph = buildFieldGraph(node);
-    expect(graph.nodes.some((n) => n.kind === 'external')).toBe(true);
-    expect(graph.edges.some((e) => e.directed && e.rel === '→')).toBe(true);
-    expect(graph.boundary?.corpus).toBe(true);
+    const table = node.body.find((b) => b.t === 'contrast' && b.mode === 'table');
+    expect(table?.t).toBe('contrast');
+    if (table?.t !== 'contrast') return;
+    expect(table.poles.map((p) => p.toLowerCase())).toEqual(['geometry', 'retrieval']);
+    expect(table.rows.some((r) => r.label === 'Rephrase')).toBe(true);
   });
 
   it('tension trace: contrast table from essay body', () => {
-    const md = readFileSync(join(root, '../public/content/07-geometry-over-retrieval.md'), 'utf8');
+    const md = readFileSync(join(root, '../content/writing/geometry-retrieval.md'), 'utf8');
     const body = md.slice(md.indexOf('\n---\n', 4) + 5);
     const blocks = parseBlocks(body);
     expect(blocks.some((b) => b.t === 'contrast' && b.mode === 'table')).toBe(true);
   });
 
-  it('nested trace: me-plus-ai projects L0–L3 interior via essayGraph', () => {
+  it('me-plus-ai no longer projects L0–L3 rungs — load order is prose + step ladder', () => {
     const node = pool.nodes['me-plus-ai']!;
     const graph = buildFieldGraph(node, pool);
     const rungs = graph.nodes.filter((n) => n.kind === 'rung');
-    expect(rungs.length).toBeGreaterThanOrEqual(6);
-    expect(rungs.some((r) => r.label === 'Integrated')).toBe(true);
-    expect(graph.edges.some((e) => e.label === 'gate guards L3')).toBe(true);
-    expect(Object.keys(graph.interiors).length).toBeGreaterThan(0);
+    expect(rungs).toHaveLength(0);
+    // Step transitions still parse as a ladder block in the body.
+    expect(node.body.some((b) => b.t === 'ladder' && b.mode === 'step')).toBe(true);
   });
 });
