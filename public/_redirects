@@ -1,1 +1,23 @@
+# Retired writing slugs from the 2026-07 contact rewrite.
+/read/ilya /read/marginalia 301
+/read/ilya/ /read/marginalia 301
+/read/ilya/full /read/marginalia 301
+/read/ilya/full/ /read/marginalia 301
+/read/increasing-returns /read/marginalia 301
+/read/increasing-returns/ /read/marginalia 301
+/read/increasing-returns/full /read/marginalia 301
+/read/increasing-returns/full/ /read/marginalia 301
+/read/co-owning-the-loop /read/me-plus-ai 301
+/read/co-owning-the-loop/ /read/me-plus-ai 301
+/read/co-owning-the-loop/full /read/me-plus-ai 301
+/read/co-owning-the-loop/full/ /read/me-plus-ai 301
+
+# /full was the excerpt/full split. One reader now.
+/read/:id/full /read/:id 301
+/read/:id/full/ /read/:id 301
+
+# Sheet-over-home reader.
+/writing/:id /read/:id 301
+/writing/:id/ /read/:id 301
+
 /*    /index.html   200

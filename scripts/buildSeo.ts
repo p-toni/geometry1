@@ -2,6 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { readPath } from '../src/lib/legacyRoutes.ts';
 import type { Pool, PoolNode } from '../src/pool/types.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -20,18 +21,18 @@ function descriptionFor(node: PoolNode): string {
   return (node.excerpt[0] ?? `A ${node.kind} from toni.ltd.`).replace(/\s+/g, ' ').trim();
 }
 
-function canonicalFor(node: PoolNode, full = false): string {
-  return `${siteUrl}/read/${node.id}/${full ? 'full/' : ''}`;
+function canonicalFor(node: PoolNode): string {
+  return `${siteUrl}${readPath(node.id)}/`;
 }
 
 function replaceTag(html: string, pattern: RegExp, replacement: string): string {
   return pattern.test(html) ? html.replace(pattern, replacement) : html;
 }
 
-function withMeta(baseHtml: string, node: PoolNode, full = false): string {
+function withMeta(baseHtml: string, node: PoolNode): string {
   const title = `${node.title} · toni.ltd`;
   const description = descriptionFor(node);
-  const canonical = canonicalFor(node, full);
+  const canonical = canonicalFor(node);
 
   let html = baseHtml;
   html = replaceTag(html, /<title>.*?<\/title>/, `<title>${escapeHtml(title)}</title>`);
@@ -96,18 +97,9 @@ const nodes = Object.values(pool.nodes).sort((a, b) => a.rank - b.rank || a.titl
 
 for (const node of nodes) {
   writeHtml(['read', node.id], withMeta(baseHtml, node));
-  if (node.body.length > 0 && node.kind !== 'link') {
-    writeHtml(['read', node.id, 'full'], withMeta(baseHtml, node, true));
-  }
 }
 
-const urls = [
-  `${siteUrl}/`,
-  ...nodes.flatMap((node) => [
-    canonicalFor(node),
-    ...(node.body.length > 0 && node.kind !== 'link' ? [canonicalFor(node, true)] : []),
-  ]),
-];
+const urls = [`${siteUrl}/`, ...nodes.map((node) => canonicalFor(node))];
 
 writeFileSync(
   join(distDir, 'sitemap.xml'),
@@ -121,8 +113,8 @@ const feedItems = nodes
   .map(
     (node) => `    <item>
       <title>${xml(node.title)}</title>
-      <link>${xml(canonicalFor(node, true))}</link>
-      <guid>${xml(canonicalFor(node, true))}</guid>
+      <link>${xml(canonicalFor(node))}</link>
+      <guid>${xml(canonicalFor(node))}</guid>
       <description>${xml(descriptionFor(node))}</description>
       <pubDate>${rfcDate(node.date, node.rank)}</pubDate>
     </item>`,

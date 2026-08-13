@@ -126,9 +126,9 @@ export const HOME_INTRO =
   "I'm Toni. I write about bounded learners — people and machines that have to work with less than everything. Essays, small tools, and a lot of unfinished things kept where I can see them.";
 
 export const HOME_NOW =
-  'Rebuilding this site as one continuous column — thesis, writing, work, and play kept in one place. Reading about how people decide what to leave out. Open to one small collaboration this quarter.';
+  'One continuous column — thesis, writing, work, and play in one place. Essays open in one reader. Still reading about how people decide what to leave out. Open to one small collaboration this quarter.';
 
-export const HOME_NOW_UPDATED = 'Updated July 2026';
+export const HOME_NOW_UPDATED = 'Updated August 2026';
 
 export const SOCIAL = {
   email: 'mailto:hi@toni.ltd',

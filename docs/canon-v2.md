@@ -1,6 +1,6 @@
 # Canon v2 — greenfield rewrite spec
 
-Status: **decided, not drafted.** Strategy is greenfield canon. Ten essays retire; six are written from scratch with vessels assigned before drafting.
+Status: **superseded by rewrite-in-place (2026-07-29).** Ten writing nodes became eight vessels, each opened from dated contact in this repo. The six-essay greenfield (new ids, new titles) was not executed; the salvage operators and the contact constraint were. v1 copies live under `docs/drafts/v1-archive/`.
 
 Binding constraint: **every essay earns external contact.** No essay may open by summarizing another essay. Each must touch something outside the corpus — a dated failure, a shipped artifact, a number, a scene, a source that changes the map rather than decorating it.
 
