@@ -9,10 +9,19 @@ if (!rootNode) {
 }
 const container: HTMLElement = rootNode;
 
-// Pre-set so home paints without a scroll-lock flash; HomeLayout owns it thereafter.
+// Pre-set the ground before React mounts, or a remembered dark theme opens on white.
+// NextHome owns the class thereafter and reads the same key.
 const SYSTEM_ROUTE = /^\/(essay-system|read)(\/|$)/;
 if (!SYSTEM_ROUTE.test(window.location.pathname)) {
-  document.documentElement.classList.add('home-mode');
+  try {
+    const saved = window.localStorage.getItem('nx-theme');
+    const dark =
+      saved === 'dark' ||
+      (saved !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    if (dark) document.documentElement.classList.add('nx-dark');
+  } catch {
+    /* private mode or blocked storage — fall through to the light ground */
+  }
 }
 
 async function boot() {

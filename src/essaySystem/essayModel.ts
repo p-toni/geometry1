@@ -88,10 +88,6 @@ export function watchedFigure(items: DocItem[]): string | undefined {
   return undefined;
 }
 
-type PlateBinding =
-  | { as: 'image'; src: string; ratio: string }
-  | { as: 'drawn'; kind: DrawnKind };
-
 const ROMAN = /^(?:[IVX]+\.\s*)/;
 
 /** Strip the essay's own "I. " / "VI. " numbering — the system supplies §NN instead. */
@@ -205,18 +201,17 @@ export function buildEssayDocument(node: PoolNode, pool: Record<string, PoolNode
         });
         break;
       case 'plate': {
+        // An authored source renders as written. A plate with no source has nothing to
+        // show, so it is dropped without consuming a figure number.
+        if (!block.src) break;
         figure += 1;
-        const caption = plateSentence(block.cap);
-        // An authored source renders as written; a plate with no source is dropped.
-        const binding: PlateBinding | undefined = block.src
-          ? { as: 'image', src: block.src, ratio: '16 / 9' }
-          : undefined;
-        if (!binding) break;
-        items.push(
-          binding.as === 'image'
-            ? { t: 'plate', figure, src: binding.src, ratio: binding.ratio, caption }
-            : { t: 'drawn', figure, kind: binding.kind, caption },
-        );
+        items.push({
+          t: 'plate',
+          figure,
+          src: block.src,
+          ratio: '16 / 9',
+          caption: plateSentence(block.cap),
+        });
         break;
       }
       case 'drawn': {

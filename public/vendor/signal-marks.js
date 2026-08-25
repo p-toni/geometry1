@@ -13,16 +13,13 @@
 
   // Tuned for paper #faf8f5 — original FAINT (#d9d1c1) was ~1.15:1 on the page
   // and hairlines vanished. Keep three-step contrast; lift mid/faint off the ground.
-  const BASE_FAINT = '#b7ae9e';
-  const BASE_MID = '#7a7266';
-  const BASE_INK = '#24211d';
-  /* Structural tones — overridable per element via the `ink` attribute.
-     When `ink` is set, all three tones collapse onto it; the per-element
-     alphas keep the hierarchy. Set at the top of _render(); rendering is
-     synchronous, so module-level bindings are safe (no re-entrancy). */
-  let INK = BASE_INK;
-  let MID = BASE_MID;
-  let FAINT = BASE_FAINT;
+  const FAINT = '#b7ae9e';
+  const MID_DEFAULT = '#7a7266';
+  const INK_DEFAULT = '#24211d';
+  /* Resolved per render from the element's `ink` attribute. Rendering is synchronous
+     inside one rAF callback, so a module-level value cannot interleave between marks. */
+  let MID = MID_DEFAULT;
+  let INK = INK_DEFAULT;
 
   // Hover replay only — keep under ~1.2s (not a 2.4s demo loop).
   const DUR = 1100;
@@ -284,7 +281,7 @@
 
   class SignalMark extends HTMLElement {
     static get observedAttributes() {
-      return ['kind', 'size', 'accent', 'label', 'ink'];
+      return ['kind', 'size', 'accent', 'label', 'ink', 'mid'];
     }
 
     connectedCallback() {
@@ -316,6 +313,8 @@
       this._S = S;
       this._kind = KINDS[this.getAttribute('kind')] || enclosure;
       this._accent = this.getAttribute('accent') || '#a0522d';
+      this._ink = this.getAttribute('ink') || INK_DEFAULT;
+      this._mid = this.getAttribute('mid') || MID_DEFAULT;
 
       this.style.display = 'block';
       this.style.width = displayS + 'px';
@@ -357,11 +356,17 @@
         if (this._reduce && this._reduce.matches) return;
         this._replay();
       };
-      this.addEventListener('pointerenter', this._onEnter);
+      this._replayHost =
+        this.getAttribute('replay-on') === 'parent' && this.parentElement
+          ? this.parentElement.closest('button, a') || this.parentElement
+          : this;
+      this._replayHost.addEventListener('pointerenter', this._onEnter);
     }
 
     _teardown() {
-      if (this._onEnter) this.removeEventListener('pointerenter', this._onEnter);
+      if (this._onEnter && this._replayHost)
+        this._replayHost.removeEventListener('pointerenter', this._onEnter);
+      this._replayHost = null;
       this._onEnter = null;
       cancelAnimationFrame(this._raf);
       this._raf = 0;
@@ -373,25 +378,13 @@
 
     _render(t) {
       if (!this._pen) return;
-      const inkOverride = this.getAttribute('ink');
-      if (inkOverride) {
-        INK = inkOverride;
-        MID = inkOverride;
-        FAINT = inkOverride;
-      } else {
-        INK = BASE_INK;
-        MID = BASE_MID;
-        FAINT = BASE_FAINT;
-      }
+      INK = this._ink || INK_DEFAULT;
+      MID = this._mid || MID_DEFAULT;
       this._pen.begin();
       this._kind(this._pen, this._S, t, this._accent);
       this._pen.end();
-    }
-
-    /** Public replay — same gates as hover replay (fine pointer, not reduced motion). */
-    replay() {
-      if (!finePointer()) return;
-      this._replay();
+      INK = INK_DEFAULT;
+      MID = MID_DEFAULT;
     }
 
     _replay() {

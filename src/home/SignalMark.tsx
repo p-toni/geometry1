@@ -6,10 +6,11 @@ type SignalMarkProps = {
   size: number;
   accent?: string;
   label?: string;
-  /** Structural stroke color (default: the CE's ink). */
+  /** Line colour. Defaults to the mark's own dark ink; a dark ground supplies its own. */
   ink?: string;
-  /** 'self' (default): CE replays on its own hover. 'parent': the nearest
-      element ancestor triggers replay — for marks inside buttons/rows. */
+  /** Mid-tone for secondary strokes. Follows `ink` when the ground inverts. */
+  mid?: string;
+  /** Replay the mark when the enclosing button or link is hovered, not just the glyph. */
   replayOn?: 'self' | 'parent';
 };
 
@@ -23,6 +24,7 @@ export function SignalMark({
   accent = ACCENT,
   label,
   ink,
+  mid,
   replayOn = 'self',
 }: SignalMarkProps) {
   const hostRef = useRef<HTMLDivElement>(null);
@@ -31,36 +33,21 @@ export function SignalMark({
     const host = hostRef.current;
     if (!host) return;
 
-    const el = document.createElement('signal-mark') as HTMLElement & {
-      replay?: () => void;
-    };
-    let parentHost: HTMLElement | null = null;
-    let onParentEnter: ((e: Event) => void) | null = null;
+    const el = document.createElement('signal-mark');
     el.setAttribute('kind', kind);
     el.setAttribute('size', String(size));
     el.setAttribute('accent', accent);
     if (label) el.setAttribute('label', label);
     if (ink) el.setAttribute('ink', ink);
+    if (mid) el.setAttribute('mid', mid);
+    if (replayOn === 'parent') el.setAttribute('replay-on', 'parent');
 
     host.replaceChildren(el);
 
-    if (replayOn === 'parent') {
-      parentHost = host.parentElement;
-      onParentEnter = (e: Event) => {
-        // Entering directly over the mark: the CE's own hover replay handles it.
-        if (e.target === el) return;
-        el.replay?.();
-      };
-      parentHost?.addEventListener('pointerenter', onParentEnter);
-    }
-
     return () => {
-      if (parentHost && onParentEnter) {
-        parentHost.removeEventListener('pointerenter', onParentEnter);
-      }
       host.replaceChildren();
     };
-  }, [kind, size, accent, label, ink, replayOn]);
+  }, [kind, size, accent, label, ink, mid, replayOn]);
 
   return (
     <div
