@@ -54,6 +54,15 @@ html.nx-dark body {
 .nx-root[data-theme='dark'] .nx-line__label,
 .nx-root[data-theme='dark'] .nx-footer { color: var(--meta); }
 
+/* The brand is the page heading; it must not inherit h1 metrics. */
+.nx-root h1.nx-brand { margin: 0; font-size: inherit; font-weight: inherit; line-height: inherit; }
+
+.nx-main { display: contents; }
+
+/* WCAG 2.5.8 — a control's hit area is at least 24px square, whatever the glyph. */
+.nx-root .nx-theme-toggle { min-width: 24px; min-height: 24px; display: inline-flex; align-items: center; justify-content: center; }
+.nx-root .nx-dial button { min-height: 24px; padding-block: 3px; }
+
 .nx-root .home-signal-host {
   display: block;
   flex: none;

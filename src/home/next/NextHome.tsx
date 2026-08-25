@@ -245,7 +245,7 @@ export function NextHome() {
     <>
       <div className="nx-root" data-theme={theme}>
       <header className="nx-top">
-        <span className="nx-brand">toni<span className="nx-brand__dot">.</span>ltd</span>
+        <h1 className="nx-brand">toni<span className="nx-brand__dot">.</span>ltd</h1>
         <nav className="nx-top__social" aria-label="Elsewhere">
           <a href={SOCIAL.x} target="_blank" rel="noreferrer" aria-label="X">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -278,6 +278,7 @@ export function NextHome() {
       </header>
 
       {/* —— the thesis as interface —— */}
+      <main className="nx-main">
       <div className="nx-thesis__head">
         <span className="nx-kicker">the argument</span>
         <div className="nx-dial" role="group" aria-label="Argument compression">
@@ -329,6 +330,7 @@ export function NextHome() {
       <section className="nx-room" aria-live="polite">
         <Panel />
       </section>
+      </main>
 
       <footer className="nx-footer">
         <span>toni limited co. — website built by many intelligences</span>
