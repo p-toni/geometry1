@@ -1,4 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+/* JetBrains Mono, self-hosted. Same latin subset Google Fonts served, taken from
+   @fontsource/jetbrains-mono (SIL OFL 1.1) so the site makes no third-party request
+   in the render path. Weights 400 and 500 are the only two in use. */
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-400.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/JetBrainsMono-500.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
 
 @font-face {
   font-family: Aileron;

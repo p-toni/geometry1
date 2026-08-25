@@ -6,9 +6,9 @@
   --rule: var(--line);
   --rule-soft: var(--line-soft);
   --hair: var(--line-hair);
-  --tick: var(--spine);
+  --tick: #777169; /* text, not a rule — must clear 4.5:1 at 9px */
   --faint: var(--meta);
-  --faint-2: #8a847c;
+  --faint-2: #77726a;
   --soft: var(--secondary);
 
   --measure: 640px;

@@ -1,2 +1,49 @@
 # Cloudflare Pages headers
 # https://developers.cloudflare.com/pages/configuration/headers/
+
+# Everything, everywhere: cheap protections that cost nothing and break nothing.
+# No CSP here on purpose — the vendor canvas scripts and inline styles need a policy
+# written against them and tested, not guessed. A wrong CSP fails silently for the
+# reader and loudly for nobody.
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=()
+
+# Vite content-hashes these. A new build is a new filename, so the old one can be
+# kept forever.
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Fonts are NOT content-hashed, so `immutable` is a promise about the filename:
+# changing a face means shipping it under a new name. Honour that or a reader keeps
+# the old outlines for a year.
+/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/audio/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/visuals/*
+  Cache-Control: public, max-age=2592000
+
+/vendor/*
+  Cache-Control: public, max-age=604800
+
+# The shell must revalidate, or a deploy never reaches anyone holding a warm cache.
+/
+  Cache-Control: public, max-age=0, must-revalidate
+
+/index.html
+  Cache-Control: public, max-age=0, must-revalidate
+
+# Rebuilt from the pool every deploy; small, and a stale one misdescribes the site.
+/pool.json
+  Cache-Control: public, max-age=0, must-revalidate
+
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+
+/rss.xml
+  Cache-Control: public, max-age=3600
