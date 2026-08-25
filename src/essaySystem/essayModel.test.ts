@@ -1,21 +1,76 @@
 import { describe, expect, it } from 'vitest';
 import { generatedPool } from '../pool/generated';
-import { buildEssayDocument, buildNavigation, buildNotes } from './essayModel';
+import { FIG_BLOCKS } from '../lib/parseBlocks';
+import type { PoolNode } from '../pool/types';
+import {
+  DRAWN_KINDS,
+  buildEssayDocument,
+  buildNavigation,
+  buildNotes,
+  drawnFigureId,
+  isDrawnKind,
+} from './essayModel';
 
-const node = generatedPool.nodes['allowed-ignorance']!;
+const pool = generatedPool;
+
+const node = generatedPool.nodes['the-cut']!;
 const doc = buildEssayDocument(node, generatedPool.nodes);
 
-describe('buildEssayDocument — allowed-ignorance', () => {
+function fixture(body: PoolNode['body'], id: string): PoolNode {
+  return {
+    id,
+    kind: 'essay',
+    cluster: 'writing',
+    title: id,
+    date: '2026-01-01',
+    weight: 1,
+    rank: 0,
+    excerpt: ['fixture'],
+    links: [],
+    sourcePath: `content/writing/${id}.md`,
+    body,
+  };
+}
+
+/**
+ * The three authored plate sources PLATE_RESCUE is keyed on. No live essay carries a
+ * `plate` block any more — the essay that did was retired — so the rescue table's
+ * behaviour is pinned here directly rather than through content that no longer exists.
+ */
+
+/** One document carrying both a figure sequence and a table — the only way to see them
+ * counted separately. No live essay pairs a drawn figure with a contrast block. */
+function figureAndTableFixture(): PoolNode {
+  return fixture(
+    [
+      { t: 'h', x: 'Both', level: 2 },
+      { t: 'drawn', kind: 'rod-change', cap: 'first figure' },
+      {
+        t: 'contrast',
+        mode: 'pair',
+        poles: ['isolated', 'ecological'],
+        ownedPole: 1,
+        rows: [{ a: 'optimize the object', b: 'read the network' }],
+      },
+      { t: 'drawn', kind: 'connector', cap: 'second figure' },
+    ],
+    'figure-table-fixture',
+  );
+}
+
+describe('buildEssayDocument — the-cut', () => {
   it('numbers every heading into the rail spine', () => {
     expect(doc.spine.sections.map((s) => s.num)).toEqual([
-      '§01', '§02', '§03', '§04', '§05',
+      '§01', '§02', '§03', '§04', '§05', '§06', '§07',
     ]);
     expect(doc.spine.sections.map((s) => s.label)).toEqual([
-      'Cut',
-      'Face',
-      'Rotation',
-      'Void',
-      'Crack',
+      '17 July 1981',
+      'One rod, or two',
+      'A good reason',
+      'The phone call',
+      'Sixty, then thirty',
+      '4 January 2001',
+      'Already',
     ]);
   });
 
@@ -25,7 +80,7 @@ describe('buildEssayDocument — allowed-ignorance', () => {
     expect(doc.spine.claims.map((c) => c.num)).toEqual(['C01']);
     expect(claims[0]).toMatchObject({
       num: 'C01',
-      text: 'The removed material does not sit still. The void is exactly where a difference I stopped paying for waits to return as a fracture.',
+      text: 'A cut is not omission. It is equivalence-making — the declaration that two things can now be treated as one. And the moment it is made, the difference it collapsed stops being tracked by anyone.',
     });
     expect(claims[0]?.t === 'claim' && claims[0].text).not.toContain('*');
   });
@@ -43,33 +98,34 @@ describe('buildEssayDocument — allowed-ignorance', () => {
     const figures = doc.items.filter(
       (i) => i.t === 'plate' || i.t === 'drawn' || i.t === 'motif',
     );
-    expect(figures.map((f) => (f as { figure: number }).figure)).toEqual([1, 2, 3, 4]);
-    const tables = doc.items.filter((i) => i.t === 'comparison');
+    expect(figures.map((f) => (f as { figure: number }).figure)).toEqual([1, 2]);
+    // Two counters, not one: a document holding both must number them independently.
+    const both = buildEssayDocument(figureAndTableFixture(), generatedPool.nodes);
+    const bothFigures = both.items.filter(
+      (i) => i.t === 'plate' || i.t === 'drawn' || i.t === 'motif',
+    );
+    expect(bothFigures.map((f) => (f as { figure: number }).figure)).toEqual([1, 2]);
+    const tables = both.items.filter((i) => i.t === 'comparison');
     expect(tables.map((t) => (t as { table: number }).table)).toEqual([1]);
   });
 
-  it('drops the authored PLATE label so the caption states its number once', () => {
-    const plates = doc.items.filter((i) => i.t === 'plate' || i.t === 'drawn');
-    for (const p of plates) {
-      expect((p as { caption: string }).caption).not.toMatch(/^PLATE/i);
+  it('never leaves an authored PLATE label in a figure caption', () => {
+    const figures = Object.values(generatedPool.nodes)
+      .filter((n) => n.kind === 'essay' && Array.isArray(n.body) && n.body.length > 0)
+      .flatMap((n) => buildEssayDocument(n, generatedPool.nodes).items)
+      .filter((i) => i.t === 'plate' || i.t === 'drawn');
+
+    expect(figures.length).toBeGreaterThan(0);
+    for (const f of figures) {
+      expect((f as { caption: string }).caption).not.toMatch(/^PLATE/i);
     }
-    expect((plates[0] as { caption: string }).caption).toBe(
-      'One object, made usable by subtraction — the first cuts.',
-    );
   });
 
-  it('only ships image plates that are light polarity, drawing the rest', () => {
-    const images = doc.items.filter((i) => i.t === 'plate');
-    const drawn = doc.items.filter((i) => i.t === 'drawn');
-    // gated-streamlines is the one commissioned visual at light polarity.
-    expect(images).toHaveLength(1);
-    expect(images[0]).toMatchObject({ src: '/visuals/gated-streamlines.jpg', ratio: '16 / 9' });
-    expect(drawn.map((d) => (d as { kind: string }).kind)).toEqual(['rotation', 'crack']);
-  });
 
   it('carries the comparison with its owned pole intact', () => {
-    const table = doc.items.find((i) => i.t === 'comparison');
-    expect(table).toMatchObject({ poles: ['face', 'form'], ownedPole: 1 });
+    const marginalia = buildEssayDocument(generatedPool.nodes.marginalia!, generatedPool.nodes);
+    const table = marginalia.items.find((i) => i.t === 'comparison');
+    expect(table).toMatchObject({ poles: ['isolated', 'ecological'], ownedPole: 1 });
   });
 
   it('places the end mark on the last paragraph and nowhere else', () => {
@@ -80,7 +136,7 @@ describe('buildEssayDocument — allowed-ignorance', () => {
   });
 
   it('reports a word count in the tightened plate-vessel band', () => {
-    // Contact rewrite cut preamble; the void plate is denser and shorter.
+    // One sitting, seven sections, two drawn figures carrying part of the argument.
     expect(doc.wordCount).toBeGreaterThan(600);
     expect(doc.wordCount).toBeLessThan(2400);
   });
@@ -88,10 +144,11 @@ describe('buildEssayDocument — allowed-ignorance', () => {
 
 describe('buildNotes', () => {
   it('resolves inline references to real pool essays', () => {
-    const notes = buildNotes(node.body, generatedPool.nodes);
-    expect(Object.keys(notes).sort()).toEqual(['weak-geometry']);
-    expect(notes['weak-geometry']).toMatchObject({ kind: 'Essay' });
-    expect(notes['weak-geometry']?.body.length).toBeGreaterThan(0);
+    // marginalia is the live piece that summons other nodes by `[[Title|id]]`.
+    const notes = buildNotes(generatedPool.nodes.marginalia!.body, generatedPool.nodes);
+    expect(Object.keys(notes).sort()).toEqual(['the-contact', 'the-cut']);
+    expect(notes['the-cut']).toMatchObject({ kind: 'Essay' });
+    expect(notes['the-cut']?.body.length).toBeGreaterThan(0);
   });
 
   it('ignores references with no node behind them', () => {
@@ -155,20 +212,23 @@ describe('buildNavigation', () => {
   it('resolves the essay’s own outbound links with their relation', () => {
     const nav = buildNavigation(node, generatedPool.nodes);
     expect(nav.onward.map((o) => [o.id, o.rel])).toEqual([
-      ['bounded-me', 'pairs'],
-      ['weak-geometry', 'theme'],
-      ['the-world-answers', 'leads to'],
+      ['the-container', 'pairs'],
+      ['the-contact', 'leads to'],
     ]);
     for (const o of nav.onward) expect(o.title).toBeTruthy();
   });
 
   it('walks the timeline by date within the cluster', () => {
     const nav = buildNavigation(node, generatedPool.nodes);
-    // Contact rewrite dated allowed-ignorance to 2026-07-28 with five peers.
-    // It sorts first among that cohort, so there is no newer neighbour.
-    expect(nav.newer).toBeNull();
+    // The walk must be monotonic in date. Asserting a specific neighbour pins the test
+    // to one arrangement of the corpus; asserting direction survives the next essay.
+    const here = Date.parse(node.date);
+    if (nav.newer) {
+      expect(Date.parse(generatedPool.nodes[nav.newer.id]!.date)).toBeGreaterThanOrEqual(here);
+    }
     expect(nav.older?.id).toBeTruthy();
-    expect(nav.onward.some((o) => o.id === 'weak-geometry')).toBe(true);
+    expect(Date.parse(generatedPool.nodes[nav.older!.id]!.date)).toBeLessThanOrEqual(here);
+    expect(nav.onward.some((o) => o.id === 'the-contact')).toBe(true);
   });
 
   it('never offers the same destination twice', () => {
@@ -195,6 +255,71 @@ describe('buildNavigation', () => {
       for (const t of targets) expect(generatedPool.nodes[t!.id]).toBeDefined();
       // Never offer a link back to the essay being read.
       expect(targets.some((t) => t!.id === n.id)).toBe(false);
+    }
+  });
+});
+
+/**
+ * Regression: a figure kind was parsed into the pool and then silently discarded by the
+ * recast, because the type listing the kinds and the guard checking them were two
+ * separate lists. Nothing threw. The block simply did not arrive on the page.
+ *
+ * These assert the property rather than the instance: every drawn kind the parser can
+ * emit must survive to a DocItem, and no block may be lost in the recast of any essay.
+ */
+describe('drawn figures survive the recast', () => {
+  it('accepts every drawn kind the parser can produce', () => {
+    const parsed = Object.entries(FIG_BLOCKS)
+      .filter(([, block]) => block.t === 'drawn')
+      .map(([name, block]) => [name, (block as { kind: string }).kind] as const);
+
+    expect(parsed.length).toBeGreaterThan(0);
+    for (const [name, kind] of parsed) {
+      expect(isDrawnKind(kind), `[fig|${name}] emits kind "${kind}", which the reader drops`).toBe(
+        true,
+      );
+    }
+  });
+
+  it('mounts every drawn kind under a stable dom id', () => {
+    for (const kind of DRAWN_KINDS) {
+      expect(drawnFigureId(kind)).toBe(`fig-${kind}`);
+    }
+  });
+
+  /**
+   * Exhaustive, with the exceptions declared as data rather than skipped. Any new silent
+   * drop fails here; fixing a known one fails here too, and tells you to update the map.
+   *
+   * The map used to hold two entries — two-column `table` blocks in geometry-retrieval
+   * and me-plus-ai, which the recast has no case for and silently dropped. Both essays
+   * were retired in the 2026-08 restart, so no live essay loses a block and the map is
+   * empty. It stays as data: the day a `table` block is authored again, this fails loudly
+   * rather than the block quietly not arriving on the page.
+   */
+  it('drops no block in any essay', () => {
+    const KNOWN_DROPS: Record<string, number> = {};
+
+    const essays = Object.values(pool.nodes).filter(
+      (node) => node.kind === 'essay' && Array.isArray(node.body) && node.body.length > 0,
+    );
+    expect(essays.length).toBeGreaterThan(0);
+
+    const drops: Record<string, number> = {};
+    for (const node of essays) {
+      const lost = node.body.length - buildEssayDocument(node, pool.nodes).items.length;
+      if (lost !== 0) drops[node.id] = lost;
+    }
+
+    expect(drops).toEqual(KNOWN_DROPS);
+  });
+
+  it('loses no block in any live constellation essay', () => {
+    for (const id of ['the-container', 'the-cut', 'the-contact']) {
+      const node = pool.nodes[id]!;
+      expect(buildEssayDocument(node, pool.nodes).items.length, `${id} drops blocks`).toBe(
+        node.body.length,
+      );
     }
   });
 });

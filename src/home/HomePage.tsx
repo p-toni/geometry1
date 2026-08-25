@@ -1,10 +1,6 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useGlimm } from 'glimm/react';
+import { useMemo, type CSSProperties, type MouseEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import {
-  ParticleScroll,
-  supportsHtmlInCanvas,
-  type ParticleScrollInstance,
-} from './canvasui/ParticleScroll';
 import {
   HOME_INTRO,
   HOME_NOW,
@@ -13,9 +9,11 @@ import {
   homePlay,
   homeWork,
   homeWriting,
+  isWorkSpec,
   type HomeListItem,
 } from './data';
 import { ThesisSection } from './ThesisSection';
+import { NodePlate } from './plates';
 
 function SectionHead({
   title,
@@ -32,23 +30,39 @@ function SectionHead({
   );
 }
 
+function writingCountLabel(items: HomeListItem[]): string {
+  const essays = items.filter((i) => i.kind === 'essay').length;
+  const notes = items.filter((i) => i.kind === 'note').length;
+  const parts: string[] = [];
+  if (essays) parts.push(`${essays} essay${essays === 1 ? '' : 's'}`);
+  if (notes) parts.push(`${notes} note${notes === 1 ? '' : 's'}`);
+  return parts.join(' · ') || String(items.length);
+}
+
+function openWritingClick(
+  event: MouseEvent<HTMLAnchorElement>,
+  id: string,
+  onOpen: (id: string) => void,
+) {
+  if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button !== 0) {
+    return;
+  }
+  event.preventDefault();
+  onOpen(id);
+}
+
 function Writing({ essays, onOpen }: { essays: HomeListItem[]; onOpen: (id: string) => void }) {
   const [featured, ...rest] = essays;
   if (!featured) return null;
-  const countLabel = `${essays.length} essay${essays.length === 1 ? '' : 's'}`;
 
   return (
     <section id="writing" className="home-col home-section home-section--writing">
-      <SectionHead title="Writing" count={countLabel} />
-      <button type="button" className="home-featured" onClick={() => onOpen(featured.id)}>
-        <img
-          className="home-featured__poster"
-          src={featured.poster}
-          alt=""
-          width={172}
-          height={129}
-          decoding="async"
-        />
+      <SectionHead title="Writing" count={writingCountLabel(essays)} />
+      <a
+        href={`/read/${featured.id}`}
+        className="home-featured"
+        onClick={(e) => openWritingClick(e, featured.id, onOpen)}
+      >
         <div>
           <div className="home-featured__latest">Latest</div>
           <h3 className="home-featured__title">{featured.title}</h3>
@@ -57,79 +71,170 @@ function Writing({ essays, onOpen }: { essays: HomeListItem[]; onOpen: (id: stri
             {featured.year} · {featured.readLabel} · Read →
           </div>
         </div>
-      </button>
+        <span
+          className="home-featured__poster home-plate"
+          role="img"
+          aria-label={featured.posterAlt || undefined}
+        >
+          <NodePlate id={featured.id} />
+        </span>
+      </a>
       {rest.map((e) => (
-        <button key={e.id} type="button" className="home-row" onClick={() => onOpen(e.id)}>
+        <a
+          key={e.id}
+          href={`/read/${e.id}`}
+          className="home-row"
+          onClick={(event) => openWritingClick(event, e.id, onOpen)}
+        >
           <div>
             <div className="home-row__title">{e.title}</div>
             {e.dek ? <div className="home-row__dek">{e.dek}</div> : null}
+            <div className="home-row__meta">{e.year}</div>
           </div>
-          <div className="home-row__meta">{e.year}</div>
-        </button>
+          <span
+            className="home-row__poster home-plate"
+            role="img"
+            aria-label={e.posterAlt || undefined}
+          >
+            <NodePlate id={e.id} />
+          </span>
+        </a>
       ))}
     </section>
   );
 }
 
+function workHref(item: HomeListItem): string {
+  return item.proof ?? `/read/${item.id}`;
+}
+
+function workExternal(item: HomeListItem): boolean {
+  return Boolean(item.proof);
+}
+
+function CoverCard({
+  item,
+  index,
+  tag,
+  sub,
+}: {
+  item: HomeListItem;
+  index: number;
+  tag: string;
+  sub?: string;
+}) {
+  const href = workHref(item);
+  const external = workExternal(item);
+  return (
+    <a
+      className="cover-card"
+      data-i={index}
+      href={href}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noreferrer' : undefined}
+    >
+      <div className="cover-card__cover">
+        <span className="cover-plate" role="img" aria-label={item.posterAlt || undefined}>
+          <NodePlate id={item.id} />
+        </span>
+        <div className="cover-card__veil" aria-hidden />
+        <span className="cover-card__go" aria-hidden>
+          ↗
+        </span>
+        <div className="cover-card__overlay">
+          <span className="cover-card__tag">{tag}</span>
+          <span className="cover-card__title">{item.title}</span>
+          {sub ? <span className="cover-card__sub">{sub}</span> : null}
+        </div>
+      </div>
+    </a>
+  );
+}
+
 function Work({ work }: { work: HomeListItem[] }) {
+  const building = work.filter(isWorkSpec);
+  const compact = work.filter((w) => !isWorkSpec(w));
+  const featured = building.slice(0, 3);
+  const rest = building.slice(3);
+
   return (
     <section id="work" className="home-col home-section">
-      <SectionHead title="Work" count="Selected" />
-      {work.map((w) => (
-        <div key={w.id} className="home-row home-row--work">
-          <div>
-            <div className="home-row__title">{w.title}</div>
-            {w.dek ? <div className="home-row__dek">{w.dek}</div> : null}
-          </div>
-          <div className="home-row__meta">{w.meta}</div>
+      <SectionHead title="Work" count="Software" />
+      {featured.length ? (
+        <div className="cover-grid">
+          {featured.map((w, i) => (
+            <CoverCard key={w.id} item={w} index={i} tag={w.meta} sub={w.why ?? w.dek} />
+          ))}
         </div>
-      ))}
+      ) : null}
+      {rest.length ? (
+        <div className="cover-grid cover-grid--row">
+          {rest.map((w, i) => (
+            <CoverCard key={w.id} item={w} index={i} tag={w.meta} sub={w.why ?? w.dek} />
+          ))}
+        </div>
+      ) : null}
+      {compact.length ? (
+        <div className="home-work__compact">
+          {compact.map((w) => (
+            <a key={w.id} href={`/read/${w.id}`} className="home-work__line">
+              <div className="home-work__line-title">{w.title}</div>
+              <div className="home-work__line-meta">{w.meta}</div>
+            </a>
+          ))}
+        </div>
+      ) : null}
     </section>
   );
+}
+
+function playCountLabel(items: HomeListItem[]): string {
+  const feeds = items.filter((i) => i.href).length;
+  const studies = items.length - feeds;
+  const parts: string[] = [];
+  if (studies) parts.push(`${studies} stud${studies === 1 ? 'y' : 'ies'}`);
+  if (feeds) parts.push(`${feeds} feed${feeds === 1 ? '' : 's'}`);
+  return parts.join(' · ') || String(items.length);
+}
+
+function playHref(item: HomeListItem): string {
+  return item.href ?? `/read/${item.id}`;
 }
 
 function Play({ play }: { play: HomeListItem[] }) {
   return (
     <section id="play" className="home-col home-section">
-      <SectionHead title="Play" count="Borrowed & rebuilt" />
-      <div className="home-play-rail">
-        <div className="home-play-track">
-          {play.map((p) => {
-            const plateStyle =
-              p.kind !== 'link' ? { backgroundImage: `url(${p.poster})` } : undefined;
-            const inner = (
-              <>
-                <div className="home-play-card__kind">{p.playKind}</div>
-                <div className="home-play-card__name">{p.title}</div>
-                {p.dek ? <div className="home-play-card__dek">{p.dek}</div> : null}
-                <div
-                  className="home-play-card__plate"
-                  role="img"
-                  aria-label={`${p.title} preview`}
-                  style={plateStyle}
-                />
-              </>
-            );
-            if (p.href) {
-              return (
-                <a
-                  key={p.id}
-                  className="home-play-card"
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  {inner}
-                </a>
-              );
-            }
-            return (
-              <div key={p.id} className="home-play-card">
-                {inner}
+      <SectionHead title="Play" count={playCountLabel(play)} />
+      <div className="play-hand">
+        {play.map((p, i) => {
+          const external = Boolean(p.href);
+          return (
+            <a
+              key={p.id}
+              className="play-tile"
+              data-kind={p.kind}
+              style={{ '--tilt': i % 2 === 0 ? '-3.2deg' : '2.6deg' } as CSSProperties}
+              href={playHref(p)}
+              target={external ? '_blank' : undefined}
+              rel={external ? 'noreferrer' : undefined}
+            >
+              <div className="play-tile__plate">
+                {p.kind === 'link' ? (
+                  <span className="play-tile__glyph" aria-hidden>
+                    →
+                  </span>
+                ) : (
+                  <img src={p.poster} alt="" width={320} height={420} decoding="async" />
+                )}
+                <div className="play-tile__veil" aria-hidden />
+                <div className="play-tile__meta">
+                  <span className="play-tile__kind">{p.playKind}</span>
+                  <span className="play-tile__name">{p.title}</span>
+                </div>
               </div>
-            );
-          })}
-        </div>
+            </a>
+          );
+        })}
       </div>
     </section>
   );
@@ -150,29 +255,24 @@ function HomeBody({
 }) {
   return (
     <div className="home-body">
-      <div className="home-hero">
-        <ThesisSection />
-        <section id="intro" className="home-col home-intro">
-          <p className="home-intro__p">{HOME_INTRO}</p>
-          <div className="home-intro__links" id="writing-start">
-            <a
-              href="#writing"
-              onClick={(e) => {
-                e.preventDefault();
-                onStartWriting();
-              }}
-            >
-              Start with the writing
-            </a>
-            <a href={SOCIAL.email} className="is-soft">
-              Say hello
-            </a>
-          </div>
-        </section>
-      </div>
-
-      {/* Dissolve gate: sand only below this marker (see startAt). */}
-      <div id="particle-gate" className="home-particle-gate" aria-hidden />
+      <ThesisSection />
+      <section id="intro" className="home-col home-intro">
+        <p className="home-intro__p">{HOME_INTRO}</p>
+        <div className="home-intro__links" id="writing-start">
+          <a
+            href="#writing"
+            onClick={(e) => {
+              e.preventDefault();
+              onStartWriting();
+            }}
+          >
+            Start with the writing
+          </a>
+          <a href={SOCIAL.email} className="is-soft">
+            Say hello
+          </a>
+        </div>
+      </section>
 
       <Writing essays={essays} onOpen={onOpen} />
       <Work work={work} />
@@ -186,19 +286,10 @@ function HomeBody({
 
       <footer className="home-col home-footer">
         <div className="home-footer__inner">
-          <div className="home-footer__links">
-            <a href={SOCIAL.email}>Email</a>
-            <a href={SOCIAL.x} target="_blank" rel="noreferrer">
-              Twitter
-            </a>
-            <a href={SOCIAL.github} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            <a href={SOCIAL.rss}>RSS</a>
-          </div>
+          <span className="home-footer__mark">toni limited co.</span>
           <div className="home-footer__note">
             <thinking-orb size="20" theme="light" />
-            <span>Parts of this site are drafted with an assistant</span>
+            <span>website built by many intelligences</span>
           </div>
         </div>
       </footer>
@@ -206,93 +297,28 @@ function HomeBody({
   );
 }
 
-/**
- * Single-scroller home (Canvas UI official pattern).
- *
- * Layout:
- *   fixed header (outside)
- *   main fills remaining viewport
- *     ParticleScroll height 100%  ← the only scrollport
- *       entire page body
- *
- * No window scroll. No sticky track. No dual-scroll mid-list jumps.
- * startAt keeps thesis/intro/CTA assembled; sand begins at Writing.
- */
+/** Document-scrolled home. Header is sticky; the window is the scroller. */
 export function HomePage() {
   const navigate = useNavigate();
+  const { sweep } = useGlimm();
   const essays = useMemo(() => homeWriting(), []);
   const work = useMemo(() => homeWork(), []);
   const play = useMemo(() => homePlay(), []);
-  const apiRef = useRef<ParticleScrollInstance | null>(null);
 
-  const [useParticle] = useState(() =>
-    typeof window !== 'undefined' ? supportsHtmlInCanvas() : false,
-  );
-
-  // Lock document — the particle content is the only scroller.
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-    html.classList.add('home-scroll-lock');
-    body.classList.add('home-scroll-lock');
-    return () => {
-      html.classList.remove('home-scroll-lock');
-      body.classList.remove('home-scroll-lock');
-    };
-  }, []);
-
-  /**
-   * Wheel / trackpad anywhere on the page (header, side margins, dock) should
-   * drive the home scroller. Without this, only the text column receives scroll
-   * because body is overflow:hidden and the scroller is a nested box.
-   */
-  useEffect(() => {
-    const onWheel = (e: WheelEvent) => {
-      if (e.ctrlKey) return; // pinch-zoom
-      const scroller =
-        apiRef.current?.getContent() ??
-        (document.querySelector('[data-home-scroller]') as HTMLElement | null);
-      if (!scroller) return;
-
-      const t = e.target;
-      if (t instanceof Element) {
-        // Essay sheet / other overlays keep their own scroll.
-        if (t.closest('[data-no-home-wheel]')) {
-          return;
-        }
-        // Horizontal rails — don't steal vertical intent if they're the target
-        // and the gesture is mostly horizontal.
-        if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
-      }
-
-      // Already over the scroller: let the browser handle it natively.
-      if (scroller.contains(t as Node)) return;
-
-      e.preventDefault();
-      scroller.scrollTop += e.deltaY;
-    };
-
-    window.addEventListener('wheel', onWheel, { passive: false });
-    return () => window.removeEventListener('wheel', onWheel);
-  }, []);
-
-  const openEssay = (id: string) => navigate(`/read/${id}`);
-
-  /** Pin the CTA line to the top of the scrollport. */
-  const scrollToWriting = () => {
-    const scroller =
-      apiRef.current?.getContent() ??
-      (document.querySelector('[data-home-scroller]') as HTMLElement | null);
-    const seam = document.getElementById('writing-start');
-    if (!scroller || !seam) return;
-    const top =
-      seam.getBoundingClientRect().top -
-      scroller.getBoundingClientRect().top +
-      scroller.scrollTop;
-    scroller.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+  const openEssay = (id: string) => {
+    sweep(() => {
+      navigate(`/read/${id}`);
+    });
   };
 
-  const body = (
+  const scrollToWriting = () => {
+    const seam = document.getElementById('writing-start');
+    if (!seam) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    seam.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  };
+
+  return (
     <HomeBody
       essays={essays}
       work={work}
@@ -300,34 +326,5 @@ export function HomePage() {
       onOpen={openEssay}
       onStartWriting={scrollToWriting}
     />
-  );
-
-  if (!useParticle) {
-    return <div className="home-fallback">{body}</div>;
-  }
-
-  return (
-    <ParticleScroll
-      className="home-page-scroll"
-      startAt="#particle-gate"
-      onReady={(api) => {
-        apiRef.current = api;
-        api.getContent().scrollTop = 0;
-      }}
-      point={0.72}
-      band={360}
-      density={2}
-      size={1.25}
-      spread={200}
-      gravity={0.4}
-      drift={0.5}
-      swirl={50}
-      stagger={0.65}
-      fade={0.8}
-      settle={0.8}
-      smoothing={0.35}
-    >
-      {body}
-    </ParticleScroll>
   );
 }

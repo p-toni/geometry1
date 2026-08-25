@@ -1,8 +1,9 @@
-/* Newsreader Display optical size — use on large headlines only */
+/* Junicode italic — display voice, used with restraint */
 .type-display {
   font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
   font-optical-sizing: auto;
-  font-variation-settings: 'opsz' 72;
 }
 
 .field-prose {
@@ -236,11 +237,11 @@
 
 /* Shared press + focus language */
 .pressable {
-  transition: transform 140ms var(--ease-out-strong);
+  transition: transform 160ms var(--ease-out-strong);
 }
 
 .pressable:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
 .pressable:focus-visible {
@@ -249,7 +250,7 @@
 }
 
 .pressable--ghost:active {
-  transform: scale(0.96);
+  transform: scale(0.97);
 }
 
 .field-icon-button {
@@ -800,7 +801,7 @@
   bottom: 14px;
   width: 138px;
   height: 84px;
-  background: #f4f1ea;
+  background: var(--paper);
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   box-shadow: 0 2px 8px rgba(20, 23, 26, 0.06);

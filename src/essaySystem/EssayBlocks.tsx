@@ -2,8 +2,18 @@ import { Fragment, type ReactNode } from 'react';
 import { splitInlineBacklinks } from '../lib/inlineBacklink';
 import { renderInlineMarkdown } from '../lib/inlineMarkdown';
 import type { Note } from './data';
-import type { DocItem } from './essayModel';
-import { CrackFigure, FlowDiagram, LateFailureFigure, RotationFigure } from './figures';
+import { AudioClip } from './AudioClip';
+import { drawnFigureId, type DocItem } from './essayModel';
+import {
+  ChannelBreakFigure,
+  ConnectorFigure,
+  CoreSetsFigure,
+  CrackFigure,
+  FlowDiagram,
+  LateFailureFigure,
+  RodChangeFigure,
+  RotationFigure,
+} from './figures';
 import type { NoteControls } from './useReadingApparatus';
 
 /**
@@ -123,11 +133,14 @@ export function EssayBlock({
   notes,
   hasNote,
   resolveInline,
+  revealed = true,
 }: {
   item: DocItem;
   notes: NoteControls;
   hasNote: (id: string) => boolean;
   resolveInline?: (id: string) => Note | null;
+  /** Whether an animated drawn figure has reached the viewport. Defaults to resolved. */
+  revealed?: boolean;
 }) {
   switch (item.t) {
     case 'section':
@@ -191,10 +204,32 @@ export function EssayBlock({
             </>
           }
         >
-          <div className="esys-plate">
-            {item.kind === 'rotation' ? <RotationFigure /> : <CrackFigure />}
+          <div className="esys-plate" id={drawnFigureId(item.kind)}>
+            {item.kind === 'core-sets' ? (
+              <CoreSetsFigure revealed={revealed} />
+            ) : item.kind === 'rod-change' ? (
+              <RodChangeFigure />
+            ) : item.kind === 'channel-break' ? (
+              <ChannelBreakFigure />
+            ) : item.kind === 'connector' ? (
+              <ConnectorFigure />
+            ) : item.kind === 'rotation' ? (
+              <RotationFigure />
+            ) : (
+              <CrackFigure />
+            )}
           </div>
         </Figure>
+      );
+
+    case 'audio':
+      return (
+        <AudioClip
+          src={item.src}
+          label={item.label}
+          caption={item.caption}
+          figure={item.figure}
+        />
       );
 
     case 'motif':
@@ -232,7 +267,7 @@ export function EssayBlock({
     case 'pull':
       return (
         <div className="esys-pull">
-          <p>{item.text}</p>
+          <p>{renderInlineMarkdown(item.text)}</p>
         </div>
       );
 

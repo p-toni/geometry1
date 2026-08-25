@@ -11,11 +11,18 @@
 (function () {
   const NS = 'http://www.w3.org/2000/svg';
 
-  // Tuned for paper #f4f1ea — original FAINT (#d9d1c1) was ~1.15:1 on the page
+  // Tuned for paper #faf8f5 — original FAINT (#d9d1c1) was ~1.15:1 on the page
   // and hairlines vanished. Keep three-step contrast; lift mid/faint off the ground.
-  const FAINT = '#b7ae9e';
-  const MID = '#7a7266';
-  const INK = '#24211d';
+  const BASE_FAINT = '#b7ae9e';
+  const BASE_MID = '#7a7266';
+  const BASE_INK = '#24211d';
+  /* Structural tones — overridable per element via the `ink` attribute.
+     When `ink` is set, all three tones collapse onto it; the per-element
+     alphas keep the hierarchy. Set at the top of _render(); rendering is
+     synchronous, so module-level bindings are safe (no re-entrancy). */
+  let INK = BASE_INK;
+  let MID = BASE_MID;
+  let FAINT = BASE_FAINT;
 
   // Hover replay only — keep under ~1.2s (not a 2.4s demo loop).
   const DUR = 1100;
@@ -277,7 +284,7 @@
 
   class SignalMark extends HTMLElement {
     static get observedAttributes() {
-      return ['kind', 'size', 'accent', 'label'];
+      return ['kind', 'size', 'accent', 'label', 'ink'];
     }
 
     connectedCallback() {
@@ -308,7 +315,7 @@
       const S = Math.round(displayS * pxScale);
       this._S = S;
       this._kind = KINDS[this.getAttribute('kind')] || enclosure;
-      this._accent = this.getAttribute('accent') || '#c2593a';
+      this._accent = this.getAttribute('accent') || '#a0522d';
 
       this.style.display = 'block';
       this.style.width = displayS + 'px';
@@ -366,9 +373,25 @@
 
     _render(t) {
       if (!this._pen) return;
+      const inkOverride = this.getAttribute('ink');
+      if (inkOverride) {
+        INK = inkOverride;
+        MID = inkOverride;
+        FAINT = inkOverride;
+      } else {
+        INK = BASE_INK;
+        MID = BASE_MID;
+        FAINT = BASE_FAINT;
+      }
       this._pen.begin();
       this._kind(this._pen, this._S, t, this._accent);
       this._pen.end();
+    }
+
+    /** Public replay — same gates as hover replay (fine pointer, not reduced motion). */
+    replay() {
+      if (!finePointer()) return;
+      this._replay();
     }
 
     _replay() {

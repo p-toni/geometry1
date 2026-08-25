@@ -19,7 +19,7 @@ async function boot() {
   try {
     await loadHomeVendors();
   } catch {
-    // thinking-orb / signal-mark / field-hero optional if scripts fail
+    // thinking-orb / signal-mark optional if scripts fail
   }
   createRoot(container).render(<App />);
 }

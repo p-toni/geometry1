@@ -2,28 +2,23 @@
    drawn figures. Scoped entirely under .esys so it cannot leak into home. */
 
 .esys {
-  --paper: #f6f2e9;
   --plate: #fbf8f1;
-  --rule: #e2dccd;
-  --rule-soft: #eee7d9;
-  --hair: #ddd5c4;
-  --tick: #cdc4b2;
-  --faint: #a89f8e;
-  --faint-2: #b3aa99;
-  --meta: #8d8474;
-  --soft: #5c564c;
-  --body: #2b2721;
-  --ink: #221f1b;
-  --accent: #c2593a;
+  --rule: var(--line);
+  --rule-soft: var(--line-soft);
+  --hair: var(--line-hair);
+  --tick: var(--spine);
+  --faint: var(--meta);
+  --faint-2: #8a847c;
+  --soft: var(--secondary);
 
-  --measure: 680px;
+  --measure: 640px;
   --rail-w: 240px;
 
   min-height: 100vh;
   padding-bottom: 160px;
   background: var(--paper);
   color: var(--ink);
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: var(--font-body);
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
@@ -66,11 +61,11 @@
 /* —— Apparatus: everything a reader consults rather than reads —— */
 
 .esys-mono {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
 }
 
 .esys-kicker {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -83,7 +78,7 @@
 
 .esys-note {
   margin-top: 12px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   line-height: 1.65;
   color: var(--faint-2);
@@ -91,7 +86,7 @@
 
 .esys-cap {
   margin-top: 10px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   line-height: 1.65;
   letter-spacing: 0.02em;
@@ -108,17 +103,35 @@
 .esys-rail {
   position: fixed;
   top: 92px;
-  left: 50%;
-  margin-left: 380px;
+  left: calc(var(--shell-pad-l) + var(--measure) + 40px);
   width: var(--rail-w);
   z-index: 30;
+}
+
+@media (min-width: 1440px) {
+  .esys-rail {
+    left: calc(
+      max(var(--shell-pad-l), (100% - var(--content-cap)) / 2) + var(--measure) + 40px
+    );
+  }
 }
 
 .esys-rail-card {
   border-left: 2px solid var(--accent);
   padding: 0 0 18px 14px;
   margin-bottom: 26px;
-  animation: esys-rise-in 220ms ease both;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 200ms var(--ease-out-strong),
+    transform 200ms var(--ease-out-strong);
+}
+
+@starting-style {
+  .esys-rail-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 .esys-rail-card-term {
@@ -141,7 +154,7 @@
 
 .esys-rail-card-src {
   margin-top: 9px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9.5px;
   letter-spacing: 0.06em;
   color: var(--faint);
@@ -158,7 +171,7 @@
 }
 
 .esys-rail-title {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -176,7 +189,7 @@
   display: grid;
   grid-template-columns: 26px 1fr;
   gap: 8px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10.5px;
   letter-spacing: 0.02em;
   line-height: 1.4;
@@ -225,7 +238,7 @@
 }
 
 .esys-rail-claim span:first-child {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9.5px;
   letter-spacing: 0.08em;
   color: var(--accent);
@@ -243,7 +256,7 @@
 .esys-scrub-ends {
   display: flex;
   justify-content: space-between;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   color: var(--tick);
 }
@@ -253,7 +266,7 @@
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 4px 10px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   line-height: 1.6;
   color: var(--meta);
@@ -277,20 +290,32 @@
 
 .esys-main {
   max-width: var(--measure);
-  margin: 0 auto;
-  padding: 0 28px;
+  margin: 0;
+  padding: 0 var(--shell-pad-r) 0 var(--shell-pad-l);
+}
+
+@media (min-width: 1440px) {
+  .esys-main {
+    padding-left: max(var(--shell-pad-l), calc((100% - var(--content-cap)) / 2));
+  }
+}
+
+@media (max-width: 768px) {
+  .esys-main {
+    padding: 0 1.5rem;
+  }
 }
 
 .esys-head {
   padding: 88px 0 0;
-  animation: esys-rise-in 640ms ease both;
+  animation: esys-rise-in 280ms var(--ease-out-strong) both;
 }
 
 .esys-slug {
   display: flex;
   align-items: baseline;
   gap: 14px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -310,18 +335,22 @@
 
 .esys-title {
   margin: 40px 0 0;
-  font-size: 54px;
-  line-height: 1.06;
-  font-weight: 300;
-  letter-spacing: -0.028em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 40px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 .esys-standfirst {
   margin: 26px 0 0;
-  max-width: 540px;
-  font-size: 23px;
+  max-width: var(--intro-measure);
+  font-family: var(--font-display);
+  font-size: 20px;
   line-height: 1.5;
-  font-weight: 300;
+  font-weight: 400;
   font-style: italic;
   color: var(--soft);
   text-wrap: pretty;
@@ -330,7 +359,7 @@
 .esys-colophon {
   display: grid;
   gap: 14px 28px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10.5px;
   line-height: 1.6;
   color: var(--meta);
@@ -362,7 +391,7 @@
   display: flex;
   align-items: baseline;
   gap: 16px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.24em;
   text-transform: uppercase;
@@ -402,7 +431,7 @@
 }
 
 .esys-sec-head > span {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--accent);
   letter-spacing: 0.1em;
@@ -410,15 +439,18 @@
 
 .esys-sec-head h2 {
   margin: 0;
-  font-size: 27px;
-  font-weight: 400;
-  letter-spacing: -0.012em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 .esys-p {
   margin: 0 0 26px;
-  font-size: 20px;
-  line-height: 1.78;
+  font-size: 17px;
+  line-height: 1.7;
   color: var(--body);
   text-wrap: pretty;
 }
@@ -452,7 +484,7 @@
 }
 
 .esys-rule-num {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--accent);
   padding-top: 5px;
@@ -473,7 +505,7 @@
 
 .esys-rule-body code,
 .esys-inline-mono {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 15px;
 }
 
@@ -557,7 +589,7 @@
 
 .esys-multiple-label {
   margin-top: 6px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9.5px;
   color: var(--meta);
 }
@@ -592,7 +624,7 @@
 
 .esys-fig-control label,
 .esys-fig-control output {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--meta);
@@ -624,7 +656,7 @@
 }
 
 .esys-fig-subcap dt {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.1em;
   color: var(--accent);
@@ -666,7 +698,7 @@
 
 .esys-epigraph-src {
   margin-top: 10px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   color: var(--faint);
 }
@@ -684,7 +716,7 @@
 }
 
 .esys-claim-num {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10.5px;
   letter-spacing: 0.08em;
   color: var(--accent);
@@ -804,7 +836,7 @@
 }
 
 .esys-ref--sup {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--accent);
   vertical-align: super;
@@ -830,7 +862,7 @@
 }
 
 .esys-type-spec {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   line-height: 1.7;
   color: var(--meta);
@@ -851,7 +883,7 @@
 
 .esys-swatch-label {
   margin-top: 8px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   line-height: 1.6;
   color: var(--meta);
@@ -864,7 +896,7 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 22px 28px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   line-height: 1.7;
   color: var(--soft);
@@ -909,7 +941,7 @@
   display: grid;
   grid-template-columns: 112px 1fr;
   gap: 10px 16px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10.5px;
   line-height: 1.6;
   color: var(--soft);
@@ -952,7 +984,7 @@
 }
 
 .esys-table th {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   font-weight: 400;
   letter-spacing: 0.18em;
@@ -974,7 +1006,7 @@
 }
 
 .esys-table td + td {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 13px;
   padding: 15px 0;
   font-variant-numeric: tabular-nums;
@@ -1002,7 +1034,7 @@
   list-style: none;
   display: grid;
   grid-template-columns: 38px 1fr;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 12.5px;
   line-height: 1.9;
 }
@@ -1045,7 +1077,7 @@
 }
 
 .esys-verbs dt {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -1072,10 +1104,13 @@
 
 .esys-specimen-title {
   margin: 18px 0 0;
-  font-size: 44px;
-  line-height: 1.08;
-  font-weight: 300;
-  letter-spacing: -0.026em;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 36px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
 }
 
 .esys-notes {
@@ -1092,7 +1127,7 @@
 }
 
 .esys-notes-list dt {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 11px;
   color: var(--accent);
 }
@@ -1147,7 +1182,18 @@
   margin: 4px 0 26px;
   border-left: 2px solid var(--accent);
   padding: 2px 0 2px 18px;
-  animation: esys-rise-in 200ms ease both;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 200ms var(--ease-out-strong),
+    transform 200ms var(--ease-out-strong);
+}
+
+@starting-style {
+  .esys-inline-note {
+    opacity: 0;
+    transform: translateY(8px);
+  }
 }
 
 .esys-inline-note-term {
@@ -1166,7 +1212,7 @@
 
 .esys-inline-note-src {
   margin-top: 8px;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9.5px;
   letter-spacing: 0.06em;
   color: var(--faint);
@@ -1175,7 +1221,7 @@
 /* —— Navigation. Apparatus, so mono: the way back and the way onward. —— */
 
 .esys-back {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10px;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -1184,19 +1230,32 @@
   /* 10px apparatus type still needs a finger-sized target; grow the box, not the layout. */
   padding: 14px 6px;
   margin: -14px -6px;
+  transition:
+    transform 160ms var(--ease-out-strong),
+    color var(--motion-fade) ease;
 }
 
-.esys-back:hover {
+.esys-back:active {
+  transform: scale(0.97);
+}
+
+.esys-back:focus-visible {
   color: var(--accent);
 }
 
 .esys-back span {
   display: inline-block;
-  transition: transform 160ms var(--ease-out, ease);
+  transition: transform 160ms var(--ease-out-strong);
 }
 
-.esys-back:hover span {
-  transform: translateX(-3px);
+@media (hover: hover) and (pointer: fine) {
+  .esys-back:hover {
+    color: var(--accent);
+  }
+
+  .esys-back:hover span {
+    transform: translateX(-3px);
+  }
 }
 
 /* Persistent return at the top of the margin (R2). */
@@ -1232,7 +1291,7 @@
 }
 
 .esys-onward-rel {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1287,7 +1346,7 @@
 
 .esys-step-rel {
   display: block;
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1310,7 +1369,7 @@
 .esys-table--compare th + th,
 .esys-table--compare td,
 .esys-table--compare td + td {
-  font-family: 'Newsreader', Georgia, serif;
+  font-family: var(--font-display);
   font-size: 17px;
   line-height: 1.5;
   text-align: left;
@@ -1321,7 +1380,7 @@
 
 .esys-table--compare th,
 .esys-table--compare th + th {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 9px;
   letter-spacing: 0.18em;
   text-transform: uppercase;
@@ -1354,7 +1413,7 @@
 }
 
 .esys-note-row dt {
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-family: var(--font-mono);
   font-size: 10.5px;
   line-height: 1.6;
   letter-spacing: 0.02em;
@@ -1462,8 +1521,150 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .esys-head,
-  .esys-rail-card {
+  .esys-head {
     animation: none;
   }
+
+  .esys-rail-card,
+  .esys-inline-note {
+    transition: opacity 120ms ease;
+    transform: none;
+  }
+}
+
+/* ── Fig. core-sets ──────────────────────────────────────────────────────────
+   The resolved figure is the rest state. `.is-live` replays how it got there,
+   once, when the figure reaches the viewport. Reduced motion resolves at once.
+   Kept in step with CoreSetsFigure in essaySystem/figures.tsx.              */
+
+.esys-coresets .cs-a,
+.esys-coresets .cs-b,
+.esys-coresets .cs-c,
+.esys-coresets .cs-d,
+.esys-coresets .cs-e {
+  opacity: 1;
+}
+.esys-coresets .cs-thread {
+  stroke-dasharray: 280;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .esys-coresets .cs-a,
+  .esys-coresets .cs-b,
+  .esys-coresets .cs-c,
+  .esys-coresets .cs-d,
+  .esys-coresets .cs-e {
+    opacity: 0;
+  }
+  .esys-coresets .cs-thread {
+    stroke-dashoffset: 280;
+  }
+
+  .esys-coresets.is-live .cs-a { animation: cs-in 0.45s ease-out 0.1s forwards; }
+  .esys-coresets.is-live .cs-b { animation: cs-in 0.45s ease-out 0.85s forwards; }
+  .esys-coresets.is-live .cs-c { animation: cs-in 0.55s ease-out 1.45s forwards; }
+  .esys-coresets.is-live .cs-d { animation: cs-in 0.4s ease-out 2.25s forwards; }
+  .esys-coresets.is-live .cs-e { animation: cs-in 0.45s ease-out 3.45s forwards; }
+  .esys-coresets.is-live .cs-thread {
+    animation: cs-draw 0.95s cubic-bezier(0.4, 0, 0.2, 1) 2.7s forwards;
+  }
+
+  @keyframes cs-in { to { opacity: 1; } }
+  @keyframes cs-draw { to { stroke-dashoffset: 0; } }
+}
+
+/* ── Audio clip ──────────────────────────────────────────────────────────────
+   A control that answers every press. Nothing loads until pressed, nothing
+   plays on its own, and failure is stated rather than swallowed. The key is
+   sized for a thumb — an edge that invites a press it cannot answer is worse
+   than no edge, and so is one the hand cannot hit.                          */
+
+.esys-audio {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper-2);
+}
+
+.esys-audio__key {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--meter-border);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.esys-audio__key:hover:not(:disabled) {
+  border-color: var(--read-accent);
+  color: var(--read-accent);
+}
+.esys-audio__key:focus-visible {
+  outline: 2px solid var(--read-accent);
+  outline-offset: 3px;
+}
+.esys-audio__key:disabled {
+  cursor: not-allowed;
+  color: var(--secondary);
+  border-color: var(--line);
+}
+.esys-audio.is-playing .esys-audio__key { color: var(--read-accent); border-color: var(--read-accent); }
+
+.esys-audio__body { flex: 1 1 auto; min-width: 0; }
+
+.esys-audio__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--secondary);
+  margin-bottom: 9px;
+}
+
+.esys-audio__track {
+  position: relative;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: linear-gradient(var(--line-soft), var(--line-soft)) center / 100% 1px no-repeat;
+}
+.esys-audio__fill {
+  height: 1px;
+  background: var(--read-accent);
+  transition: width 0.12s linear;
+}
+.esys-audio.is-loading .esys-audio__fill { background: var(--secondary); }
+
+.esys-audio__state {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--read-accent-deep);
+}
+
+.esys-audio__time {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  /* Not --meta: that token is 2.36:1 on paper and fails AA for text. */
+  color: var(--secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esys-audio__fill { transition: none; }
+  .esys-audio__key { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .esys-audio { gap: 12px; padding: 12px 14px; }
+  .esys-audio__time { font-size: 10px; }
 }

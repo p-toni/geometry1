@@ -286,7 +286,7 @@
           cx.font = `600 ${Math.max(8, Math.min(11, this._w / 26)).toFixed(1)}px ui-monospace,"JetBrains Mono",monospace`;
           cx.textAlign = 'center'; cx.textBaseline = 'middle';
           if (cx.letterSpacing !== undefined) cx.letterSpacing = '0.14em';
-          cx.fillStyle = this.getAttribute('accent') || '#c2593a';
+          cx.fillStyle = this.getAttribute('accent') || '#a0522d';
           cx.fillText(LABELS[hit], lx / 4, ly / 4);
           cx.restore();
         }

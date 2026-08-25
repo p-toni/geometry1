@@ -17,15 +17,6 @@ declare module 'react' {
         accent?: string;
         label?: string;
       };
-      'field-hero': CEProps & {
-        bg?: string;
-        ground?: string;
-        ink?: string;
-        edge?: string;
-        accent?: string;
-        fit?: string;
-        labels?: string;
-      };
       'asciify-lens': CEProps & {
         src?: string;
         alt?: string;
@@ -45,19 +36,6 @@ declare module 'react' {
         amp?: string;
         speed?: string;
         threshold?: string;
-      };
-      'particle-scroll': CEProps & {
-        point?: string;
-        band?: string;
-        spread?: string;
-        gravity?: string;
-        drift?: string;
-        swirl?: string;
-        stagger?: string;
-        settle?: string;
-        smoothing?: string;
-        effect?: string;
-        'start-at'?: string;
       };
     }
   }

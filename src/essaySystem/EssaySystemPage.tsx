@@ -60,8 +60,7 @@ function SpecRailCards({ state }: { state: EssaySystemState }) {
 /**
  * Essay System, Rev. 01 — the specification and its specimen on one page.
  *
- * Document-scrolled: home locks the viewport for ParticleScroll, so the class comes off
- * while this route is mounted.
+ * Document-scrolled. `home-mode` comes off while this route is mounted.
  */
 export function EssaySystemPage() {
   const state = useEssaySystem();
@@ -127,7 +126,7 @@ export function EssaySystemPage() {
             <div>
               <span>Type</span>
               <br />
-              Newsreader / JetBrains Mono
+              Junicode / Aileron
             </div>
             <div>
               <span>Target length</span>

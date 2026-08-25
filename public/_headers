@@ -1,8 +1,2 @@
 # Cloudflare Pages headers
 # https://developers.cloudflare.com/pages/configuration/headers/
-
-/*
-  # Chrome Origin Trial: HTML-in-Canvas (ParticleScroll / Asciify)
-  # Production token for https://toni.ltd:443 — also in index.html meta.
-  # Re-register when expired (~2026-10): https://developer.chrome.com/origintrials
-  Origin-Trial: AoAxRxtoqvkfaVinrpXd4HdxvqG7G5PAT7CBgYf8z2tyepzGRPsTeDpG2264jM7PL+vIzjaHxJ5uw92fyu8urAoAAABOeyJvcmlnaW4iOiJodHRwczovL3RvbmkubHRkOjQ0MyIsImZlYXR1cmUiOiJIVE1MSW5DYW52YXMiLCJleHBpcnkiOjE3OTI0NTQ0MDB9

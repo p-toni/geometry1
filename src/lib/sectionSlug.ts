@@ -1,4 +1,4 @@
-/** Stable anchor for ## headings — shared by read panel and constellation. */
+/** Stable anchor for ## headings — used by reader section anchors. */
 export function sectionSlug(label: string): string {
   return label
     .toLowerCase()

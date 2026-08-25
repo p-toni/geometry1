@@ -4,19 +4,16 @@ This site is a continuous editorial home (`src/home/`) fed by a content pool. Co
 
 Home lists derive from pool clusters: **writing** → Writing section (featured = freshest by date), **work** → Work rows, **play** → Play rail. Essays open at `/read/:id` — the single reader, set in the **Essay System** (`src/essaySystem/`). It renders typed `Block[]` directly, not a parallel prose model. `/writing/:id` redirects there.
 
-The spatial field UI was **removed** — product surface is `src/home/` only. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp).
-
-**Canvas UI ParticleScroll** (`src/home/canvasui/ParticleScroll.tsx`, from [canvasui.dev](https://canvasui.dev/docs/components/particle-scroll)): single scroller for the full home body; `startAt` keeps thesis/intro assembled. Requires Chrome html-in-canvas (origin trial meta + `public/_headers`); otherwise plain scrollable HTML.
+The spatial field UI was **removed** — product surface is `src/home/` only. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp). Home is ordinary document scroll.
 
 ## Workflow
 
 ```bash
 pnpm pool:seed    # optional: re-seed from geometry v1 prose
 pnpm pool:build   # required after any content edit
-pnpm constellation:build   # required after writing-essay edits (spatial graphs)
 pnpm dev          # local preview
 pnpm test         # vitest
-pnpm build        # pool:build + constellation:build + typecheck + static export
+pnpm build        # pool:build + typecheck + static export + seo
 ```
 
 ## File layout
@@ -43,12 +40,16 @@ excerpt:             # optional; auto-derived from first paragraphs if omitted
 links:
   - target: increasing-returns
     rel: cites       # see Rel type in src/pool/types.ts
-struct:              # optional; powers constellation descent
+struct:              # optional; lens seeds the reader standfirst/gloss fallbacks
   lens: "understanding after the right omissions"
-  sections:
+  sections:         # descriptive only; no longer drives any build
     - label: Thesis
       concepts: ["allowed cuts", "omission"]
-href: https://…      # link nodes only
+href: https://…      # link / play nodes
+why: I needed…       # work projects — home spec
+problem: They kept…
+solution: One kernel…
+proof: https://…        # repo or running proof; omit if not public
 media: true          # play nodes with render placeholders
 ---
 ```
@@ -84,42 +85,13 @@ Essay chrome (title, standfirst, date, colophon) is rendered by `EssayReader` �
 
 1. **Excerpt** — `excerpt` frontmatter or first two `p` blocks
 2. **Full** — entire `body` at `/read/:id`, set in the Essay System
-3. **Constellation** — spatial argument descent from essay `##` / `###` sections (see below)
 
-## Constellation (argument descent)
-
-Every **writing** essay that supports descent must have a **section spine** in the body:
-
-- Prefer `## Section` headings; `### Section` is accepted when no `##` exist (e.g. me-plus-ai).
-- Section order in the markdown is essay order in the spatial layout.
-- Optional `struct` frontmatter still powers the field-graph spine; spatial layout reads the body digest.
-
-Build pipeline (`pnpm constellation:build`):
-
-1. `buildConstellationDigest()` — sections from body headings
-2. Graph from agent source (`constellation/sources/{id}.json`), LLM, or `localGenerate`
-3. `hydrateConstellationGraph()` — **always** adds `sectionSlug` + `meta.sectionSlugs` from digest
-4. Renderer uses **authored layout** when graph has `*-lens` + section-anchored inquiries
-
-Agent-authored graphs should include:
-
-```yaml
-people:
-  - id: {id}-lens          # required — center node
-  - id: …                  # section inquiries with sectionSlug matching digest slugs
-  - id: …                  # optional link inquiries (meta: "cites · …" — no sectionSlug)
-meta.sectionSlugs:         # filled automatically on build from digest
-```
-
-After editing `content/writing/*.md` or `constellation/sources/*.json`, run `pnpm pool:build && pnpm constellation:build`.
-
-**Build gates:** `pool:build` fails if a constellation essay lacks `##`/`###` sections. `constellation:build` fails if hydration cannot produce an authored-layout-ready graph (lens + section-anchored inquiries).
+The former spatial constellation descent was removed; `##`/`###` headings remain required for the reader's §NN section marks and rail.
 
 ## Rules for agents
 
 - Edit atoms, not JSX. Never add MDX or React in content files.
 - After editing any `content/**/*.md` or `src/pool/field.ts`, run `pnpm pool:build`.
-- After editing any writing essay, run `pnpm constellation:build` (or full `pnpm build`).
 - New nodes require both a content file **and** a hand-placed `positions[id]` entry.
 - Use `[[backlink:…]]` for in-essay navigation to other pool nodes.
 - Keep links directed and use only relations from `Rel` in `src/pool/types.ts`.
@@ -129,3 +101,4 @@ After editing `content/writing/*.md` or `constellation/sources/*.json`, run `pnp
 - MDX essays under `/essays/`
 - `bodyPath`, per-canvas JSON, zustand canvas store
 - v1 widget components
+- Constellation argument descent (spatial graphs, `constellation/`, `pnpm constellation:*`)

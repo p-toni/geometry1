@@ -1,4 +1,4 @@
-import { useMemo, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { ACCENT } from './data';
 import { SignalMark } from './SignalMark';
 import {
@@ -11,11 +11,17 @@ import {
   type ThesisRow,
 } from './thesis';
 
+type ThesisDir = 'compress' | 'expand';
+
 function rowFont(level: ThesisLevel, role: ThesisRow['role']) {
   const scale = TYPE_SCALE[level];
   if (role === 'premise') return scale.premise;
   if (role === 'turn') return scale.turn;
   return scale.body;
+}
+
+function direction(from: ThesisLevel, to: ThesisLevel): ThesisDir {
+  return to < from ? 'compress' : 'expand';
 }
 
 function RowText({ row, style }: { row: ThesisRow; style: CSSProperties }) {
@@ -40,44 +46,110 @@ function RowText({ row, style }: { row: ThesisRow; style: CSSProperties }) {
   );
 }
 
-export function ThesisSection() {
-  const [level, setLevel] = useState<ThesisLevel>(4);
+function ThesisLayer({
+  level,
+  className,
+  dir,
+  hidden,
+}: {
+  level: ThesisLevel;
+  className?: string;
+  dir: ThesisDir;
+  hidden?: boolean;
+}) {
   const rows = useMemo(() => thesisRows(level), [level]);
+  const cells: ReactNode[] = [];
+  let rowIndex = 0;
 
-  const compress = () => {
-    setLevel((l) => (l === 1 ? 4 : ((l - 1) as ThesisLevel)));
-  };
-
-  const toggleLabel =
-    level === 1 ? 'Restore the full argument' : 'Compress it further';
-
-  const bodyCells: ReactNode[] = [];
   rows.forEach((row, i) => {
     const font = rowFont(level, row.role);
     const textStyle: CSSProperties = {
       fontSize: font.size,
       lineHeight: font.lh,
       letterSpacing: font.track,
+      ['--row' as string]: rowIndex,
     };
+    const markStyle = { ['--row' as string]: rowIndex } as CSSProperties;
 
     if (i === 5) {
-      bodyCells.push(
-        <div key={`${level}-rule`} className="home-thesis__turn-rule" />,
+      cells.push(
+        <div
+          key={`${level}-rule`}
+          className="home-thesis__turn-rule"
+          style={{ ['--row' as string]: rowIndex }}
+        />,
       );
     }
 
-    bodyCells.push(
-      <div key={`${level}-m-${row.kind}`} className="home-thesis__mark">
-        <SignalMark
-          kind={row.kind}
-          size={MARK_SIZE}
-          accent={ACCENT}
-          label={row.label}
-        />
+    cells.push(
+      <div key={`${level}-m-${row.kind}`} className="home-thesis__mark" style={markStyle}>
+        <SignalMark kind={row.kind} size={MARK_SIZE} accent={ACCENT} />
       </div>,
       <RowText key={`${level}-t-${row.kind}`} row={row} style={textStyle} />,
     );
+    rowIndex += 1;
   });
+
+  return (
+    <div
+      className={['home-spine', 'home-thesis__body', className].filter(Boolean).join(' ')}
+      data-dir={dir}
+      style={{ rowGap: ROW_GAP }}
+      aria-hidden={hidden || undefined}
+    >
+      {cells}
+    </div>
+  );
+}
+
+const SWAP_MS = 220;
+const EASE = 'cubic-bezier(0.23, 1, 0.32, 1)';
+
+export function ThesisSection() {
+  const [level, setLevel] = useState<ThesisLevel>(1);
+  const [leaving, setLeaving] = useState<{ level: ThesisLevel; dir: ThesisDir } | null>(null);
+  const stageRef = useRef<HTMLDivElement>(null);
+  const swapTimer = useRef(0);
+  const heightAnim = useRef<Animation | null>(null);
+
+  useEffect(() => () => {
+    window.clearTimeout(swapTimer.current);
+    heightAnim.current?.cancel();
+  }, []);
+
+  const goTo = (next: ThesisLevel | ((current: ThesisLevel) => ThesisLevel)) => {
+    const resolved = typeof next === 'function' ? next(level) : next;
+    if (resolved === level) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) {
+      setLeaving(null);
+      setLevel(resolved);
+      return;
+    }
+
+    const dir = direction(level, resolved);
+    const el = stageRef.current;
+    const fromH = el?.offsetHeight ?? 0;
+    window.clearTimeout(swapTimer.current);
+    heightAnim.current?.cancel();
+    setLeaving({ level, dir });
+    setLevel(resolved);
+
+    requestAnimationFrame(() => {
+      if (!el) return;
+      const toH = el.offsetHeight;
+      if (Math.abs(toH - fromH) < 1) return;
+      heightAnim.current = el.animate([{ height: `${fromH}px` }, { height: `${toH}px` }], {
+        duration: SWAP_MS,
+        easing: EASE,
+      });
+    });
+
+    swapTimer.current = window.setTimeout(() => setLeaving(null), SWAP_MS + 80);
+  };
+
+  const toggleLabel =
+    level === 1 ? 'Restore the full argument' : 'Compress it further';
 
   return (
     <section id="thesis" className="home-col home-thesis">
@@ -101,7 +173,7 @@ export function ThesisSection() {
                   type="button"
                   className={`home-thesis__count${n === level ? ' is-on' : ''}`}
                   title={`${WORD_COUNT[n]} words`}
-                  onClick={() => setLevel(n)}
+                  onClick={() => goTo(n)}
                   aria-pressed={n === level}
                 >
                   {WORD_COUNT[n]}
@@ -113,12 +185,28 @@ export function ThesisSection() {
         </div>
       </div>
 
-      <div className="home-spine home-thesis__body" style={{ rowGap: ROW_GAP }}>
-        {bodyCells}
+      <div className="home-thesis__stage" ref={stageRef}>
+        {leaving ? (
+          <ThesisLayer
+            level={leaving.level}
+            dir={leaving.dir}
+            className="is-leave"
+            hidden
+          />
+        ) : null}
+        <ThesisLayer
+          level={level}
+          dir={leaving?.dir ?? 'compress'}
+          className={leaving ? 'is-enter' : undefined}
+        />
       </div>
 
       <div className="home-spine home-thesis__toggle-row">
-        <button type="button" className="home-thesis__toggle" onClick={compress}>
+        <button
+          type="button"
+          className="home-thesis__toggle"
+          onClick={() => goTo((l) => (l === 1 ? 4 : ((l - 1) as ThesisLevel)))}
+        >
           {toggleLabel}
         </button>
       </div>

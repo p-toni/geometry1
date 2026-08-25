@@ -1,0 +1,7 @@
+interface:
+  display_name: "Chalk Logic"
+  short_description: "Dark charcoal chalk covers for toni.ltd work, green plates in-essay"
+  default_prompt: "Use $chalk-logic to turn this concept into a 3:2 wordless chalk drawing on dark charcoal for a toni.ltd work cover: [concept]."
+
+policy:
+  allow_implicit_invocation: false

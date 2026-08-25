@@ -1,1 +1,47 @@
-@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..600;1,6..72,200..500&family=JetBrains+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&display=swap');
+
+@font-face {
+  font-family: Aileron;
+  src: url('/fonts/Aileron-Light.woff2') format('woff2');
+  font-weight: 300;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Aileron;
+  src: url('/fonts/Aileron-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Aileron;
+  src: url('/fonts/Aileron-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: Aileron;
+  src: url('/fonts/Aileron-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Junicode VF';
+  src: url('/fonts/JunicodeVF-Roman.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-stretch: 75% 125%;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Junicode VF';
+  src: url('/fonts/JunicodeVF-Italic.woff2') format('woff2-variations');
+  font-weight: 300 700;
+  font-stretch: 75% 125%;
+  font-style: italic;
+  font-display: swap;
+}

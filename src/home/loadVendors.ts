@@ -1,9 +1,6 @@
-// particle-scroll intentionally omitted — fixed scroller takeover caused
-// load blink and vertical layout jumps. Re-add only with a non-invasive host.
 const VENDORS = [
   '/vendor/thinking-orb.js',
   '/vendor/signal-marks.js',
-  '/vendor/field-hero.js',
 ] as const;
 
 let loadPromise: Promise<void> | null = null;

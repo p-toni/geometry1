@@ -1,4 +1,5 @@
 import { memo, type Dispatch, type ReactNode, type SetStateAction } from 'react';
+import { ACCENT } from '../design/swatches';
 import { PANELS } from './data';
 import {
   DistributionFigure,
@@ -148,20 +149,20 @@ const BEHAVIOURS = [
 ];
 
 const SWATCHES = [
-  { name: 'paper', hex: '#f6f2e9', bordered: true },
+  { name: 'paper', hex: '#faf8f5', bordered: true },
   { name: 'plate', hex: '#fbf8f1', bordered: true },
-  { name: 'rule', hex: '#e2dccd', bordered: false },
-  { name: 'faint', hex: '#a89f8e', bordered: false },
-  { name: 'ink', hex: '#221f1b', bordered: false },
-  { name: 'accent', hex: '#c2593a', bordered: false },
+  { name: 'rule', hex: '#ebe6dd', bordered: false },
+  { name: 'faint', hex: '#a8a39c', bordered: false },
+  { name: 'ink', hex: '#2a2824', bordered: false },
+  { name: 'accent', hex: '#a0522d', bordered: false },
 ];
 
 const TYPE_SCALE = [
-  { spec: ['44 / 48 · 300', '−0.026em'], render: <div className="esys-title" style={{ margin: 0, fontSize: 44 }}>Essay title</div> },
-  { spec: ['23 / 34 · 300 ital', '#5c564c'], render: <div className="esys-standfirst" style={{ margin: 0 }}>Standfirst, one sentence long</div> },
-  { spec: ['27 / 35 · 400', 'mono numeral'], render: <div style={{ fontSize: 27, lineHeight: 1.3, letterSpacing: '-0.012em' }}>Section heading</div> },
+  { spec: ['40 / 45 · 600 ital', 'Junicode'], render: <div className="esys-title" style={{ margin: 0, fontSize: 40 }}>Essay title</div> },
+  { spec: ['20 / 30 · 400 ital', '#6c675f'], render: <div className="esys-standfirst" style={{ margin: 0 }}>Standfirst, one sentence long</div> },
+  { spec: ['24 / 31 · 600 ital', 'Junicode'], render: <div className="esys-sec-head"><h2 style={{ margin: 0 }}>Section heading</h2></div> },
   {
-    spec: ['20 / 35.6 · 400', '#2b2721'],
+    spec: ['17 / 29 · 400', 'Aileron'],
     render: (
       <div className="esys-p" style={{ margin: 0 }}>
         Body. The measure is set so that a line lands between sixty-five and seventy-two characters at
@@ -190,7 +191,7 @@ const TYPE_SCALE = [
   },
 ];
 
-/** Listing 1 — keywords clay, comments faint, everything else ink. No third colour. */
+/** Listing 1 — keywords sienna, comments faint, everything else ink. No third colour. */
 const LISTING: (() => ReactNode)[] = [
   () => <code className="esys-comment"># the edge is a parameter, not an accident</code>,
   () => (
@@ -297,8 +298,9 @@ export const SystemPart = memo(function SystemPart({ controls }: { controls: Fig
       <section id="s-type" className="esys-sec">
         <SectionHead num="03" title="Type" />
         <p className="esys-p esys-p--lede">
-          Two families. Newsreader carries every word the reader is meant to read; JetBrains Mono
-          carries every word the reader is meant to consult. There is no third.
+          Junicode carries the voice — titles, the standfirst, the turn. Aileron carries the rest of
+          what is read. Mono still consults: rail, dates, the machinery. It is not a third reading
+          face.
         </p>
         <div style={{ marginTop: 34 }}>
           {TYPE_SCALE.map((row) => (
@@ -317,7 +319,7 @@ export const SystemPart = memo(function SystemPart({ controls }: { controls: Fig
       <section id="s-ink" className="esys-sec">
         <SectionHead num="04" title="Ink" />
         <p className="esys-p esys-p--lede">
-          Warm paper, warm black, one clay accent. The accent is a pin, not a palette — it marks the
+          Warm paper, warm black, one sienna accent. The accent is a pin, not a palette — it marks the
           single thing on a page that the reader is being asked to look at.
         </p>
         <div className="esys-swatches">
@@ -442,7 +444,7 @@ function FiguresSection() {
         Ten classes, one drawing language. No gridlines, no fills, no legends floating in a box —
         series are labelled where they end. Axes are a single baseline with tick marks; the y-axis is
         implied by the labels and drawn only when a zero line matters. Everything is 1px, everything
-        is mono-labelled, and exactly one mark per figure may be clay.
+        is mono-labelled, and exactly one mark per figure may be sienna.
       </p>
 
       <figure className="esys-fig">
@@ -501,7 +503,7 @@ function FiguresSection() {
 
       <figure className="esys-fig">
         <div className="esys-plate esys-plate--flush">
-          <plate-lattice accent="#c2593a" ink="#221f1b" amp="26" speed="1" threshold="0.55" />
+          <plate-lattice accent={ACCENT} ink="#2a2824" amp="26" speed="1" threshold="0.55" />
         </div>
         <figcaption className="esys-cap">
           <b>Fig. 7 — Live plate.</b> The slot for shaders, simulations and 3D. Same rules apply:
@@ -554,7 +556,7 @@ function FiguresSection() {
             <div className="esys-spec-title">Fixed for essays</div>
             polarity → light only
             <br />
-            accent → clay #c2593a
+            accent → sienna #a0522d
             <br />
             ratio → 16:9 or 4:5
             <br />
@@ -631,7 +633,7 @@ function FiguresSection() {
         </div>
         <div className="esys-cap">
           <b>Listing 1 — Code.</b> 12.5px on plate fill with a hairline gutter of faint line numbers.
-          Syntax colour is the accent and the faint grey only: keywords clay, comments faint,
+          Syntax colour is the accent and the faint grey only: keywords sienna, comments faint,
           everything else ink. No third colour, no theme.
         </div>
       </div>
@@ -649,8 +651,7 @@ function FiguresSection() {
   );
 }
 
-const ACCENT = '#c2593a';
-const INK = '#221f1b';
+const INK = '#2a2824';
 
 /**
  * B1: the resting state is the figure. Untouched, Fig. 11 must be exactly Fig. 4 — the
@@ -716,15 +717,15 @@ function BehaviourSection({ controls }: { controls: FigureControls }) {
             <path
               d={curves.retention}
               fill="none"
-              stroke="#221f1b"
+              stroke={INK}
               pathLength={1}
               strokeDasharray="1"
               strokeDashoffset={revealed ? 0 : 1}
               style={{ transition: 'stroke-dashoffset 1400ms cubic-bezier(0.4, 0, 0.2, 1)' }}
             />
-            <line x1="656" y1={curves.intakeY} x2="656" y2={curves.retentionY} stroke="#c2593a" />
+            <line x1="656" y1={curves.intakeY} x2="656" y2={curves.retentionY} stroke={ACCENT} />
             <circle cx="656" cy={curves.intakeY} r="2.2" fill="#a89f8e" />
-            <circle cx="656" cy={curves.retentionY} r="2.2" fill="#c2593a" />
+            <circle cx="656" cy={curves.retentionY} r="2.2" fill={ACCENT} />
             <g fontFamily="'JetBrains Mono', monospace" fontSize="9.5" fill="#8d8474">
               <text x="30" y="33">1.0</text>
               <text x="30" y="190">0</text>
@@ -732,7 +733,7 @@ function BehaviourSection({ controls }: { controls: FigureControls }) {
               <text x="354" y="204" textAnchor="middle">12</text>
               <text x="656" y="204" textAnchor="end">24</text>
               <text x="640" y={curves.intakeY - 9} textAnchor="end">taken in</text>
-              <text x="640" y={retainedLabelY} textAnchor="end" fill="#221f1b">retained</text>
+              <text x="640" y={retainedLabelY} textAnchor="end" fill={INK}>retained</text>
             </g>
           </svg>
         </div>

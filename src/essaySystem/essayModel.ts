@@ -29,6 +29,7 @@ export type DocItem =
   | { t: 'plate'; figure: number; src: string; caption: string; ratio: string }
   | { t: 'drawn'; figure: number; kind: DrawnKind; caption: string }
   | { t: 'motif'; figure: number; caption: string }
+  | { t: 'audio'; figure: number; src: string; label: string; caption: string }
   | {
       t: 'diagram';
       figure: number;
@@ -49,26 +50,47 @@ export type DocItem =
       caption: string;
     };
 
-export type DrawnKind = 'rotation' | 'crack';
+/**
+ * Every drawn figure the reader knows how to mount. This array is the single source of
+ * truth: the type is derived from it and the guard tests membership in it, so a kind can
+ * never be added to one and forgotten in the other. It was two lists once, and a figure
+ * parsed correctly, entered the pool, and was dropped on the way to the page without
+ * failing anything.
+ */
+export const DRAWN_KINDS = [
+  'rotation',
+  'crack',
+  'core-sets',
+  'rod-change',
+  'channel-break',
+  'connector',
+] as const;
+
+export type DrawnKind = (typeof DRAWN_KINDS)[number];
+
+/** Drawn figures that animate; the reader watches the first one it finds. */
+const ANIMATED: ReadonlySet<DrawnKind> = new Set<DrawnKind>(['core-sets']);
+
+export function isDrawnKind(kind: string): kind is DrawnKind {
+  return (DRAWN_KINDS as readonly string[]).includes(kind);
+}
+
+/** The DOM id a drawn figure mounts under, so scroll state can find it. */
+export function drawnFigureId(kind: DrawnKind): string {
+  return `fig-${kind}`;
+}
+
+/** The first animated drawn figure in a document, or undefined if it has none. */
+export function watchedFigure(items: DocItem[]): string | undefined {
+  for (const item of items) {
+    if (item.t === 'drawn' && ANIMATED.has(item.kind)) return drawnFigureId(item.kind);
+  }
+  return undefined;
+}
 
 type PlateBinding =
   | { as: 'image'; src: string; ratio: string }
   | { as: 'drawn'; kind: DrawnKind };
-
-/**
- * The plates authored for this essay point at SVGs that were never produced, so each is
- * rebound to something the system actually permits.
- *
- * Image plates are fixed to light polarity, and `gated-streamlines` is the only
- * commissioned visual that qualifies — the other two run at ~30/255 mean luma and would
- * read as holes in the warm ground. For the rest the system's own tie-break applies:
- * where a drawn figure and a plate would carry the same event, the drawn figure wins.
- */
-const PLATE_BINDINGS: PlateBinding[] = [
-  { as: 'image', src: '/visuals/gated-streamlines.jpg', ratio: '16 / 9' },
-  { as: 'drawn', kind: 'rotation' },
-  { as: 'drawn', kind: 'crack' },
-];
 
 const ROMAN = /^(?:[IVX]+\.\s*)/;
 
@@ -143,7 +165,7 @@ export function buildEssayDocument(node: PoolNode, pool: Record<string, PoolNode
   // Figures and tables are numbered in separate sequences, as on the specification page.
   let figure = 0;
   let table = 0;
-  let plateIndex = 0;
+  let clip = 0;
 
   const lastProse = () => {
     for (let i = items.length - 1; i >= 0; i--) {
@@ -183,15 +205,36 @@ export function buildEssayDocument(node: PoolNode, pool: Record<string, PoolNode
         });
         break;
       case 'plate': {
-        const binding = PLATE_BINDINGS[plateIndex % PLATE_BINDINGS.length]!;
-        plateIndex += 1;
         figure += 1;
         const caption = plateSentence(block.cap);
+        // An authored source renders as written; a plate with no source is dropped.
+        const binding: PlateBinding | undefined = block.src
+          ? { as: 'image', src: block.src, ratio: '16 / 9' }
+          : undefined;
+        if (!binding) break;
         items.push(
           binding.as === 'image'
             ? { t: 'plate', figure, src: binding.src, ratio: binding.ratio, caption }
             : { t: 'drawn', figure, kind: binding.kind, caption },
         );
+        break;
+      }
+      case 'drawn': {
+        if (!isDrawnKind(block.kind)) break;
+        figure += 1;
+        items.push({ t: 'drawn', figure, kind: block.kind, caption: block.cap ?? '' });
+        break;
+      }
+      case 'audio': {
+        // Clips are numbered in their own sequence — they are not figures.
+        clip += 1;
+        items.push({
+          t: 'audio',
+          figure: clip,
+          src: block.src,
+          label: block.label,
+          caption: block.cap ?? '',
+        });
         break;
       }
       case 'motif':

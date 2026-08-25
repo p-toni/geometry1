@@ -5,7 +5,7 @@ import { RETIRED_READ_IDS, readPath } from '../lib/legacyRoutes';
 import { generatedPool } from '../pool/generated';
 import { EssayBlock } from './EssayBlocks';
 import { BackLink, EssayFootNav } from './EssayNav';
-import { buildEssayDocument, buildNavigation } from './essayModel';
+import { buildEssayDocument, buildNavigation, watchedFigure } from './essayModel';
 import { Rail } from './Rail';
 import { useReadingApparatus } from './useReadingApparatus';
 
@@ -40,7 +40,9 @@ export function EssayReader() {
     [node],
   );
   const emptySpine = useMemo(() => ({ sections: [], claims: [] }), []);
-  const apparatus = useReadingApparatus(doc?.spine ?? emptySpine, doc?.notes ?? {});
+  // An animated drawn figure resolves when it arrives, not when the page loads.
+  const watch = useMemo(() => (doc ? watchedFigure(doc.items) : undefined), [doc]);
+  const apparatus = useReadingApparatus(doc?.spine ?? emptySpine, doc?.notes ?? {}, watch);
 
   useLayoutEffect(() => {
     document.documentElement.classList.remove('home-mode');
@@ -65,7 +67,7 @@ export function EssayReader() {
   if (retired) return <Navigate to={readPath(id)} replace />;
   if (!node || !doc) return <Navigate to="/" replace />;
 
-  const { noteControls, noteDetail, pinned, railOn } = apparatus;
+  const { noteControls, noteDetail, pinned, railOn, revealed } = apparatus;
   const hasNote = (targetId: string) => targetId in doc.notes;
 
   return (
@@ -114,6 +116,7 @@ export function EssayReader() {
               notes={noteControls}
               hasNote={hasNote}
               resolveInline={railOn ? undefined : (targetId) => doc.notes[targetId] ?? null}
+              revealed={revealed}
             />
           ))}
 
@@ -135,7 +138,7 @@ export function EssayReader() {
 
           <div className="esys-colophon esys-colophon--foot">
             <div>
-              <span>Set in</span> Newsreader &amp; JetBrains Mono
+              <span>Set in</span> Junicode &amp; Aileron
             </div>
             <div>
               <span>Figures</span> drawn to <a href="/essay-system">Essay System Rev. 01</a>

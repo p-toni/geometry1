@@ -1,25 +1,10 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { dirname, join, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import manifest from '../constellation/generated/manifest.json';
 import { splitInlineBacklinks } from '../src/lib/inlineBacklink.ts';
 import { excerptFromBlocks, parseBlocks } from '../src/lib/parseBlocks.ts';
-import { sectionHeadingsFromBody } from '../src/lib/sectionHeadings.ts';
 import { layout, positions } from '../src/pool/field.ts';
 import type { Block, Cluster, EssayStruct, Link, NodeKind, PoolNode, Rel } from '../src/pool/types.ts';
-
-const MANIFEST_POOL_ID_ALIASES: Record<string, string> = {
-  'geometry-over-retrieval': 'geometry-retrieval',
-};
-
-const CONSTELLATION_ESSAY_IDS = new Set(
-  manifest.graphs
-    .filter((g) => g.kind === 'essay')
-    .map((g) => {
-      const id = g.id.replace(/^\d+-/, '');
-      return MANIFEST_POOL_ID_ALIASES[id] ?? id;
-    }),
-);
 
 const VALID_RELS = new Set<string>([
   'cites', 'theme', 'leads to', 'pairs', 'part of', 'sibling', 'echoes', 'idea',
@@ -40,6 +25,10 @@ type Frontmatter = {
   links?: { target: string; rel: Rel }[];
   excerpt?: string[];
   href?: string;
+  why?: string;
+  problem?: string;
+  solution?: string;
+  proof?: string;
   media?: boolean;
   struct?: EssayStruct;
 };
@@ -224,6 +213,10 @@ function textFields(block: Block): string[] {
       ]);
     case 'backlink':
       return [block.targetId, block.rel, block.title];
+    case 'drawn':
+      return [block.cap ?? ''];
+    case 'audio':
+      return [block.label, block.cap ?? ''];
     case 'h':
     case 'motif':
     case 'point-edge':
@@ -270,20 +263,13 @@ for (const file of walkMd(contentDir)) {
     body: blocks,
     struct: meta.struct,
     href: meta.href,
+    why: meta.why,
+    problem: meta.problem,
+    solution: meta.solution,
+    proof: meta.proof,
     media: meta.media,
     sourcePath: `/${relative(root, file).replace(/\\/g, '/')}`,
   };
-}
-
-const sectionSpineErrors: string[] = [];
-for (const node of Object.values(nodes)) {
-  if (node.cluster !== 'writing' || node.kind !== 'essay') continue;
-  if (!CONSTELLATION_ESSAY_IDS.has(node.id)) continue;
-  if (!sectionHeadingsFromBody(node.body).length) {
-    sectionSpineErrors.push(
-      `${node.id}: missing ## or ### section headings (required for constellation descent)`,
-    );
-  }
 }
 
 const inlineBacklinkErrors: string[] = [];
@@ -323,11 +309,6 @@ for (const node of Object.values(nodes)) {
 if (inlineBacklinkErrors.length) {
   for (const msg of inlineBacklinkErrors) console.error(`error [inline-backlink] ${msg}`);
   throw new Error(`pool:build: ${inlineBacklinkErrors.length} inline backlink error(s)`);
-}
-
-if (sectionSpineErrors.length) {
-  for (const msg of sectionSpineErrors) console.error(`error [section-spine] ${msg}`);
-  throw new Error(`pool:build: ${sectionSpineErrors.length} constellation essay(s) lack a section spine`);
 }
 
 const pool = { nodes, layout };

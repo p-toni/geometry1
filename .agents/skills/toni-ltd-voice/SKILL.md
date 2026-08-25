@@ -123,6 +123,79 @@ or:
 
 > If weakening one sentence destroys the structure, I do not have geometry.
 
+## House Soul
+
+Derived August 2026 by reading Will Manidis alongside the three constellation essays.
+The reference is `willmanidis.com/writing`. We are inspired by it; we do not reproduce it.
+
+**The error this section exists to prevent:** reading *soul* as *more first person*.
+It is not. Leading with the author's pressure and demoting the case turns a scene into
+a diagnostic sentence, and a diagnostic sentence has no time in it — nothing is about
+to happen, and the reader is nowhere.
+
+### What we take from Manidis
+
+- **Open on an object you could go and look at.** A place, a date, a proper noun, flat
+  declarative. No thesis, no pressure, no *I*. The pressure arrives second.
+- **Useless loving detail before any argument.** Craft detail carrying no analytical
+  payload, there to make the reader want the object.
+- **Announce the turn baldly.** No transition machinery.
+- **Name the concept as a physical object.** Pyramid, tomb, kanna — not
+  *preservation-orientation*.
+- **Range.** Three to five instances per essay, at least two from outside this repo,
+  at least one low-status and contemporary. Range is what buys intimacy: he can cut to
+  himself constantly because he is already cutting to eight other things.
+- **End on one flat line.** No list, no protocol, no citation. One line, landing like a
+  door closing.
+
+### What is ours and does not get traded away
+
+- **The private diagnostic** — a test the reader can run tonight. But it lives on the
+  card, not in the final paragraph.
+- **Visible seams** — Eyles says eight core sets, the ALSJ says seven, and the essay
+  says so rather than picking the number that reads better.
+- **Real instruments** — audio, drawn figures, animated plates. Not tweet embeds.
+- **Essays that revise each other.** The correction arc runs between pieces.
+- **Technical intimacy.** Manidis writes about the world. We write about the author's
+  own loop, using the world. He diagnoses a culture; we install a stabiliser.
+- **The three registers.** Past, present, and *future stated in the completed tense* —
+  see below.
+
+### The three registers
+
+An essay may draw on three sources of instance, and the third is ours alone.
+
+| register | source | tense |
+|----------|--------|-------|
+| **the record** | a historical case, verified, with provenance | past |
+| **the loop** | the author's own working life | present |
+| **the perfect** | a near future written as already installed | completed past |
+
+The third register borrows from cyberpunk — the genre's future is not new, it is old,
+installed and unmaintained — and from the **prophetic perfect** of Biblical Hebrew,
+where a future event takes the *qatal* form because the speaker is certain enough that
+tense has stopped mattering. Kimhi's gloss: *the matter is as clear as though it had
+already passed.*
+
+This is not decoration. Every essay here is about information that was already true and
+not yet acted on. Writing the coming failure in the perfect tense **performs the
+argument instead of stating it.**
+
+**And it is double-edged, so it must be caught in the same essay.** A sentence in the
+perfect tense cannot be refuted — it has already happened, so nothing can come back to
+it. That is the numb map exactly. Use the device, then name what is wrong with it.
+
+### Structural rules
+
+1. **Keep the scene entrance.** Never open on a condition.
+2. **Three to five instances**, at least two from outside the repo. Keep the long
+   historical spine — sustaining one case is ours and it beats his accumulation — but
+   hang shorter instances off it.
+3. **Ladders go to the cards. Provenance never lands last.**
+4. **End on one flat line.** Where there are three candidate closers, two are card
+   material. Pick the one that is a physical object or a refusal, and stop.
+5. **If the perfect tense is used, catch it before the essay ends.**
+
 ## Audience Registers
 
 ### Essay Mode
@@ -135,7 +208,14 @@ The prose can be strange, recursive, and intimate. It should feel like the autho
 
 Use for `content/work/*.md`.
 
-Be concrete and proof-oriented. State what the project is, what it makes possible, and where the live proof lives. Keep the same voice, but reduce abstraction.
+Work is software the author is building. Author four frontmatter fields and keep the body as a short note, not an essay:
+
+- `why` — the private pressure
+- `problem` — what kept failing
+- `solution` — the software shape
+- `proof` — repo or running URL; omit if it is not public
+
+Home renders those four on current software. Method and archive nodes stay one-liners (`date: method` / `date: archive`). Do not impersonate a writing list. Keep the same voice, but reduce abstraction.
 
 ### Visual Play Node Mode
 

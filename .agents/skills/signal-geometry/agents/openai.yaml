@@ -1,0 +1,7 @@
+interface:
+  display_name: "Signal Geometry"
+  short_description: "4:5 light paper posters for toni.ltd essays"
+  default_prompt: "Use $signal-geometry to turn this concept into a 4:5 light paper poster for toni.ltd with no text: [concept]."
+
+policy:
+  allow_implicit_invocation: false

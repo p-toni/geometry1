@@ -125,7 +125,7 @@ export const SpecimenPart = memo(function SpecimenPart({ notes }: { notes: NoteC
             <TimeSeriesFigure />
           </div>
           <figcaption className="esys-cap">
-            Fig. 12 — Two years of a reading log, normalised. The clay line is not a measurement; it
+            Fig. 12 — Two years of a reading log, normalised. The sienna line is not a measurement; it
             is the distance between what I did and what I got.
           </figcaption>
         </figure>
@@ -280,7 +280,7 @@ export const SpecimenPart = memo(function SpecimenPart({ notes }: { notes: NoteC
 
         <div className="esys-colophon esys-colophon--foot">
           <div>
-            <span>Set in</span> Newsreader &amp; JetBrains Mono
+            <span>Set in</span> Junicode &amp; Aileron
           </div>
           <div>
             <span>Figures</span> drawn to Essay System Rev. 01
