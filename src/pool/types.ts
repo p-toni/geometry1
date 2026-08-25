@@ -23,6 +23,7 @@ export type NodeKind =
   | 'shader'
   | 'voxel'
   | 'sharp'
+  | 'sketch'
   | 'link'
   | 'about';
 

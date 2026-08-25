@@ -60,6 +60,7 @@ const PLAY_KIND_LABEL: Partial<Record<NodeKind, string>> = {
   shader: 'Shader',
   voxel: 'Voxel',
   sharp: 'Point cloud',
+  sketch: 'Sketch',
   link: 'Link',
   project: 'Project',
 };

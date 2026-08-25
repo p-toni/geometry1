@@ -447,6 +447,12 @@
   text-wrap: balance;
 }
 
+/* A body that opens on prose rather than a section mark still needs air under the
+   standfirst. Every play study opens this way. */
+.esys-standfirst + .esys-p {
+  margin-top: 34px;
+}
+
 .esys-p {
   margin: 0 0 26px;
   font-size: 17px;
@@ -1701,4 +1707,35 @@
 @media (max-width: 600px) {
   .esys-audio { gap: 12px; padding: 12px 14px; }
   .esys-audio__time { font-size: 10px; }
+}
+
+/* The tsubuyaki field is a lit screen, not a plate — it carries its own dark ground,
+   so it takes no paper padding and no rule. Square, because the sketch is. */
+.esys-tsubuyaki {
+  margin: 30px 0 8px;
+}
+
+.esys-tsubuyaki__screen {
+  background: #0a0a0a;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.esys-tsubuyaki__screen tsubuyaki-field {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The whole program, at the size it was written to fit. */
+.esys-tsubuyaki__source {
+  max-width: 520px;
+  margin: 10px auto 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.62;
+  color: var(--meta);
+  word-break: break-all;
 }

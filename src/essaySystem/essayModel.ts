@@ -65,6 +65,7 @@ export const DRAWN_KINDS = [
   'channel-break',
   'connector',
   'curve-break',
+  'tsubuyaki',
 ] as const;
 
 export type DrawnKind = (typeof DRAWN_KINDS)[number];

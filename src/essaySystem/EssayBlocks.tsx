@@ -8,6 +8,7 @@ import {
   ChannelBreakFigure,
   ConnectorFigure,
   CurveBreakFigure,
+  TsubuyakiFigure,
   CoreSetsFigure,
   CrackFigure,
   FlowDiagram,
@@ -216,6 +217,8 @@ export function EssayBlock({
               <ConnectorFigure />
             ) : item.kind === 'curve-break' ? (
               <CurveBreakFigure />
+            ) : item.kind === 'tsubuyaki' ? (
+              <TsubuyakiFigure />
             ) : item.kind === 'rotation' ? (
               <RotationFigure />
             ) : (

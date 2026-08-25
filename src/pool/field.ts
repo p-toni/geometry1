@@ -23,6 +23,7 @@ export const positions: Record<string, readonly [number, number]> = {
   xcom: [1202, 500],
   'lock-in': [1182, 662],
   'point-cloud': [1018, 692],
+  tsubuyaki: [1120, 574],
   about: [322, 722],
 };
 

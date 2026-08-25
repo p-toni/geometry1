@@ -1,4 +1,6 @@
+import { useEffect, useState } from 'react';
 import { ACCENT } from '../design/swatches';
+import { loadVendorScript } from '../home/loadVendors';
 import { PANELS } from './data';
 
 const MONO = "'JetBrains Mono', monospace";
@@ -874,3 +876,40 @@ export function PageDiagram() {
     </svg>
   );
 }
+
+/**
+ * The tsubuyaki sketch, running. The posted artifact is 280 characters of p5.js; this
+ * is the same system in the site's own vendor-element idiom, so the page carries no
+ * p5 dependency. The script is fetched only when the figure mounts.
+ */
+export function TsubuyakiFigure() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let live = true;
+    void loadVendorScript('/vendor/tsubuyaki.js')
+      .then(() => { if (live) setReady(true); })
+      .catch(() => undefined);
+    return () => { live = false; };
+  }, []);
+
+  return (
+    <figure className="esys-tsubuyaki">
+      <div
+        className="esys-tsubuyaki__screen"
+        role="img"
+        aria-label="A dense cloud of pale points forming a folded organic body on a near-black ground. Thousands of samples are wound by a phase that turns faster the further they sit from the centre, so the mass reads as layered sheets and cavities. A few warm orange glints mark where the body folds most tightly onto itself. The form slowly reorganises without moving as a whole."
+      >
+        {ready ? <tsubuyaki-field accent={ACCENT} /> : null}
+      </div>
+      {/* The program is the artifact, so it is shown, not described. */}
+      <figcaption className="esys-tsubuyaki__source">{TSUBUYAKI_SOURCE}</figcaption>
+    </figure>
+  );
+}
+
+const TSUBUYAKI_SOURCE =
+  't=0;draw=_=>{t||createCanvas(w=400,w);background(8);stroke(255,34);' +
+  'for(i=4e4;i--;)point(200+(q=34+sin((k=i%173/40-2.1)*3+(e=i/9515-2.1)*2-t)' +
+  '*(d=mag(k,e))*19)*cos(c=d*d*2.1-t+i%2*3)+k*34,200+q*sin(c)*.8+e*34);' +
+  't+=PI/240}//#つぶやきProcessing';

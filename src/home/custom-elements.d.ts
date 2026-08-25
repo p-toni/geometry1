@@ -17,6 +17,14 @@ declare module 'react' {
         accent?: string;
         label?: string;
       };
+      'tsubuyaki-field': CEProps & {
+        ground?: string;
+        ink?: string;
+        accent?: string;
+        samples?: string;
+        speed?: string;
+        paused?: string;
+      };
       'plate-lattice': CEProps & {
         ink?: string;
         accent?: string;
