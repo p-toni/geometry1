@@ -367,6 +367,86 @@ export function RodChangeFigure() {
 
 
 /**
+ * The fitted relation, and the two years that will not sit on it. The curve is drawn
+ * from a sample in which nobody was leaning on it; 1970 and 1975 are the United States
+ * after somebody was.
+ *
+ * One accent event: the arrow, which runs up and to the right. No downward-sloping
+ * curve admits a pair like that — which is the argument, drawn.
+ */
+export function CurveBreakFigure() {
+  const label = (x: number, y: number, text: string, fill = '#8d8474', anchor?: 'end' | 'middle') => (
+    <text x={x} y={y} textAnchor={anchor} fontFamily={MONO} fontSize="9.5" fill={fill}>
+      {text}
+    </text>
+  );
+
+  // unemployment 3–10 across 90–600; inflation 0–14 across 240–40
+  const px = (u: number) => 90 + ((u - 3) * 510) / 7;
+  const py = (i: number) => 240 - (i * 200) / 14;
+
+  const sample: [number, number][] = [
+    [3.4, 8.6], [3.8, 6.4], [4.3, 5.2], [4.9, 3.4], [5.4, 2.9],
+    [6.1, 1.9], [6.8, 1.5], [7.6, 0.9], [8.4, 0.6],
+  ];
+
+  return (
+    <svg viewBox="0 0 680 292" role="img"
+      aria-label="A downward-sloping curve fitted through a scatter of points: as unemployment rises, inflation falls. Two further points are marked, 1970 at 4.9 percent unemployment and 5.8 percent inflation, and 1975 at 8.5 and 9.1. An arrow runs from the first to the second, up and to the right, away from the curve entirely, because both quantities rose together.">
+      {label(20, 22, 'the fitted relation, and the pair it cannot hold')}
+
+      {/* axes */}
+      <g stroke="#c3bbae" fill="none">
+        <line x1="90" y1="40" x2="90" y2="240" />
+        <line x1="90" y1="240" x2="614" y2="240" />
+      </g>
+      {[0, 4, 8, 12].map((i) => (
+        <g key={i}>
+          <line x1="86" y1={py(i)} x2="90" y2={py(i)} stroke="#c3bbae" />
+          {label(80, py(i) + 3.5, String(i), '#b3aa99', 'end')}
+        </g>
+      ))}
+      {[4, 6, 8, 10].map((u) => (
+        <g key={u}>
+          <line x1={px(u)} y1="240" x2={px(u)} y2="244" stroke="#c3bbae" />
+          {label(px(u), 258, String(u), '#b3aa99', 'middle')}
+        </g>
+      ))}
+      {label(90, 276, 'unemployment, per cent')}
+      {label(80, 52, 'inflation', '#8d8474', 'end')}
+
+      {/* the sample the curve was fitted to */}
+      <g fill={INK}>
+        {sample.map(([u, i]) => (
+          <circle key={`${u}`} cx={px(u)} cy={py(i)} r="1.7" opacity="0.55" />
+        ))}
+      </g>
+
+      {/* the curve */}
+      <path
+        d={`M${px(3.2)} ${py(10)} C ${px(3.9)} ${py(6.2)}, ${px(4.6)} ${py(4.2)}, ${px(5.2)} ${py(3.2)} S ${px(7.2)} ${py(1.4)}, ${px(9)} ${py(0.5)}`}
+        stroke={INK}
+        fill="none"
+      />
+      {label(px(6.4), py(2.6), 'the menu, as drawn')}
+
+      {/* the accent event: two years that both went up */}
+      <g stroke={ACCENT} fill="none">
+        <line x1={px(4.9)} y1={py(5.8)} x2={px(8.2)} y2={py(8.85)} />
+        <path d="M-10 -3.6 L0 0 L-10 3.6" transform="translate(468.9 113.6) rotate(-10.27)" />
+        <circle cx={px(8.5)} cy={py(9.1)} r="4.5" />
+      </g>
+      <circle cx={px(4.9)} cy={py(5.8)} r="2.6" fill={ACCENT} />
+      {label(px(4.9) - 8, py(5.8) - 8, '1970', ACCENT, 'end')}
+      {label(px(8.5) + 10, py(9.1) - 6, '1975 — both rose', ACCENT)}
+
+      {label(20, 288, 'United States, annual averages', '#b3aa99')}
+    </svg>
+  );
+}
+
+
+/**
  * The taper that fits everything. Three couplings drawn in profile: the same male Luer
  * tip meeting an intravenous hub, the same tip meeting a spinal hub, and the same tip
  * meeting an NRFit bore that will not take it.

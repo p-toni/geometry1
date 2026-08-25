@@ -7,6 +7,7 @@ import { drawnFigureId, type DocItem } from './essayModel';
 import {
   ChannelBreakFigure,
   ConnectorFigure,
+  CurveBreakFigure,
   CoreSetsFigure,
   CrackFigure,
   FlowDiagram,
@@ -213,6 +214,8 @@ export function EssayBlock({
               <ChannelBreakFigure />
             ) : item.kind === 'connector' ? (
               <ConnectorFigure />
+            ) : item.kind === 'curve-break' ? (
+              <CurveBreakFigure />
             ) : item.kind === 'rotation' ? (
               <RotationFigure />
             ) : (

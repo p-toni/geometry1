@@ -15,6 +15,7 @@ export const FIG_BLOCKS: Record<string, Block> = {
   'rod-change': { t: 'drawn', kind: 'rod-change' },
   'channel-break': { t: 'drawn', kind: 'channel-break' },
   connector: { t: 'drawn', kind: 'connector' },
+  'curve-break': { t: 'drawn', kind: 'curve-break' },
   rotation: { t: 'drawn', kind: 'rotation' },
   crack: { t: 'drawn', kind: 'crack' },
   table: { t: 'table', headers: [], rows: [] },

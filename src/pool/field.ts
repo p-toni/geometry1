@@ -8,6 +8,7 @@ export const positions: Record<string, readonly [number, number]> = {
   'the-contact': [340, 214],
   'the-cut': [292, 268],
   'the-container': [246, 240],
+  'the-curve': [404, 296],
   marginalia: [174, 340],
   'codex-fieldwork': [850, 118],
   geometry: [952, 208],
