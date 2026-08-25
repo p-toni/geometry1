@@ -36,8 +36,8 @@
 
     disconnectedCallback() {
       cancelAnimationFrame(this._raf);
-      this._ro && this._ro.disconnect();
-      this._io && this._io.disconnect();
+      this._ro?.disconnect();
+      this._io?.disconnect();
       this._built = false;
     }
 
@@ -97,13 +97,13 @@
       ctx.globalAlpha = 0.34;
       for (let i = 0; i <= COLS; i++) {
         ctx.beginPath();
-        for (let j = 0; j <= ROWS; j++) { const p = P[i][j]; j ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); }
+        for (let j = 0; j <= ROWS; j++) { const p = P[i][j]; if (j) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); }
         ctx.stroke();
       }
       ctx.globalAlpha = 0.18;
       for (let j = 0; j <= ROWS; j++) {
         ctx.beginPath();
-        for (let i = 0; i <= COLS; i++) { const p = P[i][j]; i ? ctx.lineTo(p.x, p.y) : ctx.moveTo(p.x, p.y); }
+        for (let i = 0; i <= COLS; i++) { const p = P[i][j]; if (i) ctx.lineTo(p.x, p.y); else ctx.moveTo(p.x, p.y); }
         ctx.stroke();
       }
 

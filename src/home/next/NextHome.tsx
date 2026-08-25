@@ -1,4 +1,4 @@
-import { useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import { Fragment, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import {
   ACCENT,
   HOME_INTRO,
@@ -12,6 +12,7 @@ import {
 } from '../data';
 import { SignalMark } from '../SignalMark';
 import { NodePlate } from '../plates';
+import { useSweepNav } from '../sweepNav';
 import './next.css';
 
 /**
@@ -64,6 +65,7 @@ function doorText(door: Door, register: Register): string {
 /* —— panels —— */
 
 function EssaysPanel() {
+  const sweepTo = useSweepNav();
   const essays = homeWriting();
   const [featured, ...rest] = essays;
   if (!featured) return null;
@@ -73,6 +75,7 @@ function EssaysPanel() {
       <a
         href={`/read/${featured.id}`}
         className="nxp-featured"
+        onClick={sweepTo(`/read/${featured.id}`)}
       >
         <div className="nxp-featured__plate">
           <NodePlate id={featured.id} />
@@ -87,7 +90,7 @@ function EssaysPanel() {
       <ul className="nxp-list">
         {rest.map((e) => (
           <li key={e.id}>
-            <a href={`/read/${e.id}`}>
+            <a href={`/read/${e.id}`} onClick={sweepTo(`/read/${e.id}`)}>
               <span className="nxp-list__title">{e.title}</span>
               <span className="nxp-list__dek">{e.dek}</span>
               <span className="nxp-list__meta">{e.year}</span>
@@ -103,6 +106,7 @@ function EssaysPanel() {
 }
 
 function WorkPanel() {
+  const sweepTo = useSweepNav();
   const specs = homeWork().filter(isWorkSpec);
   const compact = homeWork().filter((w) => !isWorkSpec(w));
   return (
@@ -115,6 +119,7 @@ function WorkPanel() {
             href={w.proof ?? `/read/${w.id}`}
             target={w.proof ? '_blank' : undefined}
             rel={w.proof ? 'noreferrer' : undefined}
+            onClick={w.proof ? undefined : sweepTo(`/read/${w.id}`)}
           >
             <span className="nxp-spec__plate">
               <NodePlate id={w.id} />
@@ -131,7 +136,12 @@ function WorkPanel() {
         <ul className="nxp-minor">
           {compact.map((w) => (
             <li key={w.id}>
-              <a href={w.proof ?? `/read/${w.id}`} target={w.proof ? '_blank' : undefined} rel={w.proof ? 'noreferrer' : undefined}>
+              <a
+                href={w.proof ?? `/read/${w.id}`}
+                target={w.proof ? '_blank' : undefined}
+                rel={w.proof ? 'noreferrer' : undefined}
+                onClick={w.proof ? undefined : sweepTo(`/read/${w.id}`)}
+              >
                 <span>{w.title}</span>
                 <span className="nxp-minor__meta">{w.meta}</span>
               </a>
@@ -144,6 +154,7 @@ function WorkPanel() {
 }
 
 function PlayPanel() {
+  const sweepTo = useSweepNav();
   const play = homePlay();
   return (
     <div className="nxp nxp--play">
@@ -152,7 +163,12 @@ function PlayPanel() {
           const external = Boolean(p.href);
           return (
             <li key={p.id}>
-              <a href={p.href ?? `/read/${p.id}`} target={external ? '_blank' : undefined} rel={external ? 'noreferrer' : undefined}>
+              <a
+                href={p.href ?? `/read/${p.id}`}
+                target={external ? '_blank' : undefined}
+                rel={external ? 'noreferrer' : undefined}
+                onClick={external ? undefined : sweepTo(`/read/${p.id}`)}
+              >
                 <span className="nxp-play__plate">
                   <NodePlate id={p.id} />
                 </span>
@@ -213,12 +229,19 @@ const PANELS: Record<string, () => ReactNode> = {
 /* —— page —— */
 
 export function NextHome() {
+  const sweepTo = useSweepNav();
   const [active, setActive] = useState<string>('essays');
   const [register, setRegister] = useState<Register>('full');
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window === 'undefined') return 'light';
-    const saved = window.localStorage.getItem('nx-theme');
-    if (saved === 'dark' || saved === 'light') return saved;
+    // A browser set to block site data throws on access, not on read. Reaching for the
+    // remembered theme must never be the reason the page fails to render.
+    try {
+      const saved = window.localStorage.getItem('nx-theme');
+      if (saved === 'dark' || saved === 'light') return saved;
+    } catch {
+      /* blocked storage — fall through to the system preference */
+    }
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
   const Panel = PANELS[active] ?? EssaysPanel;
@@ -228,10 +251,20 @@ export function NextHome() {
     return () => document.documentElement.classList.remove('nx-dark');
   }, [theme]);
 
+  // Arriving from a scrolled reader, the router keeps the old offset. The home has no
+  // scroll position worth restoring — it should always open at the argument.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   const toggleTheme = () => {
     setTheme((t) => {
       const next = t === 'dark' ? 'light' : 'dark';
-      window.localStorage.setItem('nx-theme', next);
+      try {
+        window.localStorage.setItem('nx-theme', next);
+      } catch {
+        /* blocked storage — the theme still flips, it just won't be remembered */
+      }
       return next;
     });
   };
@@ -335,7 +368,17 @@ export function NextHome() {
       <footer className="nx-footer">
         <span>toni limited co. — website built by many intelligences</span>
         <span className="nx-footer__note">
-          <a href="/read/the-container">the container</a> · <a href="/read/the-cut">the cut</a> · <a href="/read/the-contact">the contact</a>
+          {/* The essays, from the pool. Hardcoding them was exact at three and wrong at four. */}
+          {homeWriting()
+            .filter((e) => e.kind === 'essay')
+            .map((e, i) => (
+              <Fragment key={e.id}>
+                {i > 0 ? ' · ' : null}
+                <a href={`/read/${e.id}`} onClick={sweepTo(`/read/${e.id}`)}>
+                  {e.title}
+                </a>
+              </Fragment>
+            ))}
         </span>
       </footer>
       </div>

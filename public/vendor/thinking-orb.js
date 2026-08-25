@@ -88,7 +88,7 @@
       });
       this._io.observe(this);
     }
-    disconnectedCallback() { cancelAnimationFrame(this._raf); this._raf = 0; this._io && this._io.disconnect(); }
+    disconnectedCallback() { cancelAnimationFrame(this._raf); this._raf = 0; this._io?.disconnect(); }
     attributeChangedCallback() { if (this._c) this._setup(); }
     _setup() {
       const size = parseFloat(this.getAttribute('size') || '64') || 64;

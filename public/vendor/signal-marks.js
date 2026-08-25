@@ -105,7 +105,7 @@
 
   /* 01 — enclosure. A field larger than the frame that holds it: dots
      inside resolve, dots outside stay faint and drift away. */
-  function enclosure(pen, S, t, accent) {
+  function enclosure(pen, S, t, _accent) {
     const rnd = mulberry32(7);
     const pts = [];
     for (let i = 0; i < 34; i++) {
@@ -142,7 +142,7 @@
 
   /* 02 — search. A scan sweeps a noisy field; the three rows that repeat
      the same interval brighten and stay. */
-  function search(pen, S, t, accent) {
+  function search(pen, S, t, _accent) {
     const rnd = mulberry32(19);
     const rows = [S * 0.28, S * 0.52, S * 0.76];
     const cols = [S * 0.26, S * 0.5, S * 0.74];
@@ -170,7 +170,7 @@
 
   /* 03 — symmetry. Marks on one side of an axis are answered, one by one,
      by their mirror. */
-  function mirror(pen, S, t, accent) {
+  function mirror(pen, S, t, _accent) {
     const ax = S * 0.5;
     pen.line('axis', ax, S * 0.1, ax, S * 0.9, FAINT, 0.7, seg(t, 0, 0.25), '1.5 2');
 
@@ -195,7 +195,7 @@
 
   /* 04 — compression. Evenly spread channels pass a gate and leave it as a
      tight bundle carrying the same count. */
-  function compress(pen, S, t, accent) {
+  function compress(pen, S, t, _accent) {
     const n = 6;
     const gate = S * 0.56;
     const draw = easeOut(seg(t, 0.05, 0.9));
@@ -226,7 +226,7 @@
 
   /* 05 — projection. A measured cadence is spent, then continues past the
      last measurement as a dashed extrapolation. */
-  function project(pen, S, t, accent) {
+  function project(pen, S, t, _accent) {
     const base = S * 0.62;
     pen.line('base', S * 0.1, base, S * 0.9, base, FAINT, 0.7, seg(t, 0, 0.2));
 
