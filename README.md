@@ -1,8 +1,8 @@
 # geometry
 
-toni.ltd as a continuous editorial home — compressible thesis, writing / work /
-play from the content pool, soft-routed essay sheets with the figure block
-pipeline.
+toni.ltd as a thesis you can operate — six doors that state the argument one
+sentence at a time, a compression dial that rewrites all six, and three essays
+behind a single reader.
 
 ## Quick start
 
@@ -19,6 +19,8 @@ pnpm dev          # http://localhost:5173
 | `pnpm dev` | Local dev server |
 | `pnpm pool:build` | Rebuild `public/pool.json` after content edits |
 | `pnpm test` | Vitest unit tests |
+| `pnpm test:browser` | agent-browser smoke test (needs `pnpm dev` running) |
+| `pnpm lint` | oxlint — the baseline is zero warnings |
 | `pnpm typecheck` | TypeScript |
 | `pnpm build` | Production static export → `dist/` |
 | `pnpm preview` | Preview production build |
@@ -28,18 +30,23 @@ pnpm dev          # http://localhost:5173
 See [AGENTS.md](./AGENTS.md).
 
 - **Content:** `content/{cluster}/{id}.md`
-- **Home lists:** derived from pool clusters
-- **Essays:** `/writing/:id` → sheet chrome + `FigureReader` body blocks
+- **Rooms:** each door reads the pool by cluster
+- **Essays:** `/read/:id` → Essay System chrome + typed `Block[]` body
 
 ## Architecture
 
 - React 19 + Vite + TypeScript
-- Home: `src/home/` (layout, page, thesis, sheet, progressive effects)
-- Routes: `/`, `/writing/:id` (sheet overlay); unknown paths → `/`
+- Home: `src/home/next/NextHome.tsx` — six doors, compression dial, theme toggle
+- Reader: `src/essaySystem/` — the only essay surface
+- Routes: `/`, `/read/:id`, `/essay-system`; `/writing/:id` and `/read/:id/full`
+  redirect; unknown paths → `/`
 - Design tokens: single source in `src/design/tokens.css`
-- Progressive CE: `public/vendor/` (signal marks, field-hero, thinking-orb,
-  particle-scroll, asciify)
-- Spatial FieldApp package removed; editorial home is the only product surface
+- Progressive custom elements: `public/vendor/` (signal marks, thinking orb,
+  plate lattice) — each optional, the page renders without them
+- The spatial FieldApp and its stylesheet are gone; nothing else renders a page
+
+`_local/` holds what stays on disk but is neither shipped nor tracked: the
+pre-rewrite writings, retired essay visuals, and the unwired point-cloud `.splt`.
 
 ## Deploy
 
@@ -48,5 +55,5 @@ pnpm build
 pnpm deploy
 ```
 
-Cloudflare Pages serves `dist/`. SPA fallback: `public/_redirects`.  
-HTML-in-Canvas origin trial: `index.html` meta tags + `public/_headers` (`Origin-Trial`).
+Cloudflare Pages serves `dist/`. SPA fallback and the retired-slug 301s live in
+`public/_redirects`; caching and security headers in `public/_headers`.

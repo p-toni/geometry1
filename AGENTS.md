@@ -1,20 +1,24 @@
 # geometry — agent authoring guide
 
-This site is a continuous editorial home (`src/home/`) fed by a content pool. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
+This site is a thesis you can operate (`src/home/next/NextHome.tsx`) fed by a content pool. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
 
-Home lists derive from pool clusters: **writing** → Writing section (featured = freshest by date), **work** → Work rows, **play** → Play rail. Essays open at `/read/:id` — the single reader, set in the **Essay System** (`src/essaySystem/`). It renders typed `Block[]` directly, not a parallel prose model. `/writing/:id` redirects there.
+The home is **six doors** — one sentence each, together forming the argument (who → essays → work → play → now → hi). Clicking a door opens its room below; a compression dial rewrites all six at three registers (`full` → `line` → `word`). Panels read the pool by cluster: **writing** → the essays room, **work** → the work room, **play** → the play room. Essays open at `/read/:id` — the single reader, set in the **Essay System** (`src/essaySystem/`). It renders typed `Block[]` directly, not a parallel prose model. `/writing/:id` redirects there.
 
-The spatial field UI was **removed** — product surface is `src/home/` only. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp). Home is ordinary document scroll.
+The spatial field UI was **removed** — the product surface is `src/home/next/` plus `src/essaySystem/`, and nothing else renders a page. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp).
 
 ## Workflow
 
 ```bash
-pnpm pool:seed    # optional: re-seed from geometry v1 prose
 pnpm pool:build   # required after any content edit
 pnpm dev          # local preview
 pnpm test         # vitest
+pnpm test:browser # agent-browser smoke test — needs `pnpm dev` running
+pnpm lint         # oxlint; the baseline is zero warnings
 pnpm build        # pool:build + typecheck + static export + seo
 ```
+
+Anything kept on disk but deliberately not shipped and not tracked lives in `_local/`
+(pre-rewrite writings, retired essay visuals, the unwired point-cloud `.splt`).
 
 ## File layout
 
@@ -96,9 +100,15 @@ The former spatial constellation descent was removed; `##`/`###` headings remain
 - Use `[[backlink:…]]` for in-essay navigation to other pool nodes.
 - Keep links directed and use only relations from `Rel` in `src/pool/types.ts`.
 
-## Retired (v1)
+## Retired
 
 - MDX essays under `/essays/`
 - `bodyPath`, per-canvas JSON, zustand canvas store
 - v1 widget components
 - Constellation argument descent (spatial graphs, `constellation/`, `pnpm constellation:*`)
+- The scrolling home (`HomeLayout`/`HomePage`/`ThesisSection`, `home.css`) — replaced by the six doors
+- `src/design/surface.css` — the field subsystem's styling; it outlived the UI by three commits
+- The v1 content-migration scripts and `pnpm pool:seed` / `pool:migrate` / `pool:restore`
+- `lib/freshness`, `lib/graph`, `lib/readMode`, `lib/spring`, `lib/search`, `pool/essayStructure`
+
+Nothing above is coming back. If a change seems to need one of them, the change is wrong.

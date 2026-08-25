@@ -194,7 +194,7 @@ export const HOME_INTRO =
   "I'm Toni. I'm a bounded learner interested in people, machines, and how we make maps of worlds too large to carry. Most things here are unfinished, so I keep them where I can see them.";
 
 export const HOME_NOW =
-  'One continuous column — thesis, writing, work, and play in one place. Essays open in one reader. Still reading about how people decide what to leave out. Open to one small collaboration this quarter.';
+  'Six lines on the front page, and each one opens a room. Essays open in one reader. Still reading about how people decide what to leave out. Open to one small collaboration this quarter.';
 
 export const HOME_NOW_UPDATED = 'Updated August 2026';
 

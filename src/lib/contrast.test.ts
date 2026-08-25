@@ -1,11 +1,6 @@
-import { readFileSync } from 'node:fs';
-import { dirname, join } from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { collectContrastFence, contrastFromTable } from './contrast';
 import { parseBlocks } from './parseBlocks';
-
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 describe('contrast fence', () => {
   it('parses pair mode from author marker', () => {
@@ -56,10 +51,16 @@ describe('contrast table', () => {
 });
 
 describe('contrast via parseBlocks', () => {
-  it('emits contrast table from geometry-retrieval essay', () => {
-    const md = readFileSync(join(root, '../public/content/07-geometry-over-retrieval.md'), 'utf8');
-    const body = md.slice(md.indexOf('\n---\n', 4) + 5);
-    const table = parseBlocks(body).find((b) => b.t === 'contrast' && b.mode === 'table');
+  it('emits a contrast table from a three-column GFM table', () => {
+    const table = parseBlocks(`| Test | Geometry | Retrieval |
+|------|----------|-----------|
+| **Rephrase** — same question, different framing | invariant survives | surface breaks |
+| **Rebuild** — close everything, wait, reconstruct | structure regenerates | fragments only |
+| **Predict** — what's around the corner? | specific expectations | no expectations |
+| **Teach** — can I build it in someone else? | I can walk a path | I can only relay |
+| **Break** — a fact turns out wrong | damage localizes to an edge | the whole picture destabilizes |`).find(
+      (b) => b.t === 'contrast' && b.mode === 'table',
+    );
     expect(table?.t).toBe('contrast');
     if (table?.t !== 'contrast') return;
     expect(table.poles).toEqual(['Geometry', 'Retrieval']);

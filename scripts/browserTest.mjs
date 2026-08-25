@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
- * Full UI smoke test via agent-browser CLI.
- * Run: node scripts/browserTest.mjs
+ * UI smoke test via agent-browser CLI, against the six-doors home and the reader.
+ * Run: pnpm dev, then pnpm test:browser
  */
 import { execSync } from 'node:child_process';
 import { mkdirSync, writeFileSync } from 'node:fs';
@@ -12,6 +12,7 @@ const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const outDir = join(root, '.browser-test');
 mkdirSync(outDir, { recursive: true });
 
+const BASE = process.env.BASE_URL ?? 'http://localhost:5173';
 const results = [];
 
 function ab(cmd) {
@@ -23,10 +24,16 @@ function ab(cmd) {
   }
 }
 
-function snap(interactive = true) {
-  const raw = ab(`snapshot ${interactive ? '-i' : ''} --json`);
-  return JSON.parse(raw).data;
-}
+const snap = () => JSON.parse(ab('snapshot -i --json')).data;
+const pageText = () => (JSON.parse(ab('snapshot --json')).data.snapshot || '').toLowerCase();
+const shot = (file) => ab(`screenshot ${join(outDir, file)}`);
+const evaljs = (js) => ab(`eval "${js.replace(/"/g, '\\"')}"`).replace(/^"|"$/g, '');
+
+/** Hard navigation — agent-browser open can no-op on SPA history. */
+const goto = (path) => {
+  ab(`eval "window.location.assign('${BASE}${path}')"`);
+  ab('wait 1200');
+};
 
 function pass(name, detail = '') {
   results.push({ name, ok: true, detail });
@@ -51,279 +58,205 @@ function refByName(data, pattern) {
   return null;
 }
 
-function clickRole(name) {
-  ab(`find role button click --name "${name}"`);
-}
-
 function clickNamed(pattern) {
   const ref = refByName(snap(), pattern);
-  if (!ref) throw new Error(`button not found: ${pattern}`);
-  ab(`scrollintoview ${ref}`);
-  ab('wait 200');
+  if (!ref) throw new Error(`control not found: ${pattern}`);
   ab(`click ${ref}`);
+  ab('wait 500');
 }
 
-function shot(file) {
-  ab(`screenshot ${join(outDir, file)}`);
-}
+/* —— 1. the home renders, and renders clean —— */
 
-/** Hard navigation — agent-browser open can no-op on SPA history. */
-function goto(url) {
-  ab(`eval "window.location.assign('${url}')"`);
-}
-
-function pageText() {
-  const data = JSON.parse(ab('snapshot --json')).data;
-  return (data.snapshot || '').toLowerCase();
-}
-
-ab('open http://localhost:5173/');
+ab(`open ${BASE}/`);
+ab('wait 2000');
+ab('errors --clear');
+ab('console --clear');
+ab('reload');
 ab('wait 2000');
 
-// 1. Field home
-let data = snap();
-assert('field home loads', /toni/i.test(ab('get title')), ab('get title'));
-const nodeButtons = Object.values(data.refs).filter(
-  (r) => r.role === 'button' && /essay|note|project|doc|link|about|voxel|sharp|shader/i.test(r.name),
+assert('home loads', /toni/i.test(ab('get title')), ab('get title'));
+assert('page errors', ab('errors') === '', ab('errors').slice(0, 200));
+const consoleErrors = ab('console')
+  .split('\n')
+  .filter((l) => /^\s*(error|severe)/i.test(l));
+assert('console clean', consoleErrors.length === 0, consoleErrors.join(' | ').slice(0, 200));
+shot('01-home.png');
+
+/* —— 2. six doors, each opening its own room —— */
+
+const DOORS = [
+  ['WHO', /bounded learner|ape_toni/i],
+  ['ESSAYS', /the container|the cut/i],
+  ['WORK', /spec v1|archive/i],
+  ['PLAY', /point cloud/i],
+  ['NOW', /updated/i],
+  ['HI', /hi@toni\.ltd/i],
+];
+
+const doorRefs = Object.entries(snap().refs).filter(
+  ([, m]) => m.role === 'button' && /\b(WHO|ESSAYS|WORK|PLAY|NOW|HI)$/.test(m.name ?? ''),
 );
-assert('field nodes visible', nodeButtons.length >= 15, `${nodeButtons.length} nodes`);
-assert('lens chips present', refByName(data, 'thinking on AI') != null);
-assert('now toggle present', refByName(data, /now/i) != null);
-assert('zoom controls present', refByName(data, /^zoom in$/i) != null);
-shot('01-field-home.png');
+assert('six doors present', doorRefs.length === 6, `${doorRefs.length} doors`);
 
-// 2. Read panel excerpt
-clickRole('allowed ignorance');
-ab('wait 1000');
-assert('read panel opens', ab('get url').includes('read=allowed-ignorance'), ab('get url'));
-data = snap();
-assert('read full button', refByName(data, 'read full') != null);
-assert('constellation CTA', refByName(data, /see the argument/i) != null);
-assert('walk edges', refByName(data, 'geometry > retrieval') != null);
-shot('02-read-excerpt.png');
+for (const [label, marker] of DOORS) {
+  clickNamed(new RegExp(`\\b${label}$`));
+  assert(`door ${label.toLowerCase()} opens its room`, marker.test(pageText()));
+}
+shot('02-doors.png');
 
-// 3. Full essay (click from excerpt — SPA preserves state reliably)
-clickNamed('read full');
-ab('wait 2500');
-assert('full mode URL', ab('get url').includes('full=1'), ab('get url'));
-data = snap();
-assert('collapse button', refByName(data, 'collapse') != null);
-assert('essay headings', pageText().includes('block') && pageText().includes('crack'));
-assert('motif figure', refByName(data, 'hold to stress') != null);
-assert('constellation in full mode', refByName(data, /see the argument/i) != null);
-shot('03-read-full.png');
+/* —— 3. the compression dial walks full → line → word —— */
 
-// 4. Collapse (before constellation — keeps full-mode context clean)
-clickNamed('collapse');
-ab('wait 700');
-assert('collapse removes full', !ab('get url').includes('full=1'));
-shot('04-collapsed.png');
-
-// 5. Constellation descent from excerpt
-goto('http://localhost:5173/?read=allowed-ignorance');
-ab('wait 1200');
-clickNamed(/see the argument/i);
-ab('wait 1200');
-const txt = pageText();
+goto('/');
+const dialState = () => evaljs("document.querySelector('.nx-dial__state')?.textContent?.trim() || ''");
+assert('dial starts full', dialState() === 'full', dialState());
 assert(
-  'constellation handoff',
-  txt.includes('back to essay') && /inquiries/i.test(txt),
-  txt.slice(0, 200),
+  'expand disabled at full',
+  /true/i.test(evaljs("String(document.querySelector('.nx-dial button:last-of-type')?.disabled)")),
 );
-assert('constellation title', txt.includes('allowed ignorance'));
-assert('constellation URL', ab('get url').includes('spatial=1'), ab('get url'));
-shot('05-constellation.png');
-ab('back');
-ab('wait 700');
-assert('browser back closes constellation', !pageText().includes('back to essay'));
-assert('browser back keeps read', ab('get url').includes('read=allowed-ignorance'), ab('get url'));
-assert('browser back clears spatial', !ab('get url').includes('spatial=1'), ab('get url'));
-goto('http://localhost:5173/?read=allowed-ignorance&spatial=1');
-ab('wait 1600');
-assert('spatial URL opens handoff', pageText().includes('back to essay'));
-shot('05b-spatial-deeplink.png');
-clickRole('back to essay');
-ab('wait 700');
-assert('constellation closes', !pageText().includes('back to essay'));
+clickNamed('Compress the argument');
+assert('compress → line', dialState() === 'line', dialState());
+clickNamed('Compress the argument');
+assert('compress → word', dialState() === 'word', dialState());
+assert(
+  'compress disabled at word',
+  /true/i.test(evaljs("String(document.querySelector('.nx-dial button:first-of-type')?.disabled)")),
+);
+clickNamed('Expand the argument');
+assert('expand → line', dialState() === 'line', dialState());
+shot('03-dial.png');
 
-// 6. Walk edge
-clickNamed('geometry > retrieval');
-ab('wait 900');
-const edgeUrl = ab('get url');
-assert('edge navigation', edgeUrl.includes('read=geometry-retrieval'));
-assert('edge trail in URL', edgeUrl.includes('trail=allowed-ignorance'), edgeUrl);
-assert('back button', refByName(snap(), 'back') != null);
-shot('06-edge-walk.png');
-clickNamed('back');
-ab('wait 1200');
-assert('panel back restores trail parent', ab('get url').includes('read=allowed-ignorance'));
+/* —— 4. the theme toggle flips the ground and remembers it —— */
 
-// 7. Home reset
-clickRole('toni.ltd');
-ab('wait 700');
-assert('home clears read', !ab('get url').includes('read='));
-shot('07-home.png');
-
-// 8. Lens chip
-clickRole('thinking on AI');
-ab('wait 900');
-assert('lens chip URL', ab('get url').includes('q='), ab('get url'));
-shot('08-lens-chip.png');
-clickRole('toni.ltd');
-ab('wait 600');
-
-// 9. Lens search
-data = snap();
-ab(`fill ${refByName(data, 'ask the field')} geometry`);
-clickRole('ask');
-ab('wait 900');
-assert('lens search', /q=/.test(ab('get url')), ab('get url'));
-shot('09-lens-search.png');
-clickRole('toni.ltd');
-ab('wait 600');
-
-// 10. Now mode
-clickRole('now');
-ab('wait 900');
-assert('now mode on', ab('get url').includes('now=1'));
-shot('10-now.png');
-clickRole('now');
-ab('wait 500');
-
-// 11. Deep link full essay
-goto('http://localhost:5173/?read=bounded-me&full=1');
+goto('/');
+const isDark = () => /true/i.test(evaljs("String(document.documentElement.classList.contains('nx-dark'))"));
+const before = isDark();
+clickNamed(/Switch to (light|dark)/);
+assert('theme toggle flips', isDark() !== before, `${before} → ${isDark()}`);
+assert(
+  'theme persists to storage',
+  evaljs("localStorage.getItem('nx-theme')") === (isDark() ? 'dark' : 'light'),
+  evaljs("localStorage.getItem('nx-theme')"),
+);
+ab('reload');
 ab('wait 1500');
-assert('deep link read', ab('get url').includes('read=bounded-me'));
-assert('deep link full body', pageText().includes('context window') || pageText().includes('extractable'));
-shot('11-deep-link-full.png');
+assert('theme survives reload', isDark() !== before);
+shot('04-theme.png');
+clickNamed(/Switch to (light|dark)/);
 
-// 12. Project node
-goto('http://localhost:5173/');
-ab('wait 1000');
-clickNamed(/project geometry/i);
-ab('wait 900');
-assert('project read panel', ab('get url').includes('read=geometry'));
-assert('project body', pageText().includes('hand-placed field') || pageText().includes('knowledge as place'));
-shot('12-project.png');
+/* —— 5. an essay card opens the reader, carried by the sweep ——
+   The provider is mounted in App but does nothing until a click drives it, so this
+   asserts the driver: the route swaps without a document load, and glimm's WebGL
+   canvas appears while it does. Both were silently absent once. */
 
-// 13. Link node
-goto('http://localhost:5173/');
-ab('wait 1000');
-clickNamed('x.com');
-ab('wait 900');
-assert('link node opens', ab('get url').includes('read=xcom'));
-assert('visit link CTA', pageText().includes('visit'));
-shot('13-link.png');
-
-// 14. Zoom controls
-goto('http://localhost:5173/');
-ab('wait 1000');
-const readoutBefore = ab(
-  'eval "Array.from(document.querySelectorAll(\'div\')).map(d=>d.textContent).find(t=>/^z \\\\d+%$/.test(t?.trim()||\'\'))"',
+goto('/');
+evaljs(
+  "window.__spa = 'alive'; window.__sawCanvas = 0;" +
+    'new MutationObserver(() => { const n = document.querySelectorAll(\'canvas\').length;' +
+    ' if (n > window.__sawCanvas) window.__sawCanvas = n; })' +
+    '.observe(document.documentElement, { childList: true, subtree: true })',
 );
-data = snap();
-ab(`click ${refByName(data, /^zoom in$/i)}`);
-ab('wait 600');
-const readoutAfter = ab(
-  'eval "Array.from(document.querySelectorAll(\'div\')).map(d=>d.textContent).find(t=>/^z \\\\d+%$/.test(t?.trim()||\'\'))"',
-);
-assert('zoom in changes readout', readoutAfter !== readoutBefore, `${readoutBefore} -> ${readoutAfter}`);
-data = snap();
-ab(`click ${refByName(data, /^zoom out$/i)}`);
-ab('wait 400');
-data = snap();
-ab(`click ${refByName(data, /^fit field$/i)}`);
-ab('wait 400');
-pass('zoom out/fit');
-shot('14-zoom.png');
+clickNamed(/the container.*read/is);
+assert('essay card opens reader', ab('get url').includes('/read/the-container'), ab('get url'));
+assert('essay open is client-side', evaljs('String(window.__spa)') === 'alive');
+assert('sweep canvas plays on entry', Number(evaljs('String(window.__sawCanvas)')) > 0);
 
-// 15. Media node
-goto('http://localhost:5173/?read=sea');
-ab('wait 1000');
-assert('media node excerpt', pageText().includes('moonlit ripple') || pageText().includes('pointer'));
-shot('15-media.png');
-
-// 16. Browser history back + forward with trail
-goto('http://localhost:5173/');
-ab('wait 1000');
-clickRole('allowed ignorance');
-ab('wait 700');
-clickNamed('increasing returns');
-ab('wait 700');
-assert('trail after edge walk', ab('get url').includes('trail=allowed-ignorance'));
-ab('back');
-ab('wait 900');
-const backUrl = ab('get url');
-assert('browser back restores read', backUrl.includes('read=allowed-ignorance'), backUrl);
-assert('browser back clears trail tail', !backUrl.includes('trail='), backUrl);
-ab('forward');
-ab('wait 900');
-const fwdUrl = ab('get url');
-assert('browser forward restores child read', fwdUrl.includes('read=increasing-returns'), fwdUrl);
-assert('browser forward restores trail', fwdUrl.includes('trail=allowed-ignorance'), fwdUrl);
-shot('16-browser-back.png');
-
-// 17. Field card click centers viewport on node
-goto('http://localhost:5173/');
-ab('wait 1200');
-const zHome = ab(
-  'eval "(() => { const w = document.querySelector(\'div[style*=\\\"will-change\\\"]\'); return w?.style?.transform || \'\'; })()"',
+/* the band runs the other way on the way out, and the home opens at the argument */
+evaljs("window.__spaBack = 'alive'; window.__sawBack = 0; window.scrollTo(0, 600);");
+evaljs(
+  'new MutationObserver(() => { const n = document.querySelectorAll(\'canvas\').length;' +
+    ' if (n > window.__sawBack) window.__sawBack = n; })' +
+    '.observe(document.documentElement, { childList: true, subtree: true })',
 );
-ab('eval "document.querySelector(\'[data-testid=field-node-bounded-me]\')?.click()"');
-ab('wait 900');
-const zBounded = ab(
-  'eval "(() => { const w = document.querySelector(\'div[style*=\\\"will-change\\\"]\'); return w?.style?.transform || \'\'; })()"',
-);
-assert('card click moves viewport', zBounded !== zHome && zBounded.includes('translate'), `${zHome} -> ${zBounded}`);
-assert('card click URL has viewport', /[xy]=-?\d+/.test(ab('get url')), ab('get url'));
-shot('17-field-center.png');
+clickNamed(/toni\.ltd/i);
+assert('back link returns home', new URL(ab('get url')).pathname === '/', ab('get url'));
+assert('return is client-side', evaljs('String(window.__spaBack)') === 'alive');
+assert('sweep canvas plays on return', Number(evaljs('String(window.__sawBack)')) > 0);
+assert('home reopens at top', evaljs('String(window.scrollY)') === '0', evaljs('String(window.scrollY)'));
 
-// 18. Field card click updates read panel while another essay is open
-goto('http://localhost:5173/?read=bounded-me');
-ab('wait 1200');
-ab('eval "document.querySelector(\'[data-testid=field-node-allowed-ignorance]\')?.click()"');
-ab('wait 1200');
-const fieldNavUrl = ab('get url');
-assert('field card switches read URL', fieldNavUrl.includes('read=allowed-ignorance'), fieldNavUrl);
-assert('field card sets trail', fieldNavUrl.includes('trail=bounded-me'), fieldNavUrl);
-assert(
-  'field card updates read header',
-  pageText().includes('allowed ignorance') && pageText().includes('bounded me'),
+/* continuing inside the writing carries the band too, and lands at the top */
+goto('/read/the-cut');
+evaljs("window.__spaOn = 'alive'; window.__sawOn = 0; window.scrollTo(0, 900);");
+evaljs(
+  'new MutationObserver(() => { const n = document.querySelectorAll(\'canvas\').length;' +
+    ' if (n > window.__sawOn) window.__sawOn = n; })' +
+    '.observe(document.documentElement, { childList: true, subtree: true })',
 );
-shot('18-field-card-readbar.png');
+clickNamed(/^(pairs|leads to|← older|newer →)/i);
+assert('onward link opens another essay', /\/read\/[a-z-]+$/.test(ab('get url')), ab('get url'));
+assert('onward is client-side', evaljs('String(window.__spaOn)') === 'alive');
+assert('sweep canvas plays essay → essay', Number(evaljs('String(window.__sawOn)')) > 0);
+assert('next essay opens at top', evaljs('String(window.scrollY)') === '0', evaljs('String(window.scrollY)'));
 
-// 19. Inline essay backlink navigation
-goto('http://localhost:5173/?read=bounded-me&full=1');
-ab('wait 2000');
-ab('eval "document.querySelector(\'[data-testid=essay-backlink]\')?.scrollIntoView({block:\'center\'})"');
-ab('wait 400');
-const hasBacklink = /true/i.test(
-  ab('eval "Boolean(document.querySelector(\'[data-testid=essay-backlink]\'))"'),
+/* a modified click stays the browser's business */
+goto('/');
+const modified = evaljs(
+  "(() => { const a = document.querySelector('.nxp-featured');" +
+    " const e = new MouseEvent('click', { bubbles: true, cancelable: true, metaKey: true, button: 0 });" +
+    ' a.dispatchEvent(e); return String(e.defaultPrevented); })()',
 );
-assert('inline backlink visible', hasBacklink);
-ab('eval "document.querySelector(\'[data-testid=essay-backlink]\').click()"');
-ab('wait 900');
-const blUrl = ab('get url');
-assert('backlink opens target', blUrl.includes('read=me-plus-ai'), blUrl);
-assert('backlink pushes trail', blUrl.includes('trail=bounded-me'), blUrl);
-shot('19-inline-backlink.png');
+assert('cmd-click is not swallowed', modified === 'false', `defaultPrevented=${modified}`);
 
-// 20. geometry-retrieval full (table + steps figures)
-goto('http://localhost:5173/?read=geometry-retrieval&full=1');
-ab('wait 2500');
-ab('eval "document.querySelector(\'[data-testid=diagnostic-table]\')?.scrollIntoView({block:\'center\'})"');
-ab('wait 400');
-const gtxt = pageText();
-const hasTable = /true/i.test(
-  ab('eval "Boolean(document.querySelector(\'[data-testid=diagnostic-table]\'))"'),
-);
-assert('geometry-retrieval thesis', gtxt.includes('rebuild the structure') || gtxt.includes('geometry'));
-assert('diagnostic table', hasTable || gtxt.includes('rephrase') || gtxt.includes('predict'));
-shot('20-geometry-retrieval-full.png');
+/* —— 6. the reader carries its apparatus —— */
+
+goto('/read/the-cut');
+const readerText = pageText();
+assert('reader renders the essay', readerText.includes('the cut'));
+const sections = Number(evaljs("String(document.querySelectorAll('a[href^=\\'#\\']').length)"));
+assert('reader rail has section marks', /§01/.test(readerText), `${sections} anchors`);
+assert('reader next-nav', /where to go next|pairs|leads to/i.test(readerText));
+assert('reader page errors', ab('errors') === '', ab('errors').slice(0, 200));
+shot('05-reader.png');
+
+/* —— 7. retired URLs still land somewhere —— */
+
+goto('/writing/the-cut');
+assert('legacy /writing/:id redirects', ab('get url').includes('/read/the-cut'), ab('get url'));
+goto('/read/the-cut/full');
+assert('legacy /full redirects', !ab('get url').includes('/full'), ab('get url'));
+goto('/no-such-page');
+assert('unknown route falls home', new URL(ab('get url')).pathname === '/', ab('get url'));
+
+/* —— 8. the phone —— */
+
+ab('set viewport 390 844');
+for (const [label, path] of [
+  ['home', '/'],
+  ['reader', '/read/the-cut'],
+]) {
+  goto(path);
+  const overflow = evaljs(
+    'String(document.documentElement.scrollWidth - document.documentElement.clientWidth)',
+  );
+  assert(`${label}: no horizontal overflow at 390px`, Number(overflow) <= 0, `${overflow}px over`);
+}
+shot('06-mobile-reader.png');
+
+/* —— 9. WCAG 2.5.8 — every control at least 24px square —— */
+
+goto('/');
+const small = evaljs(`(() => {
+  const out = [];
+  document.querySelectorAll('a,button').forEach(el => {
+    const r = el.getBoundingClientRect();
+    if (!r.width && !r.height) return;
+    if (r.height < 24 || r.width < 24) {
+      out.push(((el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 24)) + ' ' + Math.round(r.width) + 'x' + Math.round(r.height));
+    }
+  });
+  return out.join('; ');
+})()`);
+assert('home tap targets >= 24px', small === '', small.slice(0, 200));
+shot('07-mobile-home.png');
+ab('set viewport 1280 800');
+
+/* —— report —— */
 
 const passed = results.filter((r) => r.ok).length;
 const failed = results.filter((r) => !r.ok);
-writeFileSync(join(outDir, 'report.json'), JSON.stringify({ passed, total: results.length, results }, null, 2));
+writeFileSync(
+  join(outDir, 'report.json'),
+  JSON.stringify({ passed, total: results.length, results }, null, 2),
+);
 
 console.log(`\n--- ${passed}/${results.length} passed ---`);
 if (failed.length) {

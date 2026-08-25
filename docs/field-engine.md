@@ -2,7 +2,7 @@
 
 > **Archived.** The interactive FieldApp product surface was removed. This document
 > remains as historical handoff for terrain/minimap math. Do not re-mount a field UI
-> without an explicit product decision. Live product: `src/home/`.
+> without an explicit product decision. Live product: `src/home/next/NextHome.tsx`.
 
 Handoff reference for the former living field canvas (`FieldApp`).
 
