@@ -1429,6 +1429,40 @@
   text-wrap: pretty;
 }
 
+/* —— Figures leave the measure ——
+ *
+ * The prose measure is set for reading; a drawn figure at that width renders its 9.5px
+ * mono labels too small to read, which is the one thing a figure exists to do. So a
+ * figure keeps its left edge on the prose and grows into the right margin instead. The
+ * text column does not move, so nothing about the reading rhythm changes.
+ *
+ * The cap is the machinery rail. Rail left = padding-left + measure + 40, and the figure
+ * starts at padding-left, so 648px leaves a 32px gutter between the two at every width
+ * the rail is shown. Below 1260 the rail is gone and the figure may take the room, held
+ * off the viewport edge. Below 760 it returns to the column and the plate scrolls, which
+ * is the concession already made for the code listing.
+ */
+.esys-fig--body,
+.esys-fig--tight {
+  width: min(var(--fig-w, 648px), calc(100vw - var(--shell-pad-l) - 24px));
+  max-width: none;
+}
+
+@media (max-width: 1259px) {
+  .esys-fig--body,
+  .esys-fig--tight {
+    --fig-w: 820px;
+  }
+}
+
+@media (max-width: 759px) {
+  .esys-fig--body,
+  .esys-fig--tight {
+    --fig-w: 100%;
+    width: 100%;
+  }
+}
+
 /* —— Breakpoints: ≥1260 rail, 760–1259 column only, <760 tighter gutters —— */
 
 @media (max-width: 1259px) {
