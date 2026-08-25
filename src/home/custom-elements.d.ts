@@ -17,19 +17,6 @@ declare module 'react' {
         accent?: string;
         label?: string;
       };
-      'asciify-lens': CEProps & {
-        src?: string;
-        alt?: string;
-        charset?: string;
-        scale?: string;
-        spacing?: string;
-        radius?: string;
-        softness?: string;
-        background?: string;
-        'background-opacity'?: string;
-        contrast?: string;
-        effect?: string;
-      };
       'plate-lattice': CEProps & {
         ink?: string;
         accent?: string;

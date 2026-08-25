@@ -6,9 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "pnpm pool:build && tsc -b && vite build && pnpm seo:build",
-    "pool:seed": "node scripts/migrateFromV1.mjs",
-    "pool:migrate": "node scripts/migrateFromV1.mjs",
-    "pool:restore": "node scripts/restoreOriginalContent.mjs",
     "pool:build": "vite-node scripts/buildPool.ts",
     "seo:build": "vite-node scripts/buildSeo.ts",
     "typecheck": "tsc -b --noEmit",

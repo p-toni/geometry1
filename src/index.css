@@ -1,6 +1,5 @@
 @import './design/fonts.css';
 @import './design/tokens.css';
-@import './design/surface.css';
 @import 'tailwindcss';
 
 @theme {
@@ -50,24 +49,4 @@ body {
 button,
 input {
   font: inherit;
-}
-
-@media (min-width: 701px) and (max-width: 900px) {
-  .field-read {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    flex: none !important;
-    z-index: 20;
-  }
-}
-
-@media (max-width: 700px) {
-  .field-read {
-    position: absolute !important;
-    inset: auto 10px calc(var(--status-h) + 10px) 10px !important;
-    width: auto !important;
-    flex: none !important;
-    z-index: 20;
-  }
 }
