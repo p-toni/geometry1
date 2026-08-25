@@ -5,11 +5,13 @@ cluster: work
 title: synapse
 date: rebuild
 rank: 5
+why: I couldn't trust an agent I could only watch from the outside.
+problem: Behavior is too slippery to inspect after the fact.
+solution: Replayable runs, explicit contracts, evidence kept separate from authority.
 excerpt:
-  - "A deterministic evidence layer for agent behavior."
-  - "It turns runs into replayable proof under explicit execution contracts."
+  - "I couldn't trust an agent I could only watch from the outside."
 links:
-  - target: geometry-retrieval
+  - target: the-container
     rel: idea
   - target: macroscopic
     rel: theme

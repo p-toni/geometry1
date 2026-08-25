@@ -5,9 +5,11 @@ cluster: work
 title: macroscopic
 date: active
 rank: 3
+why: Life and work context arrives in fragments, then a dashboard tries to shout it all back.
+problem: Surfaces get loud. Memory gets thin. Agency boundaries blur.
+solution: A quiet kernel — remember more, surface less, ask before acting.
 excerpt:
-  - "A product system for holding fragmented life and work context without turning it into a dashboard."
-  - "The wager: surface less, remember better, ask permission before action."
+  - "Life and work context arrives in fragments, then a dashboard tries to shout it all back."
 links:
   - target: geometry
     rel: theme

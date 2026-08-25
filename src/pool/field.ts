@@ -5,14 +5,10 @@ export const FIELD_HEIGHT = 800;
 
 /** Hand-placed coordinates — synced to v2 single-spine prototype `this.POS`. */
 export const positions: Record<string, readonly [number, number]> = {
-  'the-world-answers': [488, 206],
-  'allowed-ignorance': [322, 288],
+  'the-contact': [340, 214],
+  'the-cut': [292, 268],
+  'the-container': [246, 240],
   marginalia: [174, 340],
-  'geometry-retrieval': [420, 440],
-  'me-plus-ai': [602, 430],
-  'tools-need-edges': [188, 542],
-  'weak-geometry': [390, 560],
-  'bounded-me': [650, 560],
   'codex-fieldwork': [850, 118],
   geometry: [952, 208],
   macroscopic: [1038, 112],
@@ -51,25 +47,12 @@ export const lenses: LensChip[] = [
       'media-atlas',
       'the-loom',
       'spec-v1',
-      'geometry-retrieval',
-    ],
-  },
-  {
-    label: 'thinking on AI',
-    query: 'your thinking on AI',
-    nodeIds: [
-      'the-world-answers',
-      'allowed-ignorance',
-      'me-plus-ai',
-      'bounded-me',
-      'weak-geometry',
-      'marginalia',
     ],
   },
   {
     label: 'who are you',
     query: 'who are you',
-    nodeIds: ['about', 'xcom', 'tools-need-edges', 'point-cloud'],
+    nodeIds: ['about', 'xcom', 'point-cloud'],
   },
 ];
 

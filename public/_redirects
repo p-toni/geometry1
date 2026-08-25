@@ -7,10 +7,40 @@
 /read/increasing-returns/ /read/marginalia 301
 /read/increasing-returns/full /read/marginalia 301
 /read/increasing-returns/full/ /read/marginalia 301
-/read/co-owning-the-loop /read/me-plus-ai 301
-/read/co-owning-the-loop/ /read/me-plus-ai 301
-/read/co-owning-the-loop/full /read/me-plus-ai 301
-/read/co-owning-the-loop/full/ /read/me-plus-ai 301
+/read/co-owning-the-loop /read/the-contact 301
+/read/co-owning-the-loop/ /read/the-contact 301
+/read/co-owning-the-loop/full /read/the-contact 301
+/read/co-owning-the-loop/full/ /read/the-contact 301
+
+# Retired in the 2026-08 restart. Each slug goes to the essay that inherited its argument.
+/read/allowed-ignorance /read/the-cut 301
+/read/allowed-ignorance/ /read/the-cut 301
+/read/allowed-ignorance/full /read/the-cut 301
+/read/allowed-ignorance/full/ /read/the-cut 301
+/read/weak-geometry /read/the-cut 301
+/read/weak-geometry/ /read/the-cut 301
+/read/weak-geometry/full /read/the-cut 301
+/read/weak-geometry/full/ /read/the-cut 301
+/read/tools-need-edges /read/the-cut 301
+/read/tools-need-edges/ /read/the-cut 301
+/read/tools-need-edges/full /read/the-cut 301
+/read/tools-need-edges/full/ /read/the-cut 301
+/read/the-world-answers /read/the-contact 301
+/read/the-world-answers/ /read/the-contact 301
+/read/the-world-answers/full /read/the-contact 301
+/read/the-world-answers/full/ /read/the-contact 301
+/read/me-plus-ai /read/the-contact 301
+/read/me-plus-ai/ /read/the-contact 301
+/read/me-plus-ai/full /read/the-contact 301
+/read/me-plus-ai/full/ /read/the-contact 301
+/read/bounded-me /read/the-container 301
+/read/bounded-me/ /read/the-container 301
+/read/bounded-me/full /read/the-container 301
+/read/bounded-me/full/ /read/the-container 301
+/read/geometry-retrieval /read/the-container 301
+/read/geometry-retrieval/ /read/the-container 301
+/read/geometry-retrieval/full /read/the-container 301
+/read/geometry-retrieval/full/ /read/the-container 301
 
 # /full was the excerpt/full split. One reader now.
 /read/:id/full /read/:id 301

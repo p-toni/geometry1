@@ -8,9 +8,9 @@ describe('isWholePiece', () => {
   });
 
   it('does not treat essays as whole pieces', () => {
-    expect(isWholePiece(pool.nodes['allowed-ignorance']!)).toBe(false);
-    expect(isWholePiece(pool.nodes['bounded-me']!)).toBe(false);
-    expect(isWholePiece(pool.nodes['me-plus-ai']!)).toBe(false);
+    expect(isWholePiece(pool.nodes['the-container']!)).toBe(false);
+    expect(isWholePiece(pool.nodes['the-cut']!)).toBe(false);
+    expect(isWholePiece(pool.nodes['the-contact']!)).toBe(false);
   });
 });
 
@@ -20,6 +20,6 @@ describe('effectiveReadFull', () => {
   });
 
   it('honors full flag for essays with body', () => {
-    expect(effectiveReadFull(pool.nodes['allowed-ignorance'], true)).toBe(true);
+    expect(effectiveReadFull(pool.nodes['the-container'], true)).toBe(true);
   });
 });

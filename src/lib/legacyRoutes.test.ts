@@ -13,11 +13,11 @@ describe('legacyRoutes', () => {
   });
 
   it('leaves live ids alone', () => {
-    expect(resolveReadId('allowed-ignorance')).toBe('allowed-ignorance');
-    expect(readPath('allowed-ignorance')).toBe('/read/allowed-ignorance');
+    expect(resolveReadId('the-container')).toBe('the-container');
+    expect(readPath('the-container')).toBe('/read/the-container');
   });
 
   it('does not advertise a /full split — there is one reader', () => {
-    expect(readPath('allowed-ignorance')).not.toMatch(/\/full/);
+    expect(readPath('the-container')).not.toMatch(/\/full/);
   });
 });

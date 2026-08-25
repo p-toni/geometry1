@@ -110,8 +110,8 @@ export const generatedPool: Pool = {
       "id": "codex-fieldwork",
       "kind": "project",
       "cluster": "work",
-      "title": "Codex fieldwork",
-      "date": "live",
+      "title": "codex fieldwork",
+      "date": "method",
       "rank": 1,
       "weight": 0.95,
       "links": [
@@ -129,8 +129,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "The working method behind Geometry: taste-led edits, local browser QA, recovery, commit, deploy.",
-        "Codex keeps the build moving; human judgment decides what deserves to stay."
+        "Agents move the build faster than I can trust it."
       ],
       "body": [
         {
@@ -147,6 +146,9 @@ export const generatedPool: Pool = {
           "x": "The useful agent is not a replacement author. It is an inspectable build loop for judgment that still belongs to the human."
         }
       ],
+      "why": "Agents move the build faster than I can trust it.",
+      "problem": "Work lands without a loop that can reject it. Taste arrives too late.",
+      "solution": "A fieldwork loop — recover, decide, tune, test, commit. The agent is inspectable; judgment stays mine.",
       "sourcePath": "/content/work/codex-fieldwork.md"
     },
     "geometry": {
@@ -154,7 +156,7 @@ export const generatedPool: Pool = {
       "kind": "project",
       "cluster": "work",
       "title": "geometry",
-      "date": "2026-07-29",
+      "date": "live",
       "rank": 0,
       "weight": 1,
       "links": [
@@ -163,7 +165,7 @@ export const generatedPool: Pool = {
           "contains"
         ],
         [
-          "geometry-retrieval",
+          "the-container",
           "idea"
         ],
         [
@@ -172,17 +174,16 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "This site: an editorial home for essays, projects, and visual studies.",
-        "One reader, constellation descent, no spatial field."
+        "I needed one place that could hold unfinished essays, tools, and studies without pretending they were shipped."
       ],
       "body": [
         {
           "t": "p",
-          "x": "Geometry is the site you are on: a continuous editorial home for essays, projects, and visual studies."
+          "x": "Geometry is this site: a continuous editorial home for essays, projects, and visual studies."
         },
         {
           "t": "p",
-          "x": "Markdown files with YAML frontmatter compile into a typed content pool. Home lists them by cluster. Essays open at `/read/:id` — one reader, the Essay System — and can descend into a constellation of the argument. The spatial field is gone; node coordinates remain only as placement data for the pool."
+          "x": "Markdown files with YAML frontmatter compile into a typed content pool. Home lists them by cluster. Essays open at `/read/:id` — one reader, the Essay System. The spatial field is gone; node coordinates remain only as placement data for the pool."
         },
         {
           "t": "thesis",
@@ -194,6 +195,10 @@ export const generatedPool: Pool = {
           "x": "Proof: the public repo is [p-toni/geometry](https://github.com/p-toni/geometry)."
         }
       ],
+      "why": "I needed one place that could hold unfinished essays, tools, and studies without pretending they were shipped.",
+      "problem": "They kept falling into different rooms. The spatial field was a surface I had to pan, not a home I could read.",
+      "solution": "One column, one reader, one pool. The map is the content, not a canvas.",
+      "proof": "https://github.com/p-toni/geometry",
       "sourcePath": "/content/work/geometry.md"
     },
     "human-responsibility-mapping": {
@@ -219,8 +224,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "A public framework for deciding what AI may do, what humans retain, and what proof is required.",
-        "The output is a responsibility map, not a vibes-based automation plan."
+        "Delegation decisions were being made on vibes."
       ],
       "body": [
         {
@@ -241,6 +245,10 @@ export const generatedPool: Pool = {
           "x": "Proof: the public repo is [p-toni/human-responsibility-mapping](https://github.com/p-toni/human-responsibility-mapping)."
         }
       ],
+      "why": "Delegation decisions were being made on vibes.",
+      "problem": "Nobody could say what the model may do, what the human retains, or what proof would make a release honest.",
+      "solution": "One operating artifact — boundaries, evidence, evals, telemetry, and a gate that stays reversible.",
+      "proof": "https://github.com/p-toni/human-responsibility-mapping",
       "sourcePath": "/content/work/human-responsibility-mapping.md"
     },
     "macroscopic": {
@@ -262,8 +270,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "A product system for holding fragmented life and work context without turning it into a dashboard.",
-        "The wager: surface less, remember better, ask permission before action."
+        "Life and work context arrives in fragments, then a dashboard tries to shout it all back."
       ],
       "body": [
         {
@@ -280,6 +287,9 @@ export const generatedPool: Pool = {
           "x": "The useful assistant is not louder. It remembers what matters, surfaces only what earns attention, and asks before crossing an agency boundary."
         }
       ],
+      "why": "Life and work context arrives in fragments, then a dashboard tries to shout it all back.",
+      "problem": "Surfaces get loud. Memory gets thin. Agency boundaries blur.",
+      "solution": "A quiet kernel — remember more, surface less, ask before acting.",
       "sourcePath": "/content/work/macroscopic.md"
     },
     "media-atlas": {
@@ -301,8 +311,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "A visual atlas for private mixed-media archives.",
-        "Media stays primary; ontology, layout, overlays, provenance, and curation stay inspectable."
+        "Private archives were being reduced to search results."
       ],
       "body": [
         {
@@ -320,6 +329,9 @@ export const generatedPool: Pool = {
           "x": "The ambition is not a prettier file browser. It is an inspectable map where media remains the perceptual anchor."
         }
       ],
+      "why": "Private archives were being reduced to search results.",
+      "problem": "Media stopped being the thing you look at. It became a hit list.",
+      "solution": "An inspectable map — objects, relations, layout, overlays, and curation stay in separate layers.",
       "sourcePath": "/content/work/media-atlas.md"
     },
     "spec-v1": {
@@ -327,7 +339,7 @@ export const generatedPool: Pool = {
       "kind": "doc",
       "cluster": "work",
       "title": "spec v1",
-      "date": "1 week",
+      "date": "archive",
       "rank": 8,
       "weight": 0.6,
       "links": [
@@ -337,8 +349,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "The retired v1 Geometry spec.",
-        "A useful fossil: grid canvases, draggable blocks, JSON content, MDX-era widgets."
+        "I needed the retired stack to stay visible so it couldn't sneak back in as taste."
       ],
       "body": [
         {
@@ -354,6 +365,9 @@ export const generatedPool: Pool = {
           "x": "v2 replaces that stack with one field route, markdown plus YAML frontmatter, and typed Block[] figures. The spec remains here to show what was retired, not what should come back."
         }
       ],
+      "why": "I needed the retired stack to stay visible so it couldn't sneak back in as taste.",
+      "problem": "Warm grids, JSON canvases, MDX widgets. A surface that wanted to be rearranged more than read.",
+      "solution": "This is the fossil. v2 is one home and typed blocks.",
       "sourcePath": "/content/work/spec-v1.md"
     },
     "synapse": {
@@ -366,7 +380,7 @@ export const generatedPool: Pool = {
       "weight": 0.75,
       "links": [
         [
-          "geometry-retrieval",
+          "the-container",
           "idea"
         ],
         [
@@ -375,8 +389,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "A deterministic evidence layer for agent behavior.",
-        "It turns runs into replayable proof under explicit execution contracts."
+        "I couldn't trust an agent I could only watch from the outside."
       ],
       "body": [
         {
@@ -393,6 +406,9 @@ export const generatedPool: Pool = {
           "x": "If an agent changed something, the system should be able to show what happened, under which contract, and whether the evidence is proof or projection."
         }
       ],
+      "why": "I couldn't trust an agent I could only watch from the outside.",
+      "problem": "Behavior is too slippery to inspect after the fact.",
+      "solution": "Replayable runs, explicit contracts, evidence kept separate from authority.",
       "sourcePath": "/content/work/synapse.md"
     },
     "the-loom": {
@@ -409,7 +425,7 @@ export const generatedPool: Pool = {
           "part of"
         ],
         [
-          "geometry-retrieval",
+          "the-container",
           "idea"
         ],
         [
@@ -418,8 +434,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "The earlier layout-engine idea behind Geometry.",
-        "Blocks had weight, freshness, and neighborhood; the page could re-weave emphasis without erasing place."
+        "I wanted a page that could re-weave emphasis without erasing place."
       ],
       "body": [
         {
@@ -437,6 +452,9 @@ export const generatedPool: Pool = {
           "x": "Geometry keeps the useful part: the field stays authored, while lenses and reading modes decide what glows."
         }
       ],
+      "why": "I wanted a page that could re-weave emphasis without erasing place.",
+      "problem": "Fixed grids couldn't move. Free layouts forgot where anything lived.",
+      "solution": "Blocks carried weight, freshness, and neighborhood. Geometry kept the useful part.",
       "sourcePath": "/content/work/the-loom.md"
     },
     "wing": {
@@ -458,8 +476,7 @@ export const generatedPool: Pool = {
         ]
       ],
       "excerpt": [
-        "A workbench for high-stakes writing where the artifact stays central.",
-        "It coordinates claims, sources, frictions, next moves, patches, and activation packages."
+        "High-stakes writing kept getting treated as text generation."
       ],
       "body": [
         {
@@ -477,887 +494,10 @@ export const generatedPool: Pool = {
           "x": "It is the authorial slice of the larger bionic-work idea: agents can notice, propose, and package without taking over the page."
         }
       ],
+      "why": "High-stakes writing kept getting treated as text generation.",
+      "problem": "The artifact lost the center. Claims, sources, and next moves lived somewhere else.",
+      "solution": "A workbench around the page. Agents can notice and package; they don't take the draft.",
       "sourcePath": "/content/work/wing.md"
-    },
-    "allowed-ignorance": {
-      "id": "allowed-ignorance",
-      "kind": "essay",
-      "cluster": "writing",
-      "title": "allowed ignorance",
-      "date": "2026-07-28",
-      "rank": 1,
-      "weight": 0.95,
-      "links": [
-        [
-          "bounded-me",
-          "pairs"
-        ],
-        [
-          "weak-geometry",
-          "theme"
-        ],
-        [
-          "the-world-answers",
-          "leads to"
-        ]
-      ],
-      "excerpt": [
-        "A reader I built dropped a third of my own writing, silently, for a month."
-      ],
-      "body": [
-        {
-          "t": "h",
-          "x": "Cut",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "The world does not arrive at the resolution I can keep. It arrives dense — too many differences at once, too many branches, too many live variables competing for the same small loop. So before I ever say I understand, something harsher has already happened."
-        },
-        {
-          "t": "p",
-          "x": "I have removed material. Not because I am certain. Because I am bounded."
-        },
-        {
-          "t": "p",
-          "x": "And a cut is not merely omission. It is **equivalence-making**: it declares that several visible differences can now be treated as one usable thing. That is the primitive act underneath compression — not removing detail, *licensing a collapse.*"
-        },
-        {
-          "t": "p",
-          "x": "Some differences are only surface. Some are only changes of coordinate. Some are the beginning of a new object. In the moment, all three feel equally expensive."
-        },
-        {
-          "t": "plate",
-          "cap": "PLATE I — One object, made usable by subtraction — the first cuts.",
-          "src": "/images/pieces/allowed-ignorance/plate-cut.svg"
-        },
-        {
-          "t": "h",
-          "x": "Face",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "After the first cut I usually do not have the whole thing. I have a face: a visible side, a stable angle, a version of the object that feels coherent because I am still looking from the same direction."
-        },
-        {
-          "t": "p",
-          "x": "And it does feel coherent. That is the problem."
-        },
-        {
-          "t": "p",
-          "x": "From inside, a face and a form are nearly indistinguishable. Both give me something to hold. Both let me speak with confidence. The difference only shows up when I move — and I may not move for a long time."
-        },
-        {
-          "t": "callout",
-          "v": "aside",
-          "label": "face",
-          "x": "A clean explanation can just be a well-lit face. A good summary can just be a flattering projection. A framework can feel complete because it hides the seam from where I happen to be standing."
-        },
-        {
-          "t": "contrast",
-          "mode": "pair",
-          "poles": [
-            "face",
-            "form"
-          ],
-          "ownedPole": 1,
-          "rows": [
-            {
-              "a": "a visible, stable side",
-              "b": "the whole object"
-            },
-            {
-              "a": "coherent from where I stand",
-              "b": "keeps contact when turned"
-            },
-            {
-              "a": "a well-lit explanation",
-              "b": "generates consequences"
-            }
-          ]
-        },
-        {
-          "t": "h",
-          "x": "Rotation",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "What I wanted from geometry was never elegance. I wanted something that survives rotation."
-        },
-        {
-          "t": "p",
-          "x": "If the wording changes, does the object remain? If the example changes? If the source closes, can I rebuild it? If the context shifts, do I still know what was structural and what was local scenery?"
-        },
-        {
-          "t": "p",
-          "x": "I do not understand a thing when I can repeat the same face. I understand it when I can turn it and keep contact."
-        },
-        {
-          "t": "plate",
-          "cap": "PLATE II — The same form under rotation — if it disappears when turned, I only owned a face.",
-          "src": "/images/pieces/allowed-ignorance/plate-rotation.svg"
-        },
-        {
-          "t": "p",
-          "x": "Read that way, the old tests are not tests of confidence. They are tests of whether the cut was faithful."
-        },
-        {
-          "t": "ladder",
-          "mode": "step",
-          "rungs": [
-            {
-              "marker": "01",
-              "term": "Rephrase",
-              "body": "— did the surface change while the form stayed?"
-            },
-            {
-              "marker": "02",
-              "term": "Rebuild",
-              "body": "— is the structure mine without the source?"
-            },
-            {
-              "marker": "03",
-              "term": "Transfer",
-              "body": "— did I keep the object, or only the setting it first appeared in?"
-            },
-            {
-              "marker": "04",
-              "term": "Predict",
-              "body": "— does the form generate consequences instead of summaries?"
-            },
-            {
-              "marker": "05",
-              "term": "Break",
-              "body": "— which cut removed something load-bearing?"
-            },
-            {
-              "marker": "06",
-              "term": "Relax",
-              "body": "— does the map still orient after I weaken one of its claims?"
-            }
-          ]
-        },
-        {
-          "t": "h",
-          "x": "Void",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "A map is not the world made portable. It is the world with pieces missing, and the absence is not a defect — it is what makes the map usable."
-        },
-        {
-          "t": "p",
-          "x": "This is where relief misleads me. The lighter object feels better in the hand. So I start treating the removed material as if it had never mattered."
-        },
-        {
-          "t": "p",
-          "x": "On 28 July I found out what that costs."
-        },
-        {
-          "t": "p",
-          "x": "The site had two essay readers. The one I kept handled seven block types. The pool uses eleven. `diagram`, `ladder`, `pull` and `edge-taxonomy` — **32 blocks across 9 of the 10 essays** — rendered as nothing at all."
-        },
-        {
-          "t": "p",
-          "x": "Not badly. Not degraded. *Nothing.* For weeks I had been reading my own essays in a reader that was quietly deleting about a third of their structure, and I did not notice, because absence has no rendering. A missing paragraph leaves no gap you can see. The prose closes over it and reads fine."
-        },
-        {
-          "t": "thesis",
-          "k": "the void is not inert",
-          "x": "The removed material does not sit still. The void is exactly where a difference I stopped paying for waits to return as a fracture."
-        },
-        {
-          "t": "p",
-          "x": "The four types all had a shape the system already defined. Nothing was hard. The cut had been made months earlier — *the reader handles the blocks that matter* — and it was an equivalence, and it was wrong, and it was invisible from every angle I had been standing at."
-        },
-        {
-          "t": "h",
-          "x": "Crack",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "Failure often looks less like chaos than like the return of a difference I stopped paying for."
-        },
-        {
-          "t": "motif"
-        },
-        {
-          "t": "p",
-          "x": "A neat cut is seductive precisely because it deletes. It lowers the cost of thought, it gives me something to stand inside, it makes the domain feel solved enough to move in. But reality does not care whether the cut felt good, and one small movement later the structure cracks along a line I had decided was cosmetic."
-        },
-        {
-          "t": "p",
-          "x": "That is why the dangerous map is not always the loose one. It is often the elegant one. The one that failed late."
-        },
-        {
-          "t": "plate",
-          "cap": "PLATE III — A crack reveals the difference the map stopped paying for.",
-          "src": "/images/pieces/allowed-ignorance/plate-crack.svg"
-        },
-        {
-          "t": "p",
-          "x": "The fix was not better judgement. It was a test that now asserts every block type any essay actually uses survives the recast, so the reader cannot silently drop content again. A cut I cannot see is not disciplined by being more careful next time. It is disciplined by building something that shouts when the void grows."
-        },
-        {
-          "t": "p",
-          "x": "So [[Weak Geometry|weak-geometry]] reads differently to me now. Leave some seams visible. Leave some cuts provisional. Do not merge faster than reality has licensed. Not because I want vagueness — because I want contact."
-        },
-        {
-          "t": "p",
-          "x": "Understanding is not possession, and not even compactness. **It is a disciplined right to leave things out.** To learn is to get better at subtraction without losing the form; to think well is to know which variations are cheap to ignore, which are dangerous to ignore, and which only reveal their importance when the object is turned."
-        },
-        {
-          "t": "p",
-          "x": "That may be all a bounded mind gets. Not the whole thing, not final fidelity — only a better and better sense for what it is allowed to leave out, plus an alarm for the times that sense is wrong."
-        },
-        {
-          "t": "p",
-          "x": "The alarm is the new part. I did not have one in June, and 32 blocks went missing while I admired the cut."
-        }
-      ],
-      "struct": {
-        "lens": "understanding after the right omissions",
-        "sections": [
-          {
-            "label": "Cut",
-            "concepts": [
-              "equivalence-making",
-              "licensing a collapse"
-            ]
-          },
-          {
-            "label": "Face",
-            "concepts": [
-              "well-lit side",
-              "coherence from one angle"
-            ]
-          },
-          {
-            "label": "Rotation",
-            "concepts": [
-              "turn and keep contact"
-            ]
-          },
-          {
-            "label": "Void",
-            "concepts": [
-              "32 blocks",
-              "silent absence"
-            ]
-          },
-          {
-            "label": "Crack",
-            "concepts": [
-              "late failure",
-              "returned difference"
-            ]
-          }
-        ]
-      },
-      "sourcePath": "/content/writing/allowed-ignorance.md"
-    },
-    "bounded-me": {
-      "id": "bounded-me",
-      "kind": "essay",
-      "cluster": "writing",
-      "title": "bounded me",
-      "date": "2026-07-18",
-      "rank": 6,
-      "weight": 0.7,
-      "links": [
-        [
-          "me-plus-ai",
-          "leads to"
-        ],
-        [
-          "allowed-ignorance",
-          "pairs"
-        ]
-      ],
-      "excerpt": [
-        "Two limits that look alike and are not. One is trainable. One is a wall."
-      ],
-      "body": [
-        {
-          "t": "h",
-          "x": "Why a glossary",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "I keep getting tempted by clean definitions. Information as entropy. Intelligence as compression. Learning as matching a distribution. They are elegant and they leave my actual day untouched."
-        },
-        {
-          "t": "p",
-          "x": "Some mornings I read one paragraph and it becomes a lever. Other mornings the same paragraph is dead text. Nothing about the paragraph changed — my sleep changed, my calendar changed, the number of open loops changed, the amount of future-me available to receive the thought changed."
-        },
-        {
-          "t": "p",
-          "x": "So the definitions I need are not about the world. They are about the container."
-        },
-        {
-          "t": "p",
-          "x": "What follows is the working set: seven terms, each with the wound that produced it. A term earns its place here only if getting it wrong has cost me something."
-        },
-        {
-          "t": "p",
-          "x": "For eleven months I ran all of these together under one word, *boundedness*, and treated it as a mood — a thing to be humble about. Splitting it into terms was worth more than any amount of humility, because two of them are trainable and one of them is a wall, and I had been trying to train the wall."
-        },
-        {
-          "t": "h",
-          "x": "Hard structural limit",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "**HSL** — a ceiling that practice does not move."
-        },
-        {
-          "t": "p",
-          "x": "Integration window. Signal propagation speed. The number of edges that can be live at once before the thing stops being one thought and becomes two."
-        },
-        {
-          "t": "p",
-          "x": "Bennett formalizes the sharpest version: under the Chord assumptions a unified moment has a physical size limit, `D ≤ kvθ`, where support diameter is bounded by signal speed times the integration window and `k` depends on exchange architecture. A mind can only get so big because signals travel at finite speed."
-        },
-        {
-          "t": "p",
-          "x": "That result is about consciousness criteria and I am borrowing it for a smaller job. But the borrowing is load-bearing: **boundedness is not an attitude, it is a constraint on integration.** You cannot become humble enough to widen θ."
-        },
-        {
-          "t": "p",
-          "x": "*The wound:* every productivity system I have built before this one was an attempt to expand HSL by trying harder."
-        },
-        {
-          "t": "h",
-          "x": "Dynamic loop parameter",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "**DLP** — everything inside the container that responds to training."
-        },
-        {
-          "t": "p",
-          "x": "Leakage. Re-entry cost. Closure pressure. Basin stability. How fast a diffuse impression becomes a structured object I can return to."
-        },
-        {
-          "t": "p",
-          "x": "These move. They move slowly, they move under conditions, but they move."
-        },
-        {
-          "t": "thesis",
-          "k": "the split",
-          "x": "Training optimizes DLP. It never buys more HSL. Effort spent on the wrong side of that line does not underperform — it produces nothing at all, while feeling like the most serious work available."
-        },
-        {
-          "t": "p",
-          "x": "*The wound:* I spent a year reading DLP failures as character."
-        },
-        {
-          "t": "h",
-          "x": "Leakage",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "**Leakage** — loss at the transition, not at the store."
-        },
-        {
-          "t": "p",
-          "x": "The flow is literal: attention → notes → decisions → habits → products → feedback. Most of the loss happens between states, not inside them."
-        },
-        {
-          "t": "p",
-          "x": "I read something and do not integrate it. I have an insight and do not attach it to a decision. I make a decision and do not make it executable. I execute and do not close the loop with feedback."
-        },
-        {
-          "t": "p",
-          "x": "The leak is never memory. **The leak is transition.** Which is why writing matters more than filing: writing is the conversion point where a diffuse impression becomes an object with edges."
-        },
-        {
-          "t": "p",
-          "x": "*The wound:* four years of note-taking systems, all of them optimizing the wrong end."
-        },
-        {
-          "t": "h",
-          "x": "Re-entry",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "**Re-entry** — what it costs future-me to get back in."
-        },
-        {
-          "t": "p",
-          "x": "The private event I actually mean when I say *I learned something* is not possession. It is that a pattern survived contact with my schedule, became cheaper to recall, and started changing predictions without asking for a full rebuild."
-        },
-        {
-          "t": "p",
-          "x": "Some ideas enter and stay inert. They sound right, they quote well, they make me feel briefly improved, and the next loop arrives and they do nothing. Others become internal programs — I reach for them unprompted, they reduce startup cost, they change what I notice."
-        },
-        {
-          "t": "p",
-          "x": "If I write for others I optimize for legibility. If I write for me I optimize for re-entry."
-        },
-        {
-          "t": "p",
-          "x": "*The wound:* the pieces I was proudest of were often the ones with the highest re-entry cost, because polish and re-entry are not the same axis and I kept scoring one as the other."
-        },
-        {
-          "t": "h",
-          "x": "Basin",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "**Basin** — the region where the loop converges rather than diverges."
-        },
-        {
-          "t": "p",
-          "x": "There is a boundary in my life that behaves like training stability. On one side I am compounding: the loop is tight, small inputs become durable progress. On the other, everything diverges and I am busy and nothing closes."
-        },
-        {
-          "t": "p",
-          "x": "The boundary is not clean. It is *sensitive*. A good week and a trash week can differ by one meeting at the wrong time, one breach of sleep, one context switch I did not respect, one *I'll just do this quickly* that eats an evening."
-        },
-        {
-          "t": "p",
-          "x": "From far away this looks like discipline. Up close it looks like dynamics."
-        },
-        {
-          "t": "p",
-          "x": "So the useful question is not *why am I like this* but **what conditions keep me in the convergent basin** — which is a DLP question with a testable answer, where the first one is neither."
-        },
-        {
-          "t": "p",
-          "x": "*The wound:* treating a dynamical system as a moral one, for most of my adult life."
-        },
-        {
-          "t": "h",
-          "x": "The one operation",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "**Cut** — the only move available when the container is full."
-        },
-        {
-          "t": "p",
-          "x": "When active edges exceed what HSL can hold, there are exactly two candidate responses and one of them does not exist. Expanding capacity is not on the menu. What is on the menu is removing edges."
-        },
-        {
-          "t": "p",
-          "x": "This is where the glossary stops being definitions and becomes a procedure:"
-        },
-        {
-          "t": "p",
-          "x": "1. List the edges currently live."
-        },
-        {
-          "t": "p",
-          "x": "2. Count them against the window, not against ambition."
-        },
-        {
-          "t": "p",
-          "x": "3. Cut until the count fits."
-        },
-        {
-          "t": "p",
-          "x": "4. Do not call step 3 a failure of will."
-        },
-        {
-          "t": "p",
-          "x": "The uncomfortable part is that step 3 is indistinguishable, from the inside, from giving up. [[Allowed Ignorance|allowed-ignorance]] is about the part I still get wrong: the cut is not free, and I do not always know what I removed."
-        },
-        {
-          "t": "p",
-          "x": "My job is not to know everything. It is to increase what is extractable without increasing fragility — build geometry, reduce leakage, stay in the basin, and never harden the map faster than evidence can carry it."
-        },
-        {
-          "t": "p",
-          "x": "Not because I love systems. Because the container has a wall and I have finally stopped negotiating with it."
-        }
-      ],
-      "struct": {
-        "lens": "the container and what moves inside it",
-        "sections": [
-          {
-            "label": "Why a glossary",
-            "concepts": [
-              "clean definitions",
-              "untouched day"
-            ]
-          },
-          {
-            "label": "Hard structural limit",
-            "concepts": [
-              "HSL",
-              "D <= kvtheta"
-            ]
-          },
-          {
-            "label": "Dynamic loop parameter",
-            "concepts": [
-              "DLP",
-              "trainable"
-            ]
-          },
-          {
-            "label": "Leakage",
-            "concepts": [
-              "transition",
-              "conversion"
-            ]
-          },
-          {
-            "label": "Re-entry",
-            "concepts": [
-              "startup cost",
-              "future-me"
-            ]
-          },
-          {
-            "label": "Basin",
-            "concepts": [
-              "convergence",
-              "dynamics not morality"
-            ]
-          },
-          {
-            "label": "The one operation",
-            "concepts": [
-              "cut not expand"
-            ]
-          }
-        ]
-      },
-      "sourcePath": "/content/writing/bounded-me.md"
-    },
-    "geometry-retrieval": {
-      "id": "geometry-retrieval",
-      "kind": "essay",
-      "cluster": "writing",
-      "title": "geometry over retrieval",
-      "date": "2026-07-28",
-      "rank": 5,
-      "weight": 0.75,
-      "links": [
-        [
-          "bounded-me",
-          "theme"
-        ],
-        [
-          "allowed-ignorance",
-          "pairs"
-        ],
-        [
-          "me-plus-ai",
-          "cites"
-        ]
-      ],
-      "excerpt": [
-        "Recognition is cheap now. Reconstruction still costs something. This is the card I run."
-      ],
-      "body": [
-        {
-          "t": "h",
-          "x": "When to run this",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "Not on everything. This is the instrument that fires on an **ownership claim** — the moment I am about to act as though a structure is mine, teach it, build on it, or let it decide something."
-        },
-        {
-          "t": "p",
-          "x": "The trigger is usually a feeling, and the feeling is relief. The answer arrived, the paragraph sounded coherent, the model handed me a structure-shaped object, and I felt the relief of understanding before I had paid for it."
-        },
-        {
-          "t": "p",
-          "x": "Rozenblit and Keil named the failure in 1998: the illusion of explanatory depth. People rate their understanding of a mechanism highly until they are asked to produce it in detail, and then the floor drops. The finding is old. What is new is that the floor now has something under it — the explanation is always one prompt away, so the drop never happens, and I never learn that it would have."
-        },
-        {
-          "t": "p",
-          "x": "That is the danger. Not wrong answers. Accurate prose I do not own."
-        },
-        {
-          "t": "h",
-          "x": "The standard",
-          "level": 2
-        },
-        {
-          "t": "thesis",
-          "k": "the standard",
-          "x": "If I can rebuild the structure with the source closed, I have geometry. If I can only recall it, or summon it again through a model, I have retrieval."
-        },
-        {
-          "t": "p",
-          "x": "Retrieval gives me access. Geometry gives me orientation. Both are useful and only one of them survives the source going away."
-        },
-        {
-          "t": "p",
-          "x": "Geometry has three signatures worth knowing, because they are what the tests below are actually probing. It **generates predictions** — a real map implies expectations about nearby territory. It **degrades gracefully** — forget a detail and the surrounding constraints reconstruct it. It **localizes surprise** — when something breaks, I can name which edge failed and what that invalidates downstream."
-        },
-        {
-          "t": "p",
-          "x": "Retrieval feels like reaching. Geometry feels like standing somewhere."
-        },
-        {
-          "t": "h",
-          "x": "Step 1 — sketch the graph",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "Ten minutes. Write the core nodes, then force five to ten edges between them."
-        },
-        {
-          "t": "p",
-          "x": "For each edge, name the type:"
-        },
-        {
-          "t": "table",
-          "headers": [
-            "type",
-            "claim"
-          ],
-          "rows": [
-            [
-              "causal",
-              "A drives B"
-            ],
-            [
-              "constraint",
-              "A limits B"
-            ],
-            [
-              "tradeoff",
-              "more A means less B"
-            ],
-            [
-              "dependency",
-              "B requires A"
-            ]
-          ]
-        },
-        {
-          "t": "p",
-          "x": "If I cannot type the edge, it is hand-waving. Two facts sitting near each other are still two facts — *proximity is not relationship*, and most of what feels like understanding is a list that has been arranged neatly."
-        },
-        {
-          "t": "p",
-          "x": "Then grade the force: **necessary**, **likely**, **working bridge**, **speculative**. If I cannot grade it, I am overcommitting."
-        },
-        {
-          "t": "h",
-          "x": "Step 2 — collapse the illusion",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "Pick one edge. Explain the mechanism aloud until confidence breaks."
-        },
-        {
-          "t": "p",
-          "x": "It will break. The point is to find *where* — the break marks a missing sub-edge, and that sub-edge is the thing I was quietly assuming while feeling like I knew."
-        },
-        {
-          "t": "p",
-          "x": "Do this before closing the source, not after. This step is diagnosis; the next one is the test."
-        },
-        {
-          "t": "h",
-          "x": "Step 3 — close and rebuild",
-          "level": 2
-        },
-        {
-          "t": "ladder",
-          "mode": "step",
-          "rungs": [
-            {
-              "marker": "01",
-              "term": "Scout.",
-              "body": "Model allowed. Ask for alternate framings, counterexamples, failure modes. No conclusions."
-            },
-            {
-              "marker": "02",
-              "term": "Close.",
-              "body": "No model, no notes. Wait — an hour is enough, a day is better."
-            },
-            {
-              "marker": "03",
-              "term": "Rebuild.",
-              "body": "Redraw the graph from scratch. Not from memory of the diagram; from memory of the structure."
-            },
-            {
-              "marker": "04",
-              "term": "Compare.",
-              "body": "What came back, what did not, and what came back *wrong* — the third category is the most informative and the one I skip."
-            }
-          ]
-        },
-        {
-          "t": "h",
-          "x": "Step 4 — run the six",
-          "level": 2
-        },
-        {
-          "t": "contrast",
-          "mode": "table",
-          "poles": [
-            "geometry",
-            "retrieval"
-          ],
-          "ownedPole": 0,
-          "axisLabel": "test",
-          "rows": [
-            {
-              "label": "Rephrase",
-              "a": "invariant survives",
-              "b": "surface breaks"
-            },
-            {
-              "label": "Rebuild",
-              "a": "structure regenerates",
-              "b": "fragments only"
-            },
-            {
-              "label": "Predict",
-              "a": "specific expectations",
-              "b": "none"
-            },
-            {
-              "label": "Teach",
-              "a": "I can walk a path",
-              "b": "I can only relay"
-            },
-            {
-              "label": "Break",
-              "a": "damage localizes to an edge",
-              "b": "the whole picture destabilizes"
-            },
-            {
-              "label": "Relax",
-              "a": "map still orients",
-              "b": "usefulness collapses with certainty"
-            }
-          ]
-        },
-        {
-          "t": "p",
-          "x": "Relax is the one I added late and the one that catches the most. A map that only works at full strength is not a map, it is a position."
-        },
-        {
-          "t": "h",
-          "x": "The curvature check",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "The five tests above catch local error. There is a failure they miss."
-        },
-        {
-          "t": "p",
-          "x": "I can have every local edge right and still be globally wrong. That is **curvature**: structured wrongness, the pattern of failure that says the global shape is off even when each edge looks plausible."
-        },
-        {
-          "t": "p",
-          "x": "The example that made it click is this one. *Flat intuition:* better summaries should improve decisions. *Observed bend:* better summaries can increase confidence without increasing ownership. The loop shifts from `think → consult` to `consult → assent`, and because the explanation is always available, the illusion of explanatory depth never gets tested. Ease of processing starts impersonating knowing."
-        },
-        {
-          "t": "p",
-          "x": "The bend, stated once: **in a coupled system, clarity can increase drift if it displaces reconstruction.**"
-        },
-        {
-          "t": "p",
-          "x": "Operationally, when surprise repeats in a consistent pattern rather than randomly, stop patching edges and run this instead — make two independent predictions from different edges, then stress the system."
-        },
-        {
-          "t": "p",
-          "x": "• If they repeatedly **converge** where I expected independence, there is a hidden coupling."
-        },
-        {
-          "t": "p",
-          "x": "• If they repeatedly **diverge** where I expected consistency, there is a missing dimension."
-        },
-        {
-          "t": "p",
-          "x": "Honesty clause: I am using curvature as a cognitive operator, not claiming mental maps are literally manifolds. The point is navigational power, not category purity."
-        },
-        {
-          "t": "p",
-          "x": "Models are coherence engines and I am fluency-biased, so the default loop — prompt, accept, move on — produces retrieval that feels exactly like geometry. It lands precisely on my strongest cognitive illusion."
-        },
-        {
-          "t": "p",
-          "x": "The standing rule: **use models to expand the search space, use reconstruction to build the map.**"
-        },
-        {
-          "t": "p",
-          "x": "And per the load order in [[Me + AI|me-plus-ai]], run this card on an ownership claim. Not on every thought. A test I run constantly is a test I will eventually stop running honestly."
-        }
-      ],
-      "struct": {
-        "lens": "understanding after the source closes",
-        "sections": [
-          {
-            "label": "When to run this",
-            "concepts": [
-              "ownership claim",
-              "borrowed coherence"
-            ]
-          },
-          {
-            "label": "The standard",
-            "concepts": [
-              "source closed",
-              "reconstruction"
-            ]
-          },
-          {
-            "label": "Step 1 — sketch the graph",
-            "concepts": [
-              "typed edges",
-              "graded force"
-            ]
-          },
-          {
-            "label": "Step 2 — collapse the illusion",
-            "concepts": [
-              "mechanism",
-              "the break"
-            ]
-          },
-          {
-            "label": "Step 3 — close and rebuild",
-            "concepts": [
-              "scout",
-              "close",
-              "rebuild"
-            ]
-          },
-          {
-            "label": "Step 4 — run the six",
-            "concepts": [
-              "rephrase",
-              "relax"
-            ]
-          },
-          {
-            "label": "The curvature check",
-            "concepts": [
-              "structured wrongness",
-              "hidden coupling"
-            ]
-          }
-        ]
-      },
-      "sourcePath": "/content/writing/geometry-retrieval.md"
     },
     "marginalia": {
       "id": "marginalia",
@@ -1369,11 +509,11 @@ export const generatedPool: Pool = {
       "weight": 0.55,
       "links": [
         [
-          "tools-need-edges",
+          "the-cut",
           "echoes"
         ],
         [
-          "the-world-answers",
+          "the-contact",
           "theme"
         ]
       ],
@@ -1400,7 +540,7 @@ export const generatedPool: Pool = {
         },
         {
           "t": "p",
-          "x": "I keep this near [[Tools Need Edges|tools-need-edges]] because the same shape appears there: capability without an edge does not become freedom, it becomes fog. The edge does not make the mind smaller. It gives leverage somewhere to land."
+          "x": "I keep this near [[the cut|the-cut]] because the same shape appears there: capability without an edge does not become freedom, it becomes fog. The edge does not make the mind smaller. It gives leverage somewhere to land."
         },
         {
           "t": "p",
@@ -1444,7 +584,7 @@ export const generatedPool: Pool = {
         },
         {
           "t": "p",
-          "x": "**What it costs me:** I have used this line to justify a lot of looking around. It is a good corrective against tunnel vision and a poor corrective against drift, because \"read the network\" has no stopping rule. [[The World Answers|the-world-answers]] is where I went looking for one."
+          "x": "**What it costs me:** I have used this line to justify a lot of looking around. It is a good corrective against tunnel vision and a poor corrective against drift, because \"read the network\" has no stopping rule. [[the contact|the-contact]] is where I went looking for one, and the closest thing it found was naming the destination before the probe runs — a stopping rule made of somewhere to arrive rather than an amount to read."
         }
       ],
       "struct": {
@@ -1468,1195 +608,1095 @@ export const generatedPool: Pool = {
       },
       "sourcePath": "/content/writing/marginalia.md"
     },
-    "me-plus-ai": {
-      "id": "me-plus-ai",
+    "the-contact": {
+      "id": "the-contact",
       "kind": "essay",
       "cluster": "writing",
-      "title": "me + AI",
-      "date": "2026-07-18",
-      "rank": 4,
-      "weight": 0.8,
+      "title": "the contact",
+      "date": "2026-08-24",
+      "rank": 2,
+      "weight": 0.9,
       "links": [
         [
-          "geometry-retrieval",
-          "cites"
+          "the-cut",
+          "pairs"
         ],
         [
-          "weak-geometry",
+          "the-container",
           "theme"
-        ],
-        [
-          "the-world-answers",
-          "leads to"
         ]
       ],
       "excerpt": [
-        "I built six gates against drift, then started paying for all six on every thought."
+        "Thirty men ran across the deck and the ship nearly rolled over at anchor. Everyone watched. She sailed anyway."
       ],
       "body": [
         {
           "t": "h",
-          "x": "The tax",
+          "x": "Three passes",
           "level": 2
         },
         {
           "t": "p",
-          "x": "I have a coupling gradient, a verification gate, a topology gate, a reconstruction test, a weakening test, and a contact protocol. Six instruments, each built because something real went wrong."
+          "x": "In the summer of 1628, before the warship *Vasa* left Stockholm, her captain arranged a demonstration."
         },
         {
           "t": "p",
-          "x": "By July I was running all of them on everything."
+          "x": "Thirty men ran back and forth across the upper deck, in step, to set her rolling. It is the only stability test the seventeenth century had: no instruments, no arithmetic, just weight moved deliberately from side to side to see what the hull would do about it."
         },
         {
           "t": "p",
-          "x": "That is not caution. It is a second job. A stabilizer that fires on every thought has stopped stabilizing anything — it has become the dominant cost in the loop it was supposed to protect, and the loop routes around it the way any system routes around a checkpoint that never lets anything through cheaply."
+          "x": "Vice-Admiral Klas Fleming stood and watched."
         },
         {
           "t": "p",
-          "x": "On 18 July I stress-tested the framework against itself and the finding was not that a gate was wrong. Every gate was still right. The finding was that I had no rule for **which one fires when**, so the honest default was all of them, and the practical default was none."
+          "x": "He stopped it after **three passes.**"
+        },
+        {
+          "t": "p",
+          "x": "Three. Not thirty. The ship was heeling so far — at anchor, in still water, with thirty men aboard instead of the four hundred and fifty she would carry — that the officer supervising ended the test because he believed she would go over in the harbour."
+        },
+        {
+          "t": "p",
+          "x": "I want to be precise about what happened there, because the ordinary reading is wrong. Nobody failed to notice. Nobody was fooled. The probe was designed correctly, run correctly, and read correctly by a competent man who stopped it at exactly the right moment for exactly the right reason."
+        },
+        {
+          "t": "p",
+          "x": "The world answered. It answered immediately, unambiguously, and in front of witnesses."
+        },
+        {
+          "t": "h",
+          "x": "He wished the king were at home",
+          "level": 2
+        },
+        {
+          "t": "p",
+          "x": "Then Fleming let her sail."
+        },
+        {
+          "t": "p",
+          "x": "According to the ship's master, what he said as he walked away was that **he wished the king were at home.**"
+        },
+        {
+          "t": "p",
+          "x": "Gustavus Adolphus had ordered the ship, approved her dimensions, and was at that moment on campaign in Poland, sending letters demanding to know why she was not yet at sea. There was no procedure by which a vice-admiral's afternoon on a rolling deck could become a decision to stop. The result had nowhere to go."
+        },
+        {
+          "t": "p",
+          "x": "This is the part I got wrong for a year, and it is why my own gates kept failing while I was still running them."
+        },
+        {
+          "t": "p",
+          "x": "I had been treating contact as a *test.* Build the map, go and touch something, let the touching tell me whether the map holds. That is right as far as it goes and it does not go far enough, because a test produces a result and a result is not yet anything. It is a fact standing on a deck with a man looking at it."
         },
         {
           "t": "thesis",
-          "k": "load order",
-          "x": "Stacking is how verification becomes heavier than the loop it was meant to protect. The gates are layered instruments with a load order, not a stack I run on every thought."
+          "k": "the channel",
+          "x": "A test tells you what is true. A **channel** is what carries the answer somewhere with the authority to act on it. Fleming had the first and not the second, and the first alone is worth exactly nothing."
+        },
+        {
+          "t": "p",
+          "x": "So the question is not *did I check.* I check constantly; that is the disease rather than the cure. The question has a destination in it."
+        },
+        {
+          "t": "p",
+          "x": "**Where does the answer land?** What revises, what breaks, whose memory updates, who is permitted to stop the thing. Name the place before the probe runs, or the probe is decoration."
         },
         {
           "t": "h",
-          "x": "Load order",
+          "x": "1,300 metres",
           "level": 2
         },
         {
           "t": "p",
-          "x": "The correction is small and it is the whole essay. Each gate has a trigger. If I cannot name which gate I am in, I am probably stacking them."
-        },
-        {
-          "t": "table",
-          "headers": [
-            "trigger",
-            "instrument"
-          ],
-          "rows": [
-            [
-              "always present, no ceremony",
-              "weak grades on edges I am leaning on; cuts I can still name"
-            ],
-            [
-              "a decision",
-              "R3+2+1 from memory — thesis, reason, next action, two assumptions, one uncertainty"
-            ],
-            [
-              "structure not yet a thesis",
-              "topology gate — draw it, name the open edge, falsify one link"
-            ],
-            [
-              "an ownership claim",
-              "reconstruction — close the source, rebuild, run the tests in geometry over retrieval"
-            ],
-            [
-              "an external bet",
-              "contact — one probe, temporary closure on one edge, then downgrade or revise"
-            ],
-            [
-              "drift detected",
-              "recovery — close, rewrite, re-enter at L0 or L1"
-            ]
-          ]
+          "x": "She sailed on 10 August 1628. Four sails set, a salute fired, a crowd along the shore and foreign ambassadors watching, because she was the most expensive object the Swedish crown had ever built and part of the point of her was to be seen."
         },
         {
           "t": "p",
-          "x": "The interval is event-driven. Not calendar-mandated. Nothing here runs on a timer, because a timer is how a gate becomes chrome."
+          "x": "A gust came off the bluffs. She heeled, righted, took a second gust, heeled further, and did not come back. Water came in through the open lower gunports. She went down in about thirty-two metres of water, roughly a hundred and twenty metres from shore."
+        },
+        {
+          "t": "p",
+          "x": "**She had sailed about 1,300 metres.** Around thirty people died."
+        },
+        {
+          "t": "p",
+          "x": "Two years of construction. The best shipwrights available. A king's attention on every detail. All of that coherence, accumulated and inspected and approved from the inside — and twenty minutes of actual water disposed of the entire question."
+        },
+        {
+          "t": "p",
+          "x": "The *Vasa* was not sloppy. She was **immaculate** — carved, painted, gilded, admired — and immaculate is a property of the interior. A map can be internally consistent for as long as you like. Consistency is cheap; it is the one property a wrong map is most likely to have, because a wrong map has never been disturbed."
+        },
+        {
+          "t": "p",
+          "x": "And the gunports were open for a good reason. A warship leaving harbour under salute has her guns run out; that is what the ports are *for.* She was doing the thing she was designed to do."
+        },
+        {
+          "t": "p",
+          "x": "An edge — the height of a gunport sill above the waterline — is not only a boundary. It is a **promise about what happens when you press it.** That sill said *heel this far and the sea stays out*, and it was true, across every degree of heel anybody had reason to expect. Past that it did the opposite of what it advertised, silently, while continuing to look exactly as it had."
+        },
+        {
+          "t": "p",
+          "x": "That is the failure mode I most fear in what I build. Not the control that plainly does not work; that gets fixed on the first press. The one I am afraid of answers correctly across every case anybody tested."
         },
         {
           "t": "h",
-          "x": "The instruments",
+          "x": "No calculation existed",
           "level": 2
         },
         {
           "t": "p",
-          "x": "The gradient is the cheapest thing to hold, so it stays loaded."
+          "x": "Here is what stops this being a story about people ignoring evidence."
         },
         {
           "t": "p",
-          "x": "**L0 — tool.** Execution only. Formatting, refactoring, transformation. No influence on belief."
+          "x": "In the 1620s there was **no mathematical theory of ship stability.** None. No metacentric height to compute, no formula to check the design against, no calculation anybody could have run and got wrong. Shipwrights built shell-first, by eye, from proportions that had held before."
         },
         {
           "t": "p",
-          "x": "**L1 — scout.** The model expands the search space: options, counterexamples, alternate framings, failure modes. I keep the conclusion."
+          "x": "So there was no interior gate available. Not a weak one — *none.*"
         },
         {
           "t": "p",
-          "x": "**L2 — co-author.** The model writes. I constrain, audit, cut, compress. The output is a draft artifact, not an authority."
+          "x": "Which means the thirty men on the deck were not a supplementary check on something already verified a better way. They were the **only** verification that existed. The entire apparatus available to the question *will this ship stay upright* was: put weight on her and look."
         },
         {
           "t": "p",
-          "x": "**L3 — integrated.** The model is inside my decision loop. High bandwidth, high risk, sometimes the highest signal. Only with earned entry."
+          "x": "They ran it. It worked. She sailed."
         },
         {
           "t": "p",
-          "x": "These are landmarks, not rooms. The useful question was never *what level am I at* but *which direction am I moving, and do I still know why*."
+          "x": "This clarifies my own instruments by naming their limit. My gates — can I rebuild this with the source closed, does the map still orient me if I weaken one edge, can I say what I cut away — are all **interior.** Every one asks whether I can carry the structure. Not one asks whether the structure meets anything. That is not a flaw in them; it is their type. An interior gate is the right instrument for an ownership claim and the wrong instrument for a bet on the world, and my recurring failure is not skipping a gate but reaching for the wrong class of gate and feeling, afterwards, as though I had checked."
         },
         {
           "t": "p",
-          "x": "The transitions worth watching:"
-        },
-        {
-          "t": "ladder",
-          "mode": "step",
-          "rungs": [
-            {
-              "marker": "01",
-              "term": "L1 → L2",
-              "body": "I stop rephrasing the output and start building on it."
-            },
-            {
-              "marker": "02",
-              "term": "L2 → L3",
-              "body": "the model's framing starts shaping the structure of my question."
-            },
-            {
-              "marker": "03",
-              "term": "Any → drift",
-              "body": "I feel pulled to prompt again rather than think."
-            },
-            {
-              "marker": "04",
-              "term": "Any → drift",
-              "body": "I cannot restate my position without referencing the output."
-            }
-          ]
+          "x": "And there is a worse case than a wrong map, which took me too long to name."
         },
         {
           "t": "p",
-          "x": "The goal is not to avoid L3. Unregulated L3 is the enemy; earned L3 is a capability, and over-damping is a real failure mode — a system so regulated it can no longer resonate. The goal is to never arrive there passively."
+          "x": "The bad map is not always wrong. Sometimes it is **numb.** It has been arranged so that nothing can come back to it — no prediction it could miss, no probe that could return badly, no reader who will fail to nod. The sibling essay to this one calls that writing in the perfect tense: stating a thing as already accomplished, so that refutation has no surface to attach to. A numb map ages very well and teaches nothing."
+        },
+        {
+          "t": "p",
+          "x": "Self-sealed maps age into personality. Answerable maps age into practice."
         },
         {
           "t": "h",
-          "x": "What the gates are for",
+          "x": "Six weeks earlier",
           "level": 2
         },
         {
           "t": "p",
-          "x": "Four parameters decide whether coupling helps or hurts: **exchange** (bandwidth and persistence between me and the model), **feedback control** (how well I can monitor, interpret, constrain, reject), **latency** (how fast outputs alter my internal state), and **closure pressure** (how fast candidate structure hardens into belief)."
+          "x": "Three and a half centuries later, somebody built the room."
         },
         {
           "t": "p",
-          "x": "High exchange with weak feedback control is the danger zone. Low latency makes it faster. Closure pressure makes it stick."
+          "x": "On 1 December 1974, TWA Flight 514, a Boeing 727 on a diverted approach to Dulles in bad weather, flew into a ridge at Mount Weather, Virginia. All ninety-two people aboard were killed."
         },
         {
           "t": "p",
-          "x": "Models have a specific risk here: they are closure engines. They make the first coherent map feel more finished than it is."
-        },
-        {
-          "t": "pull",
-          "x": "pull: Increase exchange only when feedback control is increasing too."
+          "x": "During the investigation the NTSB found something that is, to me, the worst detail in this essay. **Six weeks earlier, a United Airlines flight had very narrowly escaped the same fate — on the same approach, at the same place.** The crew had lived. The ambiguity in the descent clearance that nearly killed them was known, and understood, and written down."
         },
         {
           "t": "p",
-          "x": "Bennett's bound gives this a physics rather than a mood. Under the Chord assumptions a unified moment has a size limit, `D ≤ kvθ` — support diameter bounded by signal speed times the integration window. If links in the control loop exceed θ, the system fragments into two agents taking turns instead of one enlarged mind. In the BCI case, 10 ms round-trip is marginally feasible against a 20–50 ms candidate window. In cloud AI, raw speed is not enough: limited concurrency and serialized pipelines can break co-instantiation even when the links are fast."
+          "x": "It simply had not travelled."
         },
         {
           "t": "p",
-          "x": "L3 has a physics. It is not a matter of how integrated I feel."
+          "x": "Nobody was hiding it. There was no villain and no cover-up and no incompetence. There was, in the entire American aviation system, no *place* whose job it was to receive a report like that from a crew who had survived one and carry it to the people who would fly the same approach next month. The answer existed. It had nowhere to arrive."
+        },
+        {
+          "t": "p",
+          "x": "In April 1976 the FAA and NASA created the **Aviation Safety Reporting System** to be that place."
+        },
+        {
+          "t": "p",
+          "x": "And the design of it is the part worth studying, because the hard problem is not the pipe. Reports are **voluntary**, filed by the pilots and controllers themselves. They are **confidential** — NASA de-identifies them, and NASA rather than the regulator holds them, so the body that receives the answer is not the body that can punish you for it. Filing carries limited immunity from enforcement."
+        },
+        {
+          "t": "drawn",
+          "kind": "channel-break",
+          "cap": "The same loop, three hundred and forty-eight years apart. Above, the answer is read correctly and has nowhere to arrive. Below, somebody has built the place it arrives in."
+        },
+        {
+          "t": "p",
+          "x": "Every one of those properties exists to solve a problem that is not informational. **A channel is not a pipe. It is the set of conditions under which somebody will actually send.** Fleming did not lack a courier. He lacked a place where saying *this ship will capsize* was survivable for the person saying it."
+        },
+        {
+          "t": "callout",
+          "v": "update",
+          "label": "provenance",
+          "x": "*Vasa* detail from the Vasa Museum's account and the standard record: the lurching test of thirty men, halted by Vice-Admiral Klas Fleming after three passes; the maiden voyage of 10 August 1628, approximately 1,300 metres, roughly thirty dead, sunk in about 32 m of water some 120 m from shore with the lower gunports open; the inquiry finding no guilty party; the absence of any mathematical theory of ship stability in the 1620s; raised 1961. Fleming's remark that he wished the king were at home is reported by the ship's master. TWA 514 crashed 1 December 1974 with 92 aboard; the NTSB investigation established that a United flight had narrowly escaped the same fate at the same location six weeks before. ASRS was established by the FAA and NASA in April 1976. I have not established how widely the United incident circulated inside United — the record says the NTSB surfaced it, not that it was suppressed."
         },
         {
           "t": "h",
-          "x": "Encoding instead of remembering",
+          "x": "Nobody was found guilty",
           "level": 2
         },
         {
           "t": "p",
-          "x": "A load order I have to remember is another thing on the stack. So the load order should live in the repo, not in me."
+          "x": "The Swedish inquiry called witnesses, examined the shipwrights, and found no one to blame. The king had approved the specifications. The designer had died before she was launched. There was, in the end, nobody who could have been the channel, and so the finding was that there was no fault."
         },
         {
           "t": "p",
-          "x": "This is what four skills in `.agents/skills/` are actually for, and why the first one landed on 30 June rather than as an afterthought. A skill file is a small piece of institutional memory: it reduces lore hunting, it pauses before risky moves, it makes boring important things hard to skip, and it lets a future session resume without reconstructing the room."
+          "x": "I do not think that verdict was a cover-up. I think it was accurate, and the accuracy is the most uncomfortable thing here. A system with a good test, competent people, an unambiguous result and no place for the result to land does not have a guilty party. **It has an architecture.**"
         },
         {
           "t": "p",
-          "x": "Enough of them and the codebase starts pushing back when the loop gets sloppy. Tooling stops being decoration and becomes a nervous system — trust is not a vibe, it is accumulated evidence that the system catches me when attention drops."
-        },
-        {
-          "t": "contrast",
-          "mode": "pair",
-          "poles": [
-            "assistant",
-            "loop partner"
-          ],
-          "ownedPole": 1,
-          "rows": [
-            {
-              "a": "waits for tasks",
-              "b": "notices system pressure"
-            },
-            {
-              "a": "optimizes the next answer",
-              "b": "preserves the next session"
-            },
-            {
-              "a": "helps produce output",
-              "b": "helps maintain conditions"
-            }
-          ]
+          "x": "Which is the finding I have to apply to myself, and it does not flatter me. I have built a verification apparatus that is entirely interior — gates that ask whether I can carry a structure, run faithfully, on schedule, for a year. Not one of them can receive news. There is no version of my week in which an answer arrives from outside and something is *obliged* to change. I have a rolling deck and a competent officer and no room."
         },
         {
           "t": "p",
-          "x": "The partner does not need to be more human. It needs to make the work more answerable."
-        },
-        {
-          "t": "h",
-          "x": "The seam",
-          "level": 2
+          "x": "The ship was raised in 1961 and stands in a museum in Stockholm, largely intact, because the water she sank in was too cold and too brackish for shipworm. You can go and look at her. She is there because she failed at 1,300 metres instead of in the North Sea — early enough to be recovered whole."
         },
         {
           "t": "p",
-          "x": "Three commits in this repo carry a `Co-Authored-By: Claude Opus 5` trailer. That is the provenance rule doing its actual job — not a verification UI, not site chrome, just a seam I left visible in the one place I cannot quietly edit later."
+          "x": "Fleming ran his test in an afternoon. It cost nothing and it told the truth. That was never the expensive part."
         },
         {
           "t": "p",
-          "x": "The hard stops are unchanged, and they are not gates, because they never fire conditionally. **No identity outsourcing** — the model does not answer who I am or what I should value. **No reality arbitration** — it can summarize inputs, it cannot decide what happened. **Provenance is mandatory.** **Nothing is accepted until I can rebuild the core shape from memory**, whether that shape is a proposition or a topology."
-        },
-        {
-          "t": "p",
-          "x": "Everything else is a draft. No exceptions because the output sounds right, or sounds like me, or because I wanted it to be true."
-        },
-        {
-          "t": "p",
-          "x": "What I got wrong for a month was not the gates. It was believing that more verification is monotonically safer. It is not — past some density the verification becomes the thing I route around, and a gate I skip is worse than a gate I never built, because I still get to feel protected by it."
-        },
-        {
-          "t": "p",
-          "x": "One instrument, at its trigger. That is the whole discipline now."
-        },
-        {
-          "t": "p",
-          "x": "I do not prompt my way out of confusion. I rewrite my way out — but only when something has actually gone wrong, and no longer as a tax on every sentence that goes right."
+          "x": "The room the answer arrives in took another three hundred and forty-eight years."
         }
       ],
       "struct": {
-        "lens": "which instrument, when",
+        "lens": "a test is not a channel",
         "sections": [
           {
-            "label": "The tax",
+            "label": "Three passes",
             "concepts": [
-              "stacking",
-              "overhead"
+              "the probe ran correctly",
+              "the world answered"
             ]
           },
           {
-            "label": "Load order",
+            "label": "He wished the king were at home",
             "concepts": [
-              "event-driven",
-              "one gate"
+              "the channel",
+              "where the answer lands"
             ]
           },
           {
-            "label": "The instruments",
+            "label": "1,300 metres",
             "concepts": [
-              "L0-L3",
-              "R3+2+1"
+              "certified from inside",
+              "an edge is a promise"
             ]
           },
           {
-            "label": "What the gates are for",
+            "label": "No calculation existed",
             "concepts": [
-              "exchange",
-              "feedback control"
+              "interior gates",
+              "the numb map"
             ]
           },
           {
-            "label": "Encoding instead of remembering",
+            "label": "Six weeks earlier",
             "concepts": [
-              "hooks",
-              "institutional memory"
+              "a destination built on purpose",
+              "safe enough to send"
             ]
           },
           {
-            "label": "The seam",
+            "label": "Nobody was found guilty",
             "concepts": [
-              "provenance",
-              "co-authored"
+              "it has an architecture",
+              "the cheap part"
             ]
           }
         ]
       },
-      "sourcePath": "/content/writing/me-plus-ai.md"
+      "sourcePath": "/content/writing/the-contact.md"
     },
-    "the-world-answers": {
-      "id": "the-world-answers",
+    "the-container": {
+      "id": "the-container",
       "kind": "essay",
       "cluster": "writing",
-      "title": "the world answers",
-      "date": "2026-07-28",
+      "title": "the container",
+      "date": "2026-08-24",
       "rank": 0,
       "weight": 1,
       "links": [
         [
-          "allowed-ignorance",
-          "theme"
-        ],
-        [
-          "weak-geometry",
+          "the-cut",
           "pairs"
         ],
         [
-          "geometry-retrieval",
-          "theme"
+          "the-contact",
+          "leads to"
         ]
       ],
       "excerpt": [
-        "I wrote an essay about contact while building something I was not letting the world touch."
+        "The computer that landed on the moon had eight slots. When they filled it did not try harder — it said so, out loud, in a number a human could read."
       ],
       "body": [
         {
           "t": "h",
-          "x": "The field",
+          "x": "102:42:17",
           "level": 2
         },
         {
           "t": "p",
-          "x": "On 27 June I committed `geometry v2: canonical field site`. The product was a hand-placed spatial field — nodes at authored coordinates, essays you entered by moving toward them, a constellation you could descend into."
+          "x": "Three minutes from the surface, the display in front of Armstrong and Aldrin stopped showing altitude and showed a four-digit number instead."
         },
         {
           "t": "p",
-          "x": "For the next twelve days I worked on almost nothing else. Thirty commits into `src/field/`. Spatial constellation handoff with URL sync. A cartographic atlas surface. Fluid field motion. Neighbor highlighting for inbound links."
+          "x": "1201."
         },
         {
           "t": "p",
-          "x": "On 27 July I deleted it."
+          "x": "Twenty-four seconds later, 1202. Sixteen seconds after that, 1202 again — at seven hundred and seventy feet, coming down at twenty-seven feet per second, at the end of a quarter-million-mile trip, while a man flew an unflyable object toward ground nobody had ever touched."
         },
         {
           "t": "p",
-          "x": "Forty-three files. **6,898 lines.** One month, near enough exactly, from canonical to removed."
+          "x": "The alarms did not mean the computer was broken."
         },
         {
           "t": "p",
-          "x": "I want to be precise about what kind of failure that was, because it was not the kind I had been writing about."
+          "x": "They meant it was full."
+        },
+        {
+          "t": "audio",
+          "src": "/audio/a11-1202-alarm.opus",
+          "label": "Air-to-ground · 102:42:17",
+          "cap": "The alarm called, and answered. Fifteen seconds."
+        },
+        {
+          "t": "p",
+          "x": "Fifteen seconds from the callout to the go. Listen to it once and notice what is not in it. Nobody's voice changes."
         },
         {
           "t": "h",
-          "x": "What I was claiming",
+          "x": "Eight",
           "level": 2
         },
         {
           "t": "p",
-          "x": "The claim, archived from the work node as of **30 June** (`f141d63`, *Polish work nodes and field titles*):"
-        },
-        {
-          "t": "pull",
-          "x": "Geometry is the site you are on: a hand-placed field for essays, projects, visual studies, and live reading paths. It proves the core idea directly — knowledge as place, not feed."
+          "x": "The guidance computer scheduled its work into **eight core sets** — eight blocks of twelve registers, and a job needed one of them to exist. Five larger areas held the vector math. That was the entire allowance."
         },
         {
           "t": "p",
-          "x": "Full file: `docs/drafts/v1-archive/geometry-work-node-2026-06-30.md`. Pinned to a SHA so the evidence does not depend on the live path staying broken."
+          "x": "Not eight thousand. Eight."
         },
         {
           "t": "p",
-          "x": "Knowledge as place, not feed. That was the invariant. Everything else was downstream of it: the coordinates authored once, the reading paths, the descent, the refusal of the scroll."
+          "x": "A 1202 meant every core set was taken. A 1201 meant the vector areas were gone."
         },
         {
           "t": "p",
-          "x": "And it was a good map. It was internally consistent, it connected to everything else I had written, and it never contradicted itself — because nothing was in a position to contradict it."
+          "x": "So the alarm was not a diagnosis. It was a **count**: the machine reporting its own size, out loud, at the worst available moment, in a number a human could read in the time a human had."
         },
         {
           "t": "p",
-          "x": "The first draft of this essay is dated **1 July**."
+          "x": "I do not get 1202. I get Thursday."
         },
         {
           "t": "p",
-          "x": "I wrote it in the middle of the build. An essay arguing that a map cannot certify itself from the inside, that it has to risk a prediction and let the world answer — written by someone who was, that same week, not letting the world near the thing he was making. The commit from that day is `Improve field and constellation legibility`."
+          "x": "By Thursday I can usually tell the week has gone wrong and I still cannot tell you what went wrong in it. There is no incident. Nothing failed. I answered the things and moved the things along and was at my desk the whole time, and by Thursday every paragraph I read is flat text — every sentence equally far away, nothing nearer to anything else, which means nothing is structure, which means I am reading and storing nothing. The same paragraph on a better morning is a lever."
         },
         {
           "t": "p",
-          "x": "I did not notice. The essay was about contact and I wrote it out of reading."
+          "x": "Nothing about the paragraph changed."
+        },
+        {
+          "t": "p",
+          "x": "I changed."
+        },
+        {
+          "t": "p",
+          "x": "And the story I reach for is always about character. That I am undisciplined. That I have let something slide. It arrives instantly, it is very fluent, and in eleven years it has never once told me what to do differently on Friday."
+        },
+        {
+          "t": "p",
+          "x": "There is a limit of the same kind underneath it — a number of edges that can be live at once before the thing stops being one thought and becomes two — and Bennett puts a floor under it: under the Chord assumptions a unified moment has a physical size ceiling, `D ≤ kvθ`, the support diameter bounded by signal speed times the integration window. A mind can only get so big because signals travel at finite speed. I am borrowing a consciousness argument for a much smaller job and it earns its place exactly once: **you cannot become humble enough to widen θ.**"
+        },
+        {
+          "t": "p",
+          "x": "Eight is a **wall.** Practice does not move it, and nobody on that descent proposed a ninth core set. Which jobs survive a restart is a **dial** — designed, argued over, improved for years before anyone flew."
+        },
+        {
+          "t": "p",
+          "x": "Effort on the dial compounds. Effort on the wall does not underperform; it produces nothing at all, while feeling like the most serious work available."
+        },
+        {
+          "t": "p",
+          "x": "For eleven months I ran both under one word and treated the word as a mood."
+        },
+        {
+          "t": "drawn",
+          "kind": "core-sets",
+          "cap": "The container fills, and sheds. One waypoint carries the steering through the restart; the readout was never protected."
         },
         {
           "t": "h",
-          "x": "What came back",
+          "x": "No known angle",
           "level": 2
         },
         {
           "t": "p",
-          "x": "The world had been answering for a while. I was reading the answer as a to-do list."
+          "x": "Then the detail that stops this being a story about spaceflight."
         },
         {
           "t": "p",
-          "x": "• 30 June — `Smooth mobile field panning`"
+          "x": "**The computer was not full of work.**"
         },
         {
           "t": "p",
-          "x": "• 30 June — `Polish mobile field layout`"
+          "x": "The rendezvous radar — the instrument for finding the command module later, on the way home, not needed for another two hours — had its mode switch in the wrong position. Its resolvers fed the computer signals corresponding to *no known angle.* Not a wrong angle. Not a stale one. An angle that did not exist."
         },
         {
           "t": "p",
-          "x": "• 1 July — `Improve field and constellation legibility`"
+          "x": "The counters chased it anyway. Six thousand four hundred pulses per second, per axis, tracking the position of an antenna that was not reporting a position. That phantom took roughly **fifteen percent** of the computer's available time during the landing."
         },
         {
           "t": "p",
-          "x": "• 3 July — `Rework the field into a cartographic atlas surface`"
+          "x": "I read that and felt caught."
         },
         {
           "t": "p",
-          "x": "• 9 July — `Add fluid field motion and constellation interaction polish`"
+          "x": "Because the reason my container is full is almost never the work in it. It is the open loop I am not working on but am *scheduled against.* The decision deferred four times, which is not being made and is also not being dropped, and therefore runs. The unfinished conversation. The thing I said I would look into. The tab that is not information, it is a promise."
         },
         {
           "t": "p",
-          "x": "Five commits in eleven days, all of them making the field more legible or more movable. Three specifically about phones. Each one felt like polish. Together they are a signal, and the signal was: *this surface needs continuous help to be readable, and it is not getting less help over time.*"
+          "x": "None of it produces anything. All of it counts at full rate against a position that does not exist."
         },
         {
           "t": "p",
-          "x": "Alexander calls that misfit — the small wrongness between a form and the forces around it, which shows up as friction long before it shows up as an argument [Alexander 1964]. Misfit does not arrive labelled. It arrives as another commit that seemed worth making."
+          "x": "The container cannot tell work from phantom. It only counts."
         },
         {
           "t": "p",
-          "x": "What replaced the field is a single continuous scroller."
+          "x": "And the flat text on Thursday is not the disease. It is the one readout I actually own — the instrument reporting that the container is full — and I have spent years reading it as a verdict on my character instead of as a number."
+        },
+        {
+          "t": "h",
+          "x": "Frequency, not phase",
+          "level": 2
         },
         {
           "t": "p",
-          "x": "Not a feed. But not place, either."
+          "x": "The cause underneath the cause is the one I have not stopped thinking about."
+        },
+        {
+          "t": "p",
+          "x": "The radar and the flight control system each generated an 800-hertz reference signal. Both correct. Both to spec. The two were **frequency-locked** — identical rate, exactly as agreed — and were never required to be **phase-locked.** The document defining the interface between the two subsystems specified the one and was silent on the other."
+        },
+        {
+          "t": "p",
+          "x": "Nothing was broken. Every part met its specification. The failure lived in the seam between two correct things, at a resolution nobody had agreed to look at."
         },
         {
           "t": "thesis",
-          "k": "contact",
-          "x": "A map cannot certify itself from the inside. Mine did not lose an argument. It lost to a phone, one legibility fix at a time, over four weeks in which I kept scoring each fix as progress."
+          "k": "the seam",
+          "x": "The overload was not caused by a broken component. It was caused by two correct components agreeing at the wrong resolution — and the cost only appeared when the container was already nearly full."
         },
         {
           "t": "p",
-          "x": "That is the part I want to keep. The failure was never a moment of being wrong. There was no day the field was refuted. The refutation was distributed across thirty commits, and every individual commit was defensible."
-        },
-        {
-          "t": "contrast",
-          "mode": "pair",
-          "poles": [
-            "an argument",
-            "a misfit"
-          ],
-          "ownedPole": 1,
-          "rows": [
-            {
-              "a": "arrives as a claim",
-              "b": "arrives as a chore"
-            },
-            {
-              "a": "can be answered",
-              "b": "can be absorbed"
-            },
-            {
-              "a": "shows up in the essay",
-              "b": "shows up in the changelog"
-            }
-          ]
-        },
-        {
-          "t": "h",
-          "x": "The cut I did not look inside",
-          "level": 2
+          "x": "I have never had a week go wrong because a commitment was wrong. They go wrong in the seam: two things each reasonable, agreed at the level of *what*, never agreed at the level of *when.*"
         },
         {
           "t": "p",
-          "x": "Then, yesterday, a smaller and much sharper one."
-        },
-        {
-          "t": "p",
-          "x": "Removing the retired essay-sheet styles, I deleted a contiguous range of CSS from the comment `/* Essay sheet */` to the next comment. I did not check what was inside the range."
-        },
-        {
-          "t": "p",
-          "x": "Inside it were `html.home-mode`, `.home-page-scroll`, `.particle-scroll-content`, `.home-body`, `.home-particle-gate`, and `.home-fallback`. Since ParticleScroll is omitted outside the origin trial, `.home-fallback` **is** the home scroller."
-        },
-        {
-          "t": "p",
-          "x": "The home page could not scroll. At all."
-        },
-        {
-          "t": "p",
-          "x": "The commit that fixed it is called `Fix four defects found by looking at the pages`. That title is the finding. Three of the four had been sitting in the build the whole time — comparison tables rendering their second column in right-aligned mono, listing line numbers all reading `0`, drawn figures resolving to about 4px of label text on a phone. None of them are subtle. None of them were visible from inside the code."
-        },
-        {
-          "t": "p",
-          "x": "They became visible the moment I opened the pages and looked."
-        },
-        {
-          "t": "p",
-          "x": "This is [[Allowed Ignorance|allowed-ignorance]] arriving as a bug report. I made a cut — *this range is essay-sheet styles* — and the cut declared an equivalence that was false. Six selectors were treated as the same kind of thing as the ones around them because they were adjacent in the file. Adjacency is not relationship. I know this; I wrote it down; I did it anyway, in a stylesheet, without looking."
-        },
-        {
-          "t": "p",
-          "x": "Schön calls the corrective back-talk: the material answering the move you just made [Schön 1983]. Back-talk is not a metaphor here. The page did not scroll."
-        },
-        {
-          "t": "callout",
-          "v": "aside",
-          "label": "looking",
-          "x": "Reading the diff is inside the map. Opening the page is outside it. I keep treating those as the same act because they take place at the same desk."
-        },
-        {
-          "t": "h",
-          "x": "The face that stayed",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "From 27 July — the day the field went out — until this rewrite, the live work node still said the site was a hand-placed field, that the map stays put while you move through it. A month of residue after the surface it described was gone."
-        },
-        {
-          "t": "p",
-          "x": "That is the cleanest example I have of the thing [[Allowed Ignorance|allowed-ignorance]] called a face — a coherent, well-lit, still-quotable side of an object that has already turned. It did not survive rotation. It just never got rotated."
-        },
-        {
-          "t": "p",
-          "x": "But the deeper defect was not the prose. It was the date."
-        },
-        {
-          "t": "p",
-          "x": "`content/work/geometry.md` was the only node in the pool with `date: today`. Freshness maps that string to the maximum score. Combined with `rank: 0`, the one node that was factually a month out of date was the one node the system was *structurally incapable of rendering as stale.* It could not age."
-        },
-        {
-          "t": "p",
-          "x": "Absence has no rendering. Staleness, with that literal, has no rendering either. A return channel actively disabled."
-        },
-        {
-          "t": "p",
-          "x": "And while this essay still quoted the live file as \"unedited,\" the evidence depended on the repo staying broken. Any honest fix would have silently falsified the published claim — the essay had become a stakeholder in the defect it diagnoses, and nobody wrote that down."
-        },
-        {
-          "t": "p",
-          "x": "So the quote above is pinned to the archive. The live node now describes the site that exists. The date is a real date, so the next stale version can finally look old."
-        },
-        {
-          "t": "h",
-          "x": "The gate",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "So the protocol, arriving after the case rather than before it. Before an idea enters the field:"
-        },
-        {
-          "t": "ladder",
-          "mode": "step",
-          "rungs": [
-            {
-              "marker": "01",
-              "term": "Invariant",
-              "body": "— what do I believe survives change?"
-            },
-            {
-              "marker": "02",
-              "term": "Equivalence",
-              "body": "— what differences am I treating as the same?"
-            },
-            {
-              "marker": "03",
-              "term": "Prediction",
-              "body": "— what should happen if that collapse is legitimate?"
-            },
-            {
-              "marker": "04",
-              "term": "Probe",
-              "body": "— what is the smallest action that lets the world answer?"
-            },
-            {
-              "marker": "05",
-              "term": "Return",
-              "body": "— what came back without my permission?"
-            },
-            {
-              "marker": "06",
-              "term": "Boundary",
-              "body": "— where does the error land, and what updates when it does?"
-            }
-          ]
-        },
-        {
-          "t": "p",
-          "x": "Six questions, and the only expensive one is four."
-        },
-        {
-          "t": "p",
-          "x": "The field failed step four for a month. The stylesheet failed it for a day. In both cases the probe was available, cheap, and skipped: open the page on a phone. Look at it."
-        },
-        {
-          "t": "p",
-          "x": "I had a version of this list on 1 July. It did not save me, because a protocol you can recite is still inside the map."
-        },
-        {
-          "t": "p",
-          "x": "What I am adding is the weaker and more useful rule:"
-        },
-        {
-          "t": "thesis",
-          "k": "changelog",
-          "x": "When the same fix keeps returning under a different name, that is not maintenance. That is the world answering a question I have not agreed to hear yet."
-        },
-        {
-          "t": "p",
-          "x": "Five legibility commits was the answer. I read it as five tasks."
-        },
-        {
-          "t": "p",
-          "x": "The gate I actually needed was not a better question to ask an idea. It was a habit of counting how often I repair the same edge before I let myself call it polish."
-        },
-        {
-          "t": "p",
-          "x": "That one is still open. I do not yet have a number."
-        }
-      ],
-      "struct": {
-        "lens": "a map that lost to contact",
-        "sections": [
-          {
-            "label": "The field",
-            "concepts": [
-              "6898 lines",
-              "one month"
-            ]
-          },
-          {
-            "label": "What I was claiming",
-            "concepts": [
-              "place not feed",
-              "the map stays put"
-            ]
-          },
-          {
-            "label": "What came back",
-            "concepts": [
-              "a scroller",
-              "legibility"
-            ]
-          },
-          {
-            "label": "The cut I did not look inside",
-            "concepts": [
-              "contiguous range",
-              "looking"
-            ]
-          },
-          {
-            "label": "The face that stayed",
-            "concepts": [
-              "date: today",
-              "staleness unrenderable"
-            ]
-          },
-          {
-            "label": "The gate",
-            "concepts": [
-              "probe",
-              "return"
-            ]
-          }
-        ]
-      },
-      "sourcePath": "/content/writing/the-world-answers.md"
-    },
-    "tools-need-edges": {
-      "id": "tools-need-edges",
-      "kind": "essay",
-      "cluster": "writing",
-      "title": "tools need edges",
-      "date": "2026-07-28",
-      "rank": 3,
-      "weight": 0.85,
-      "links": [
-        [
-          "marginalia",
-          "echoes"
-        ],
-        [
-          "me-plus-ai",
-          "theme"
-        ]
-      ],
-      "excerpt": [
-        "A control that looked like an affordance and did nothing. Edges are promises, and mine was lying."
-      ],
-      "body": [
-        {
-          "t": "h",
-          "x": "The dead control",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "On a phone, the summoned reference in my reader did nothing."
-        },
-        {
-          "t": "p",
-          "x": "Tapping one set `aria-expanded` and pinned it — the state was correct, the accessibility tree was correct, the component believed it had worked. But the note renders in the margin rail, and there is no rail below 1260px. Nothing appeared. Tap again and the invisible thing closed."
-        },
-        {
-          "t": "p",
-          "x": "Below 600px the featured card on home was worse in a duller way: a 172px poster sitting beside its text, so at 375 the title and dek were sharing **121 pixels**. And the touch targets — the way back, the colophon link, the footnote superscript, the header icons, the thesis word-count buttons — were all **14 to 22 pixels tall**."
-        },
-        {
-          "t": "p",
-          "x": "None of that is a bug in the sense of a wrong value. Every one of those is an edge that made a promise to the hand and did not keep it."
-        },
-        {
-          "t": "h",
-          "x": "An edge is a promise",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "I have been writing about edges as if they were mainly about *limits* — the tool declining to do everything, the constraint that narrows the field so action can start."
-        },
-        {
-          "t": "p",
-          "x": "The phone taught me the other half. An edge is not only a boundary. It is a claim about what will happen when you press it."
-        },
-        {
-          "t": "thesis",
-          "k": "tool theory",
-          "x": "A tool is not better because it permits more moves. It is better when its edges make the next meaningful move easier to find — and an edge that invites a press it cannot answer is worse than no edge at all."
-        },
-        {
-          "t": "p",
-          "x": "The dead reference is the pure case. It looked pressable. It *was* pressable. It updated state. It just never returned anything to the person pressing it, which means for a month the interface was quietly teaching people that pressing does not work here."
-        },
-        {
-          "t": "p",
-          "x": "A 20px target teaches the same lesson more slowly. You do not conclude *the target is small*. You conclude *I am clumsy*, and you stop reaching."
-        },
-        {
-          "t": "edge-taxonomy",
-          "rows": [
-            {
-              "type": "physical limit",
-              "force": "teaches the hand where action starts"
-            },
-            {
-              "type": "mode boundary",
-              "force": "keeps state legible"
-            },
-            {
-              "type": "feedback loop",
-              "force": "lets skill accumulate"
-            },
-            {
-              "type": "omission",
-              "force": "prevents the tool from becoming the user's work"
-            },
-            {
-              "type": "broken promise",
-              "force": "teaches the hand to stop trying"
-            }
-          ]
-        },
-        {
-          "t": "p",
-          "x": "The last row is the one I added after the phone."
-        },
-        {
-          "t": "h",
-          "x": "Possibility debt",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "The older argument still holds, and it is the reason the promise matters."
-        },
-        {
-          "t": "p",
-          "x": "A tool that says *you can do anything* hands over a possibility space and quietly makes you responsible for its rules. Before doing the work, you have to invent the frame. That is the debt: not attention, **orientation**."
-        },
-        {
-          "t": "p",
-          "x": "Minimalism notices the wound — too many surfaces, too much capture, too many defaults designed against attention — and answers *choose less, turn things off*. The instinct is right and the answer is incomplete, because the deeper question is not how to use less technology. It is how to design tools that return agency instead of consuming it."
-        },
-        {
-          "t": "contrast",
-          "mode": "pair",
-          "poles": [
-            "less",
-            "edged"
-          ],
-          "ownedPole": 1,
-          "rows": [
-            {
-              "a": "fewer surfaces",
-              "b": "clearer affordances"
-            },
-            {
-              "a": "attention protected by refusal",
-              "b": "agency returned through grip"
-            },
-            {
-              "a": "absence as discipline",
-              "b": "constraint as instrument"
-            }
-          ]
-        },
-        {
-          "t": "p",
-          "x": "That distinction is also why I got the mobile reader wrong. I had been optimizing for *less* — strip the chrome, trust the prose — while the edges that remained were making promises nothing could keep. Fewer surfaces did not produce more agency. It produced a room full of dead switches."
-        },
-        {
-          "t": "h",
-          "x": "Grip",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "A good constraint is not a wall. It is a grip."
-        },
-        {
-          "t": "p",
-          "x": "A haiku has edges. A piano has edges. A camera lens, a command line, the OP-1. The edge is not there to reduce expression — it gives the hand something to learn, the mind something to push against, the user a place to begin. *Maximum function, minimum form* is not decoration. It is a theory of agency: every control has to earn its place, and every control has to invite use it can actually deliver."
-        },
-        {
-          "t": "p",
-          "x": "An instrument is not powerful because it has infinite options. It is powerful because its limits are learnable — which requires that pressing the same place twice does the same thing twice."
-        },
-        {
-          "t": "p",
-          "x": "Bad software inverts this. More menus, more modes, more surfaces to manage, and it calls that power. Usually it is deferred design work handed to the user: the tool refusing to decide where the edge belongs, so the user pays the orientation cost on every visit."
-        },
-        {
-          "t": "h",
-          "x": "Generative fog",
-          "level": 2
-        },
-        {
-          "t": "p",
-          "x": "AI makes this more urgent, not less. When software becomes generative the possibility space expands faster than anyone can hold it, and without frames, evals, loops, memory, and boundaries the user is left steering fog."
+          "x": "Which is also the correction to every tool I have ever bought."
         },
         {
           "t": "diagram",
           "mode": "flow",
           "cyclic": false,
           "nodes": [
-            "frames",
-            "evals",
-            "loops",
-            "memory",
-            "agency"
+            "attention",
+            "notes",
+            "decisions",
+            "habits",
+            "products",
+            "feedback"
           ],
           "edges": [
             {
-              "from": "frames",
-              "to": "evals",
+              "from": "attention",
+              "to": "notes",
               "rel": "→",
               "force": "necessary"
             },
             {
-              "from": "evals",
-              "to": "loops",
+              "from": "notes",
+              "to": "decisions",
               "rel": "→",
               "force": "likely"
             },
             {
-              "from": "loops",
-              "to": "memory",
+              "from": "decisions",
+              "to": "habits",
               "rel": "→",
               "force": "working-bridge"
             },
             {
-              "from": "memory",
-              "to": "agency",
+              "from": "habits",
+              "to": "products",
+              "rel": "→",
+              "force": "speculative"
+            },
+            {
+              "from": "products",
+              "to": "feedback",
               "rel": "→",
               "force": "speculative"
             }
-          ]
+          ],
+          "lead": "Six states, five transitions. The tools all sit on the boxes.",
+          "follow": "Every loss I can name happened on an arrow."
         },
         {
           "t": "p",
-          "x": "The model can produce more. That does not mean I can hold more — [[Bounded Me|bounded-me]] is the whole reason. Abundance without edges becomes weather."
+          "x": "I read something and do not integrate it. I have an insight and do not attach it to a decision. I make a decision and do not make it executable. I execute and do not close the loop."
         },
         {
           "t": "p",
-          "x": "And the failure I actually shipped scales badly here. A dead control in a reader costs one tap. A generative tool that appears to accept direction and quietly does not respond to it costs a whole working relationship, because the user cannot tell the difference between *I steered badly* and *the steering is not connected.*"
+          "x": "The leak is never memory. The leak is transition."
         },
         {
           "t": "p",
-          "x": "The future of good tools will not be defined by how much they can generate. It will be defined by how well they preserve agency inside abundance — which starts with the smallest possible discipline:"
+          "x": "Four years of note-taking systems optimised the wrong end, because a better store cannot recover something that was never lost in storage. What I want is not better memory. It is lower-leakage loops, and those are built, not bought — which is why writing beats filing. Writing is the conversion point, where a diffuse impression becomes an object with edges, and an object with edges is the only form that survives a transition intact."
+        },
+        {
+          "t": "h",
+          "x": "They would simply disappear",
+          "level": 2
         },
         {
           "t": "p",
-          "x": "**Press every edge you ship, on the smallest screen you support, with your actual hand.**"
+          "x": "What saved that landing was decided years before anyone needed it."
         },
         {
           "t": "p",
-          "x": "The point is not to make technology smaller. It is to make it holdable. Tools need edges because humans do — and an edge is only real if it answers."
+          "x": "The computer restarted, and restarting did not mean starting over. Critical computations had **waypoints**; on a restart they resumed from the last one, mid-flight, without losing the thread."
+        },
+        {
+          "t": "p",
+          "x": "And the rest did not. The phrase in the engineer's own account is flat enough to miss: certain computations that were not considered vital were not restart-protected. **They would simply disappear.**"
+        },
+        {
+          "t": "p",
+          "x": "The altitude-rate display was one of them. The crew lost a readout they had been using. It came back a moment later, degraded, and the landing continued, because losing a number is survivable and losing the steering is not."
+        },
+        {
+          "t": "p",
+          "x": "Somebody, years earlier, at a desk, with no emergency anywhere in the room, went through the list and decided in advance what would be allowed to vanish."
+        },
+        {
+          "t": "p",
+          "x": "I have not solved this and I do not want to pretend the essay solves it. When my container fills, the move actually available is to let something disappear. Not to schedule it later — later is still a core set. Not to do it badly — badly is still a core set. To decide which live things are not vital and let them go without the funeral."
+        },
+        {
+          "t": "p",
+          "x": "From the inside that is indistinguishable from giving up. It feels *exactly* the same, every time, and I have never once been able to tell them apart while it is happening."
+        },
+        {
+          "t": "h",
+          "x": "November 2015",
+          "level": 2
+        },
+        {
+          "t": "p",
+          "x": "So I went looking for somebody who had solved it. I found them, and the solution is worse than I wanted it to be."
+        },
+        {
+          "t": "p",
+          "x": "In November 2015 the New York State Task Force on Life and the Law, with the state Department of Health, published *Ventilator Allocation Guidelines*, updating a document first written in 2007. It is calm and procedural, and its central move is not a formula. It is a removal of authority."
+        },
+        {
+          "t": "pull",
+          "x": "To ensure that patients receive the best care possible in a pandemic, a patient's attending physician does not determine whether his/her patient receives (or continues) with ventilator therapy; instead a triage officer or triage committee makes the decision."
+        },
+        {
+          "t": "p",
+          "x": "And the officer never meets the patient:"
+        },
+        {
+          "t": "pull",
+          "x": "While the attending physician interacts with and conducts the clinical evaluation of a patient, a triage officer or triage committee does not have any direct contact with the patient."
+        },
+        {
+          "t": "p",
+          "x": "The guidelines have a name for the arrangement, and the sentence justifying it is the flattest thing in the document. **Role sequestration.** *This role sequestration allows the clinical ventilator allocation protocol to operate smoothly.*"
+        },
+        {
+          "t": "p",
+          "x": "White and Halpern's Pittsburgh framework of 23 March 2020, adapted by New Jersey and North Carolina among others, makes the same separation and says the quiet part out loud: it is \"intended to promote objectivity, avoid conflicts of commitments, and minimize moral distress.\""
+        },
+        {
+          "t": "p",
+          "x": "That is the not-vital list, made years in advance, by people who will not be in the room. And then handed to somebody who cannot see the person in front of them, because seeing the person in front of you is precisely what makes the decision impossible."
+        },
+        {
+          "t": "p",
+          "x": "Which would be a tidy ending, so here is the part that is actually about me."
+        },
+        {
+          "t": "p",
+          "x": "A systematic review found thirty-one American states holding crisis-standards documents. Roughly fourteen jurisdictions ever formally invoked one, and a fair share of those invocations concerned staffing flexibility rather than who gets the ventilator. Idaho, which went statewide on 16 September 2021, is the clearest case anyone can point to."
+        },
+        {
+          "t": "p",
+          "x": "So the protocols were written, and mostly not used. The list was necessary and it was not sufficient. Deciding in advance is one act. **Declaring that the moment has arrived is a second one**, performed under load, by the person who is drowning — and it is the one almost nobody performed."
+        },
+        {
+          "t": "callout",
+          "v": "update",
+          "label": "provenance",
+          "x": "Apollo detail from Don Eyles, *Tales from the Lunar Module Guidance Computer* (2004), and the Apollo 11 Lunar Surface Journal program-alarm notes. Eyles gives eight core sets; the ALSJ summary says seven — I have used Eyles, who wrote the code, and left the discrepancy visible rather than picking the number that reads better. `D ≤ kvθ` is Bennett (2026), borrowed once and not extended. Ventilator guidance from the New York State Task Force on Life and the Law and the New York State Department of Health, *Ventilator Allocation Guidelines* (November 2015), an update of the 2007 original; \"role sequestration\" is the document's own term, traced to Powell, Christ and Birkhead (2008), and is specific to the New York lineage rather than general usage. The Pittsburgh document is White and Halpern, *Allocation of Scarce Critical Care Resources During a Public Health Emergency*, 23 March 2020. The count of thirty-one state documents is Romney et al. (2020); the count of roughly fourteen invoking jurisdictions is the Network for Public Health Law tracker of 2 March 2022, which mixes triage activations with staffing and licensure measures — I have not separated them, and say so rather than reporting a cleaner number than I have. Idaho expanded crisis standards statewide on 16 September 2021 after activating in the Panhandle in early September."
+        },
+        {
+          "t": "h",
+          "x": "102:45:40",
+          "level": 2
+        },
+        {
+          "t": "p",
+          "x": "Three minutes after the last alarm, Eagle landed in the Sea of Tranquility."
+        },
+        {
+          "t": "audio",
+          "src": "/audio/a11-touchdown.opus",
+          "label": "Air-to-ground · 102:45:40",
+          "cap": "Touchdown, and the answer from Houston. Fourteen seconds."
+        },
+        {
+          "t": "p",
+          "x": "Nobody went back for the computations that vanished. They were not recovered later, or rescheduled, or apologised for. They were dropped by design at the moment the container filled, and the mission they belonged to succeeded — not despite the dropping but because of it."
+        },
+        {
+          "t": "p",
+          "x": "There is a version of me who has already made the list, and he is not hypothetical in any interesting way. The list is easy to write. What he has never done is say, on the Thursday, *this is that.*"
+        },
+        {
+          "t": "p",
+          "x": "Eight is eight. It was eight before the descent started and it was eight in every machine built to that spec, and no amount of wanting made a ninth core set exist at seven hundred and seventy feet."
+        },
+        {
+          "t": "p",
+          "x": "So the wall was never the problem, and it turns out the list is not the problem either."
+        },
+        {
+          "t": "p",
+          "x": "Writing it was never the hard part. Saying the word was."
         }
       ],
       "struct": {
-        "lens": "constraints that return agency",
+        "lens": "a wall you can count, and the dials inside it",
         "sections": [
           {
-            "label": "The dead control",
+            "label": "102:42:17",
             "concepts": [
-              "aria-expanded",
-              "no rail below 1260"
+              "the count",
+              "not the diagnosis"
             ]
           },
           {
-            "label": "An edge is a promise",
+            "label": "Eight",
             "concepts": [
-              "affordance",
-              "feedback"
+              "wall and dial",
+              "you cannot widen theta"
             ]
           },
           {
-            "label": "Possibility debt",
+            "label": "No known angle",
             "concepts": [
-              "infinite choice",
-              "orientation"
+              "the phantom",
+              "scheduled against nothing"
             ]
           },
           {
-            "label": "Grip",
+            "label": "Frequency, not phase",
             "concepts": [
-              "constraint",
-              "skill"
+              "the seam",
+              "leakage lives on transitions"
             ]
           },
           {
-            "label": "Generative fog",
+            "label": "They would simply disappear",
             "concepts": [
-              "AI abundance",
-              "frames"
+              "restart protection",
+              "the not-vital list"
+            ]
+          },
+          {
+            "label": "November 2015",
+            "concepts": [
+              "role sequestration",
+              "written everywhere",
+              "declared nowhere"
+            ]
+          },
+          {
+            "label": "102:45:40",
+            "concepts": [
+              "dropped by design",
+              "saying the word"
             ]
           }
         ]
       },
-      "sourcePath": "/content/writing/tools-need-edges.md"
+      "sourcePath": "/content/writing/the-container.md"
     },
-    "weak-geometry": {
-      "id": "weak-geometry",
+    "the-cut": {
+      "id": "the-cut",
       "kind": "essay",
       "cluster": "writing",
-      "title": "weak geometry",
-      "date": "2026-07-28",
-      "rank": 2,
-      "weight": 0.9,
+      "title": "the cut",
+      "date": "2026-08-24",
+      "rank": 1,
+      "weight": 0.95,
       "links": [
         [
-          "allowed-ignorance",
-          "theme"
-        ],
-        [
-          "geometry-retrieval",
+          "the-container",
           "pairs"
         ],
         [
-          "the-world-answers",
+          "the-contact",
           "leads to"
         ]
       ],
       "excerpt": [
-        "I removed a reader's only way out and called it restraint. An argument with myself about how weak is too weak."
+        "One rod became two. Nothing about it looked different, and the load at the connection doubled."
       ],
       "body": [
         {
           "t": "h",
-          "x": "The exit",
+          "x": "17 July 1981",
           "level": 2
         },
         {
           "t": "p",
-          "x": "When I deleted the essay sheet, its *Back to home* went with it and nothing took its place."
+          "x": "A tea dance, on a Friday evening, in the atrium of a hotel that had been open for a year. A band on the lobby floor. Perhaps sixteen hundred people in the room, and some of them standing on the walkways overhead to watch, because that was the best view in the building and the walkways were there to be stood on."
         },
         {
           "t": "p",
-          "x": "For most of a day, `/read/:id` had exactly one way out: a 10px wordmark in the header slug. No way to reach another essay. A reader who finished a piece was, functionally, in a room with the lights on and no door."
+          "x": "At around 7:05 the fourth-floor walkway came down onto the second-floor walkway, and both came down onto the lobby."
         },
         {
           "t": "p",
-          "x": "I did not do that by accident, and I did not do it by neglect. I did it on principle. The principle was: **do not add structure the argument has not earned.** Navigation chrome is the kind of thing that accretes, and I have spent two years learning to leave things out."
+          "x": "**114 people were killed. 216 were injured.**"
         },
         {
           "t": "p",
-          "x": "So this piece is an argument with myself, because I no longer trust the principle to run unsupervised."
+          "x": "The investigators found the cause at a single detail: the connections where the hanger rods met the box beams. Not the beams. Not the rods. The place where one was fastened to the other."
         },
         {
           "t": "h",
-          "x": "First exchange",
+          "x": "One rod, or two",
           "level": 2
         },
         {
           "t": "p",
-          "x": "**Weak:** The whole point is that structure hardens too early. A map I commit to is a map I stop testing. Leaving the edge loose is what keeps me able to move when the evidence moves."
+          "x": "The design called for a single continuous rod, hung from the roof frame, passing through the fourth-floor walkway and carrying on down to the second-floor walkway beneath it. One rod, two walkways, each hung from its own nut on the same length of steel."
         },
         {
           "t": "p",
-          "x": "**Strict:** Then explain the door."
+          "x": "What was built used two rods. One from the roof to the fourth-floor walkway. A second, offset, from the fourth-floor walkway down to the second."
         },
         {
           "t": "p",
-          "x": "**Weak:** The door was chrome. I removed a component and its navigation came with it. That is a migration defect, not a philosophy."
+          "x": "Stand in the lobby and look up and you cannot tell these apart. Same walkways, same height, same steel, same spacing. The photographs taken during construction show a building going up correctly."
         },
         {
           "t": "p",
-          "x": "**Strict:** It is a philosophy when it takes a day to notice. You were not weighing whether the exit was load-bearing. You were not weighing at all, because your default reads *removed* as *disciplined*. The bias has a direction, and the direction is always toward less."
+          "x": "But in the original, the second-floor walkway hangs from the roof. In what was built it hangs from the fourth-floor walkway — and so the fourth-floor connection, the box beam and the nut beneath it, now carries **both walkways instead of one.**"
         },
         {
           "t": "p",
-          "x": "**Weak:** The bias is calibrated. Everything I have written about maps says the same thing: the elegant cut fails late, the committed map stops being tested, hardening is the failure mode I actually have."
+          "x": "The load at that point doubled."
+        },
+        {
+          "t": "drawn",
+          "kind": "rod-change",
+          "cap": "One continuous rod hangs both walkways from the roof. Two rods hang the lower one from the upper — and the connection between them takes everything."
         },
         {
           "t": "p",
-          "x": "**Strict:** That is one failure mode. Name the other one."
+          "x": "Nothing visible changed. A fastening detail changed, and a fastening detail is exactly the kind of thing a drawing set treats as interchangeable — one way of attaching steel to steel, swapped for another way of attaching steel to steel."
         },
         {
           "t": "p",
-          "x": "**Weak:** …"
-        },
-        {
-          "t": "p",
-          "x": "**Strict:** The other one is that a map held loosely forever never has to meet anything. You can call an edge *provisional* indefinitely. It costs nothing, it always sounds honest, and it is functionally identical to having no position at all. Weakness is not automatically humility. Sometimes it is just a way of never being wrong."
+          "x": "That is the move I want to name, because I make it constantly and almost never notice."
         },
         {
           "t": "h",
-          "x": "Second exchange",
+          "x": "A good reason",
           "level": 2
+        },
+        {
+          "t": "p",
+          "x": "The change was proposed by the steel fabricator, Havens, and their reason was good."
+        },
+        {
+          "t": "p",
+          "x": "A single rod running the full height has to be threaded along its entire length so the upper nut can be driven down into position. Threading that much rod damages the threads, and installing it that way is genuinely worse. Two shorter rods avoid the problem."
+        },
+        {
+          "t": "p",
+          "x": "That is not carelessness. It is competence — somebody who understood steel better than the drawing did, looking at a detail and improving it."
+        },
+        {
+          "t": "p",
+          "x": "I know that move. It is the best feeling available in this work: the local improvement, argued from real knowledge of the material directly in front of you. Almost every bad cut I have made had a reason of exactly that quality. Not laziness. The opposite."
+        },
+        {
+          "t": "p",
+          "x": "**Overfitted structure does not feel like failure. It feels like insight.**"
         },
         {
           "t": "thesis",
-          "k": "the symmetry",
-          "x": "Hardening too early stops the map from being tested. Never hardening stops it from being usable. Both are failures of the same variable, and I only ever guard one direction."
+          "k": "the cut",
+          "x": "A cut is not omission. It is **equivalence-making** — the declaration that two things can now be treated as one. And the moment it is made, the difference it collapsed stops being tracked by anyone."
         },
         {
           "t": "p",
-          "x": "**Weak:** Fine. But the asymmetry is real — a hardened map is expensive to unwind and a loose one is cheap to firm up."
+          "x": "The trouble is that a difference can be three things and in the moment all three feel identical. It can be **surface** — the same object described another way, safe to collapse. It can be a **change of coordinate** — the same object seen from elsewhere, also safe. Or it can be **the beginning of a new object**, in which case collapsing it deletes something that was doing work."
         },
         {
           "t": "p",
-          "x": "**Strict:** Is it? The door was cheap to firm up because it was one component and I noticed within a day. What about the cuts nobody reports? [[Allowed Ignorance|allowed-ignorance]] found 32 blocks rendering as nothing across nine essays, for weeks, because absence has no rendering. Removal is only cheap to reverse when something tells you it happened."
+          "x": "One rod versus two rods is a fabrication detail. It is also a change of load path. The first reading is true. The second one killed a hundred and fourteen people."
         },
         {
           "t": "p",
-          "x": "**Weak:** So the rule is: weaken freely where failure is loud, and slowly where failure is silent."
-        },
-        {
-          "t": "p",
-          "x": "**Strict:** That is better. It is still not a stopping rule."
-        },
-        {
-          "t": "p",
-          "x": "**Weak:** There may not be one."
-        },
-        {
-          "t": "p",
-          "x": "**Strict:** There is at least a question. Not *how confident am I* — that measures the wrong thing. **What is currently load-bearing?** The exit was load-bearing and I never asked, because it did not look like structure. It looked like decoration."
-        },
-        {
-          "t": "contrast",
-          "mode": "pair",
-          "poles": [
-            "decoration",
-            "load-bearing"
-          ],
-          "ownedPole": 1,
-          "rows": [
-            {
-              "a": "can be removed to test the form",
-              "b": "removal is the test failing"
-            },
-            {
-              "a": "absence reads as restraint",
-              "b": "absence reads as a room with no door"
-            },
-            {
-              "a": "costs attention",
-              "b": "carries weight the argument does not mention"
-            }
-          ]
+          "x": "Nobody in that exchange was wrong about steel. The failure was in believing the question was about steel."
         },
         {
           "t": "h",
-          "x": "Where it settles",
+          "x": "The phone call",
           "level": 2
         },
         {
           "t": "p",
-          "x": "The correction is not *commit more* and it is not *stay loose*. It is that **weak** was doing two jobs and needs to do one."
+          "x": "Havens proposed the change. Daniel Duncan, the engineer of record's employee, approved it in a telephone call — **without running the calculation, and without seeing a sketch.**"
         },
         {
           "t": "p",
-          "x": "Graded edges — necessary, likely, working bridge, speculative — that stays. That is weakness as *information*: a claim carrying its own confidence so the map degrades legibly when one part fails. The relax test stays with it: if weakening one sentence destroys the structure, I do not have geometry, I have a position."
+          "x": "The ordinary reading of that is *he should have been more careful*, and the ordinary reading is useless. What actually happened is that the change arrived **already made** — framed as a detail, from someone competent, at a moment when checking it would have felt like an insult to that competence."
         },
         {
           "t": "p",
-          "x": "What goes is weakness as *temperament* — the reflex that scores every removal as discipline and never asks what the removed thing was holding up. That reflex is not epistemic humility. It is a preference with good PR."
+          "x": "A cut that arrives from outside is the most dangerous kind, because you inherit the collapse without inheriting the reasoning. Somebody else decided what could be treated as the same. You get the tidier object and not the record of what was folded into it."
+        },
+        {
+          "t": "p",
+          "x": "**Borrowed cuts.** Candidate structure arriving already merged, already simplified, already too finished for my verification to keep up with. Every model I work with produces them at a rate I cannot audit. So does every good collaborator. The cleaner the thing that arrives, the fewer seams it shows, and the seam is the only place the question is still visible."
+        },
+        {
+          "t": "p",
+          "x": "So the question stops being *is this map right* and becomes something with an owner in it:"
+        },
+        {
+          "t": "p",
+          "x": "**Who decided what I am no longer tracking?**"
+        },
+        {
+          "t": "h",
+          "x": "Sixty, then thirty",
+          "level": 2
+        },
+        {
+          "t": "p",
+          "x": "Then the detail that turns this from one mistake into something about margins."
+        },
+        {
+          "t": "p",
+          "x": "The original design — the correct one, the single-rod version, the one nobody built — supported roughly **60% of the minimum load** the Kansas City code required."
+        },
+        {
+          "t": "p",
+          "x": "It was already under code. Before anyone changed anything."
+        },
+        {
+          "t": "p",
+          "x": "The rod change took it to **30%.**"
+        },
+        {
+          "t": "p",
+          "x": "So the collapse was not one error. It was one error landing on a shortfall nobody had measured, and the two of them multiplying somewhere no drawing showed. Halving a margin is survivable when the margin is large. Nobody knew the margin was gone, because the void left by the first omission had never been inspected, and **a void does not announce itself.** The structure looks exactly as solid as one with twice the capacity."
+        },
+        {
+          "t": "p",
+          "x": "The hotel opened on 1 July 1980. The walkways came down on 17 July 1981. For three hundred and eighty-one days that building carried people correctly — through construction, through inspection, every day for a year, under every load anyone happened to put on it. Which is the most persuasive evidence a structure can offer and which meant nothing at all."
+        },
+        {
+          "t": "p",
+          "x": "Failure looks less like chaos than like the return of a difference I stopped paying for."
+        },
+        {
+          "t": "p",
+          "x": "This is why the dangerous map is so rarely the obviously loose one. A loose map fails early, cheaply, in front of you, while the stakes are low and the fix is small. The elegant map holds — through the review, through the launch, through the first year — and then goes at the one seam that was ruled cosmetic, at the moment the load is highest, which is the moment a crowd is standing on it."
+        },
+        {
+          "t": "p",
+          "x": "And I have my own version, at a scale where nobody was hurt. For a month my reader silently dropped four block types — diagrams, ladders, pull quotes, comparison tables. Thirty-two blocks across nine of ten essays, rendering as **nothing.** Not badly. Not degraded. Absent. I had cut the reader down to the block types that mattered, and the cut was an equivalence, and it was wrong, and it was invisible from every angle I was standing at."
+        },
+        {
+          "t": "p",
+          "x": "I did not notice because **absence has no rendering.** A missing paragraph leaves no gap you can see. The prose closes over it and reads fine."
+        },
+        {
+          "t": "h",
+          "x": "4 January 2001",
+          "level": 2
+        },
+        {
+          "t": "p",
+          "x": "The other thing I keep coming back to is not a building. It is a taper."
+        },
+        {
+          "t": "p",
+          "x": "The Luer taper is the small conical fitting at the end of a syringe. It is one of the most successful pieces of standardisation in the history of medicine: one geometry, adopted everywhere, so that any syringe meets any port in any hospital in any country. It made an enormous amount of ordinary error impossible. It is, by almost every measure anyone would apply, an excellent cut."
+        },
+        {
+          "t": "p",
+          "x": "The difference it collapsed was **route.**"
+        },
+        {
+          "t": "p",
+          "x": "Intravenous, intrathecal, epidural, enteral — four entirely different destinations in a human body, some of which are survivable and one of which is not — became, mechanically, the same connection. Nothing about the fitting knows where it is going."
+        },
+        {
+          "t": "p",
+          "x": "On 4 January 2001, at the Queen's Medical Centre in Nottingham, an eighteen-year-old named Wayne Jowett was given vincristine into his spine instead of his vein. Vincristine is routine and effective intravenously. Intrathecally it is very nearly always fatal. He died on 2 February, twenty-nine days later."
+        },
+        {
+          "t": "p",
+          "x": "The inquiry was led by Brian Toft, and the sentence of his I cannot put down is not about training or fatigue or staffing:"
+        },
+        {
+          "t": "pull",
+          "x": "the most dangerous physical aspect of all, in my opinion, is that a syringe containing Vincristine can also be connected to the spinal needle that delivers intrathecal drugs to patients."
+        },
+        {
+          "t": "drawn",
+          "kind": "connector",
+          "cap": "One taper, drawn three times. Twice it seats and once it does not, and the difference is a shape rather than a rule."
+        },
+        {
+          "t": "p",
+          "x": "The World Health Organization counted **fifty-five such cases reported worldwide since 1968.** Nearly forty years of a difference nobody was tracking, because the object had declared it did not exist."
+        },
+        {
+          "t": "p",
+          "x": "And the fix, when it finally came, was not a rule. **ISO 80369-6:2016** specifies NRFit — a neuraxial connector deliberately shaped so that it will not mate with a Luer. NHS England published transition resources in August 2017. Somewhere between the Kansas City lobby and a Nottingham ward the same lesson is sitting there twice, in the same part of the drawing: *both of these failed at a connector, which is the only element of a design that exists solely to say two things are compatible.*"
         },
         {
           "t": "callout",
-          "v": "aside",
-          "label": "the tell",
-          "x": "The tell is that weakening never costs me anything. When a discipline has produced no discomfort in months, it has probably stopped being a discipline and become a taste."
-        },
-        {
-          "t": "p",
-          "x": "A trellis is still the right image — hold without trapping, align without fixing. But a trellis that holds nothing is a pile of sticks, and I have been grading myself only on the trapping."
+          "v": "update",
+          "label": "provenance",
+          "x": "Hyatt Regency detail from the NBS investigation (*Investigation of the Kansas City Hyatt Regency Walkways Collapse*, NBS BSS 143) and from ASCE and contemporary accounts of the change order. The 60% and 30% figures are of the Kansas City code minimum; 114 dead, 216 injured. Vincristine detail from Brian Toft's *External Inquiry into the adverse incident that occurred at Queen's Medical Centre, Nottingham, 4th January 2001*; the case count of 55 since 1968 is WHO Information Exchange Alert No. 115, 18 July 2007. NRFit is ISO 80369-6:2016; NHS England published transition guidance in August 2017. The thirty-two dropped blocks are my own, from June 2026, and are recorded in the commit that fixed them."
         },
         {
           "t": "h",
-          "x": "Unresolved",
+          "x": "Already",
           "level": 2
         },
         {
           "t": "p",
-          "x": "I still do not have the number."
+          "x": "Cyberpunk got one thing right and it was never the neon."
         },
         {
           "t": "p",
-          "x": "[[The World Answers|the-world-answers]] ends in the same place from the other direction: five legibility commits were the world answering and I scored them as five tasks. Here it is one missing door for one day. Both are counting problems — how many repairs before a pattern, how much removal before damage — and in both cases I only saw it retrospectively, which is exactly the property a gate is supposed to not have."
+          "x": "The genre's future is not new. It is old, installed, and unmaintained — a city running on infrastructure whose designers are dead, whose drawings are lost, and whose margins were spent by people who had reasons at the time. Gibson's Chiba City is not a prediction about technology. It is a prediction about maintenance."
         },
         {
           "t": "p",
-          "x": "What I have instead is one question, cheap enough to actually ask before cutting:"
+          "x": "And he writes it in the past tense. That is the part I want to take. The near future arrives as flat reportage, as something already standing rather than something proposed, and the certainty is carried entirely by the grammar."
         },
         {
           "t": "p",
-          "x": "**What is this holding up that I have not written down?**"
+          "x": "Hebrew has a name for the move. The **prophetic perfect**: a future event stated in the completed tense because the speaker is certain enough that tense has stopped mattering. Kimhi's gloss is the one I keep — *the matter is as clear as though it had already passed.*"
         },
         {
           "t": "p",
-          "x": "If the answer is *nothing*, cut. If the answer arrives slowly, that hesitation is the load. If I cannot answer at all, the thing is either genuinely inert or genuinely structural, and I have no way to tell from inside the map — which is where this stops and [[The World Answers|the-world-answers]] starts."
+          "x": "So, in the perfect:"
+        },
+        {
+          "t": "p",
+          "x": "The assertion I did not write has already failed. It failed on an ordinary afternoon, on a block type I have not invented yet, in an essay I have not written. Nobody mentioned it, because there was nothing to mention. The prose closed over the gap and read fine."
+        },
+        {
+          "t": "p",
+          "x": "None of that has happened. All of it is as settled as the sixty percent was on the day the drawings were sealed, and the only thing between it and the record is that nobody has typed it into a log yet."
+        },
+        {
+          "t": "p",
+          "x": "Which is also the warning, and I would rather say it than have it said to me. **A sentence in the perfect tense cannot be refuted.** It has already happened, so nothing can come back to it. That is the most comfortable position a map can hold, and it is exactly where the drawings were sitting on the afternoon Duncan took the call."
+        },
+        {
+          "t": "p",
+          "x": "Havens was right about the threads. Duncan was right that Havens knew steel. The drawing was already under code before either of them touched it, and nobody in that chain was positioned to know."
+        },
+        {
+          "t": "p",
+          "x": "So the operator I have been carrying — *what is this holding up that I have not written down?* — is a question, and a question does not scale. It will not run on every deletion, nobody would run it, and resolving to be more careful is the response that has failed me most reliably, because it asks the worst available version of me to be better at exactly the moment he is worst."
+        },
+        {
+          "t": "p",
+          "x": "What replaces a question is a shape."
+        },
+        {
+          "t": "p",
+          "x": "I have built one. I need about nine."
+        },
+        {
+          "t": "p",
+          "x": "NRFit does not ask anyone to be careful. It does not fit."
         }
       ],
       "struct": {
-        "lens": "structure loose enough to stay playful, strong enough to hold",
+        "lens": "what I removed, and whether the object survived it",
         "sections": [
           {
-            "label": "The exit",
+            "label": "17 July 1981",
             "concepts": [
-              "10px wordmark",
-              "one way out"
+              "the cause at the connections"
             ]
           },
           {
-            "label": "First exchange",
+            "label": "One rod, or two",
             "concepts": [
-              "restraint",
-              "abdication"
+              "nothing visible changed",
+              "the load doubled"
             ]
           },
           {
-            "label": "Second exchange",
+            "label": "A good reason",
             "concepts": [
-              "provisional",
-              "never committing"
+              "equivalence-making",
+              "three kinds of difference"
             ]
           },
           {
-            "label": "Where it settles",
+            "label": "The phone call",
             "concepts": [
-              "load-bearing",
-              "graded edges"
+              "borrowed cuts",
+              "who decided what I stopped tracking"
             ]
           },
           {
-            "label": "Unresolved",
+            "label": "Sixty, then thirty",
             "concepts": [
-              "no stopping rule"
+              "the unmeasured margin",
+              "381 days"
+            ]
+          },
+          {
+            "label": "4 January 2001",
+            "concepts": [
+              "the universal connector",
+              "a fix that is a shape"
+            ]
+          },
+          {
+            "label": "Already",
+            "concepts": [
+              "the perfect tense",
+              "a sentence that cannot be refuted"
             ]
           }
         ]
       },
-      "sourcePath": "/content/writing/weak-geometry.md"
+      "sourcePath": "/content/writing/the-cut.md"
     },
     "about": {
       "id": "about",
@@ -2780,37 +1820,21 @@ export const generatedPool: Pool = {
     "width": 1320,
     "height": 800,
     "positions": {
-      "the-world-answers": [
-        488,
-        206
+      "the-contact": [
+        340,
+        214
       ],
-      "allowed-ignorance": [
-        322,
-        288
+      "the-cut": [
+        292,
+        268
+      ],
+      "the-container": [
+        246,
+        240
       ],
       "marginalia": [
         174,
         340
-      ],
-      "geometry-retrieval": [
-        420,
-        440
-      ],
-      "me-plus-ai": [
-        602,
-        430
-      ],
-      "tools-need-edges": [
-        188,
-        542
-      ],
-      "weak-geometry": [
-        390,
-        560
-      ],
-      "bounded-me": [
-        650,
-        560
       ],
       "codex-fieldwork": [
         850,
@@ -2905,20 +1929,7 @@ export const generatedPool: Pool = {
           "synapse",
           "media-atlas",
           "the-loom",
-          "spec-v1",
-          "geometry-retrieval"
-        ]
-      },
-      {
-        "label": "thinking on AI",
-        "query": "your thinking on AI",
-        "nodeIds": [
-          "the-world-answers",
-          "allowed-ignorance",
-          "me-plus-ai",
-          "bounded-me",
-          "weak-geometry",
-          "marginalia"
+          "spec-v1"
         ]
       },
       {
@@ -2927,7 +1938,6 @@ export const generatedPool: Pool = {
         "nodeIds": [
           "about",
           "xcom",
-          "tools-need-edges",
           "point-cloud"
         ]
       }

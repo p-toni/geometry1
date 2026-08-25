@@ -5,9 +5,12 @@ cluster: work
 title: responsibility mapping
 date: public
 rank: 2
+why: Delegation decisions were being made on vibes.
+problem: Nobody could say what the model may do, what the human retains, or what proof would make a release honest.
+solution: One operating artifact — boundaries, evidence, evals, telemetry, and a gate that stays reversible.
+proof: https://github.com/p-toni/human-responsibility-mapping
 excerpt:
-  - "A public framework for deciding what AI may do, what humans retain, and what proof is required."
-  - "The output is a responsibility map, not a vibes-based automation plan."
+  - "Delegation decisions were being made on vibes."
 links:
   - target: macroscopic
     rel: theme

@@ -3,11 +3,13 @@ id: spec-v1
 kind: doc
 cluster: work
 title: spec v1
-date: 1 week
+date: archive
 rank: 8
+why: I needed the retired stack to stay visible so it couldn't sneak back in as taste.
+problem: Warm grids, JSON canvases, MDX widgets. A surface that wanted to be rearranged more than read.
+solution: This is the fossil. v2 is one home and typed blocks.
 excerpt:
-  - "The retired v1 Geometry spec."
-  - "A useful fossil: grid canvases, draggable blocks, JSON content, MDX-era widgets."
+  - "I needed the retired stack to stay visible so it couldn't sneak back in as taste."
 links:
   - target: geometry
     rel: specs

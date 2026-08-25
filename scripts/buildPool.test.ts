@@ -45,23 +45,25 @@ function parseStructFromFile(rel: string) {
 }
 
 describe('buildPool struct round-trip', () => {
-  it('allowed-ignorance struct matches cut→crack plate spine', () => {
-    const sections = parseStructFromFile('content/writing/allowed-ignorance.md');
+  it('the-cut struct matches the 1981→already spine', () => {
+    const sections = parseStructFromFile('content/writing/the-cut.md');
     expect(sections.map((s) => s.label)).toEqual([
-      'Cut',
-      'Face',
-      'Rotation',
-      'Void',
-      'Crack',
+      '17 July 1981',
+      'One rod, or two',
+      'A good reason',
+      'The phone call',
+      'Sixty, then thirty',
+      '4 January 2001',
+      'Already',
     ]);
-    expect(sections[0]?.concepts).toContain('equivalence-making');
-    expect(sections[3]?.concepts).toContain('32 blocks');
+    expect(sections[2]?.concepts).toContain('equivalence-making');
+    expect(sections[4]?.concepts).toContain('381 days');
   });
 
   it('generated pool preserves struct sections', async () => {
     const { generatedPool } = await import('../src/pool/generated.ts');
-    const node = generatedPool.nodes['allowed-ignorance']!;
-    expect(node.struct?.sections).toHaveLength(5);
-    expect(node.struct?.lens).toBe('understanding after the right omissions');
+    const node = generatedPool.nodes['the-cut']!;
+    expect(node.struct?.sections).toHaveLength(7);
+    expect(node.struct?.lens).toBe('what I removed, and whether the object survived it');
   });
 });

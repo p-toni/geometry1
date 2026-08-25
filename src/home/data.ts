@@ -11,8 +11,13 @@ export type HomeListItem = {
   readLabel: string;
   meta: string;
   poster: string;
+  posterAlt: string;
   href?: string;
   playKind?: string;
+  why?: string;
+  problem?: string;
+  solution?: string;
+  proof?: string;
 };
 
 const POSTERS = [
@@ -20,6 +25,36 @@ const POSTERS = [
   '/visuals/relay-constellations.jpg',
   '/visuals/gated-streamlines.jpg',
 ] as const;
+
+/** Spatial event used to generate the poster — becomes the image alt. */
+const POSTER_EVENT: Record<string, string> = {
+  'the-contact':
+    'A deck heeled under thirty running marks; the ship holds at anchor.',
+  'the-cut':
+    'One rod becomes two at a quiet diagonal; the load at the seam doubles.',
+  'the-container':
+    'Eight register slots in a column; the sixth is empty; a sienna pin marks the waypoint that continues.',
+  'allowed-ignorance':
+    'A dense field of ticks collapses through a cut; a crack returns on the remaining plane.',
+  'bounded-me':
+    'A hard circular envelope; inner loops still move; a sienna contact sits on the wall.',
+  'geometry-retrieval':
+    'An empty source ring above a graph that still stands, with one sienna node.',
+  marginalia: 'Two quiet horizontal measures; one sienna tick still bites.',
+  'me-plus-ai': 'Six stacked gates; a stream threads some of them and stops.',
+  'the-world-answers': 'A closed map; a probe leaves and returns from below.',
+  'tools-need-edges':
+    'Streamlines descend and stop at a gate; the far side is empty.',
+  'weak-geometry':
+    'Three sides of a frame; the bottom is missing; one sienna corner is load-bearing.',
+  geometry: 'Scattered chalk ticks gather into one vertical spine on charcoal.',
+  'human-responsibility-mapping':
+    'A chalk boundary with a reversible gap and a sienna contact in the opening.',
+  macroscopic: 'A quiet charcoal field; one small constellation surfaces.',
+  wing: 'A central page; notices orbit outside and do not enter.',
+  synapse: 'A replayable path of waypoints, with authority kept in a separate square.',
+  'media-atlas': 'Two offset layers; one object remains the visible anchor.',
+};
 
 const PLAY_KIND_LABEL: Partial<Record<NodeKind, string>> = {
   shader: 'Shader',
@@ -31,19 +66,43 @@ const PLAY_KIND_LABEL: Partial<Record<NodeKind, string>> = {
 
 /** Status labels for freeform pool dates — prefer ISO years when present. */
 const STATUS_META: Record<string, string> = {
-  today: '2026 · ongoing',
-  live: '2026 · ongoing',
-  active: '2026 · active',
+  today: 'ongoing',
+  live: 'ongoing',
+  active: 'active',
   public: 'public',
   pilot: 'pilot',
   rebuild: 'rebuild',
   alpha: 'alpha',
   archive: 'archive',
+  method: 'method',
 };
 
-function posterFor(id: string): string {
+const WORK_COMPACT = new Set(['method', 'archive']);
+
+/** Short label for a proof URL — repo path on GitHub, else host. */
+export function proofLabel(url: string): string {
+  try {
+    const parsed = new URL(url);
+    if (parsed.hostname === 'github.com' || parsed.hostname === 'www.github.com') {
+      return parsed.pathname.replace(/^\//, '').replace(/\/$/, '') || 'GitHub';
+    }
+    const host = parsed.hostname.replace(/^www\./, '');
+    const path = parsed.pathname.replace(/\/$/, '');
+    return path && path !== '/' ? `${host}${path}` : host;
+  } catch {
+    return url;
+  }
+}
+
+function posterFor(node: PoolNode): string {
+  if (node.cluster === 'writing') return `/visuals/${node.id}.jpg`;
+  if (node.cluster === 'work') {
+    const key = node.date.trim().toLowerCase();
+    const meta = STATUS_META[key] ?? key;
+    if (!WORK_COMPACT.has(meta)) return `/visuals/${node.id}.jpg`;
+  }
   let h = 0;
-  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  for (let i = 0; i < node.id.length; i++) h = (h * 31 + node.id.charCodeAt(i)) >>> 0;
   return POSTERS[h % POSTERS.length]!;
 }
 
@@ -89,10 +148,19 @@ function toListItem(node: PoolNode): HomeListItem {
     year,
     readLabel,
     meta: node.cluster === 'work' ? workMeta(node) : `${year} · ${readLabel}`,
-    poster: posterFor(node.id),
+    poster: posterFor(node),
+    posterAlt: POSTER_EVENT[node.id] ?? '',
     href: node.href,
     playKind: PLAY_KIND_LABEL[node.kind] ?? node.kind,
+    why: node.why,
+    problem: node.problem,
+    solution: node.solution,
+    proof: node.proof,
   };
+}
+
+export function isWorkSpec(item: HomeListItem): boolean {
+  return !WORK_COMPACT.has(item.meta);
 }
 
 export function homeWriting(): HomeListItem[] {
@@ -123,7 +191,7 @@ export function writingNode(id: string): PoolNode | null {
 }
 
 export const HOME_INTRO =
-  "I'm Toni. I write about bounded learners — people and machines that have to work with less than everything. Essays, small tools, and a lot of unfinished things kept where I can see them.";
+  "I'm Toni. I'm a bounded learner interested in people, machines, and how we make maps of worlds too large to carry. Most things here are unfinished, so I keep them where I can see them.";
 
 export const HOME_NOW =
   'One continuous column — thesis, writing, work, and play in one place. Essays open in one reader. Still reading about how people decide what to leave out. Open to one small collaboration this quarter.';
@@ -137,4 +205,4 @@ export const SOCIAL = {
   rss: '/feed.xml',
 } as const;
 
-export const ACCENT = '#c2593a';
+export { ACCENT } from '../design/swatches';

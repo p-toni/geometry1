@@ -21,7 +21,6 @@ export default defineConfig({
     include: [
       'src/**/*.{test,spec}.{ts,tsx}',
       'scripts/**/*.{test,spec}.ts',
-      'constellation/**/*.{test,spec}.{js,ts}',
     ],
   },
 });

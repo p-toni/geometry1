@@ -44,6 +44,10 @@ export type Block =
   | { t: 'pull'; x: string }
   | { t: 'sidenote'; anchor: string; x: string; body?: string }
   | { t: 'plate'; cap: string; src?: string }
+  /** A figure the system draws, addressed by name rather than by position. */
+  | { t: 'drawn'; kind: string; cap?: string }
+  /** A clip the reader can press. Never preloaded, never autoplayed. */
+  | { t: 'audio'; src: string; label: string; cap?: string }
   | { t: 'table'; headers: string[]; rows: string[][] }
   | { t: 'edge-taxonomy'; rows: { type: string; force: string }[] }
   | { t: 'steps'; items: string[] }
@@ -64,7 +68,7 @@ export type Block =
   | ({ t: 'citation' } & CitationData)
   | { t: 'sources-ledger'; items: CitationData[] };
 
-/** Intra-essay shape for constellation descent (authored in frontmatter). */
+/** Optional frontmatter lens; seeds reader standfirst/gloss fallbacks. */
 export type EssayStruct = {
   lens: string;
   sections: { label: string; concepts: string[] }[];
@@ -83,6 +87,12 @@ export type PoolNode = {
   body: Block[];
   struct?: EssayStruct;
   href?: string;
+  /** Work projects: personal pressure, then the software shape. */
+  why?: string;
+  problem?: string;
+  solution?: string;
+  /** Repo or running proof. Omit if not public. */
+  proof?: string;
   media?: boolean;
   sourcePath: string;
 };
