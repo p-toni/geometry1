@@ -5,13 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "pnpm pool:build && pnpm constellation:build && tsc -b && vite build && pnpm seo:build",
+    "build": "pnpm pool:build && tsc -b && vite build && pnpm seo:build",
     "pool:seed": "node scripts/migrateFromV1.mjs",
     "pool:migrate": "node scripts/migrateFromV1.mjs",
     "pool:restore": "node scripts/restoreOriginalContent.mjs",
     "pool:build": "vite-node scripts/buildPool.ts",
-    "constellation:build": "vite-node scripts/buildConstellation.ts",
-    "constellation:validate": "vite-node scripts/validateConstellation.ts",
     "seo:build": "vite-node scripts/buildSeo.ts",
     "typecheck": "tsc -b --noEmit",
     "test": "vitest run",
@@ -22,6 +20,9 @@
     "deploy": "pnpm build && wrangler pages deploy dist --project-name toni-ltd"
   },
   "dependencies": {
+    "glimm": "0.3.0",
+    "lucide": "^1.33.0",
+    "morphicons": "^1.7.0",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
     "react-router-dom": "^7.18.0"
