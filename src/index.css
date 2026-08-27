@@ -1,22 +1,51 @@
 @import './design/fonts.css';
 @import './design/tokens.css';
-@import 'tailwindcss';
 
-@theme {
-  --color-paper: var(--paper);
-  --color-card: var(--card);
-  --color-field: var(--field);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
-  --color-signal: var(--signal);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-ui: var(--font-ui);
-  --font-mono: var(--font-mono);
-}
-
+/* Reset. Tailwind used to supply preflight on top of this; it was removed
+   because nothing in the app ever used a utility class, so the parts of
+   preflight the app relies on are spelled out here instead. */
 * {
   box-sizing: border-box;
+}
+
+/* Headings are sized by the design system, never by UA defaults. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd,
+pre {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
 }
 
 html {
