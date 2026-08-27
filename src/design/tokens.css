@@ -21,9 +21,11 @@
   --meter-border: #ddd6cc;
   --meter-empty: #f3efe8;
   --play-plate: #f3efe8;
-  --signal: #a0522d;
-  --fresh: #a0522d;
-  --accent: #a0522d;
+  /* Accent — one source for the light theme; the dark scope sets its own. */
+  --accent-base: #a0522d;
+  --signal: var(--accent-base);
+  --fresh: var(--accent-base);
+  --accent: var(--accent-base);
   --accent-line: #d4b4a0;
   --mark: #d36b41;
   --hover-wash: rgba(232, 222, 208, 0.22);
@@ -31,15 +33,15 @@
   --select: #ece4d8;
   --header-icons: #a8a39c;
 
-  --read-accent: #a0522d;
+  --read-accent: var(--accent-base);
   --read-accent-deep: #8a4526;
   --read-accent-tint: #f4ece6;
   --read-accent-border: #d4b4a0;
-  --read-owned: #a0522d;
+  --read-owned: var(--accent-base);
   --read-owned-tint: #f7f1ec;
   --read-owned-border: #e0c4b4;
 
-  --cluster-writing: #a0522d;
+  --cluster-writing: var(--accent-base);
   --cluster-work: #6c675f;
   --cluster-play: #6c675f;
   --cluster-you: #a8a39c;
