@@ -37,9 +37,11 @@ html.nx-dark body {
   --line: #2c2924;
   --line-hair: #262320;
   --link-line: #3a362f;
-  /* Dark crimson goes lighter and less saturated, not darker — 5.02:1 on
-     --paper, matching the 5.04:1 the sienna-family dark accent held. */
-  --accent: #d06457;
+  /* Dark crimson goes lighter, not darker — but it must keep the light
+     accent's chroma (0.227 vs 0.216), or it lands back on the terracotta
+     it replaced. Holding lightness and dropping chroma to clear contrast
+     is how you ship a hue nudge and call it a reshade. 5.40:1 on --paper. */
+  --accent: #ff4136;
   --accent-line: #6e4039;
   --select: #3a2f26;
   --hover-wash: rgba(255, 240, 220, 0.06);
@@ -48,7 +50,7 @@ html.nx-dark body {
   --plate-soft: #b5ac9e;
   --plate-faint: #7a7266;
   --plate-line: #3a352d;
-  --plate-accent: #d06457;
+  --plate-accent: #ff4136;
 }
 
 .nx-root[data-theme='dark'] .nx-top__social a,
