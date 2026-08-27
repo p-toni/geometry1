@@ -15,14 +15,40 @@ mkdirSync(outDir, { recursive: true });
 const BASE = process.env.BASE_URL ?? 'http://localhost:5173';
 const results = [];
 
+/**
+ * Own session per run. `agent-browser errors --clear` is a no-op — it prints the
+ * buffer and leaves it — so a shared session carries every error any other
+ * browsing left behind, and the two error assertions below fail on somebody
+ * else's stack traces. A fresh session is the only way to start empty.
+ */
+const SESSION = `geometry-e2e-${process.pid}`;
+const abEnv = { ...process.env, AGENT_BROWSER_SESSION: SESSION };
+
 function ab(cmd) {
   try {
-    return execSync(`agent-browser ${cmd}`, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'] }).trim();
+    return execSync(`agent-browser ${cmd}`, {
+      encoding: 'utf8',
+      stdio: ['pipe', 'pipe', 'pipe'],
+      env: abEnv,
+    }).trim();
   } catch (e) {
     const msg = e.stderr?.trim() || e.stdout?.trim() || e.message;
     throw new Error(`agent-browser ${cmd}\n${msg}`);
   }
 }
+
+// Runs on the failure path too, so a throw mid-suite cannot leak the session.
+process.on('exit', () => {
+  try {
+    execSync('agent-browser close', { stdio: 'ignore', env: abEnv });
+  } catch {
+    // Already gone, or never opened.
+  }
+});
+
+/** Uncaught page errors as readable text — plain `errors` prints each as a bare ✗. */
+const pageErrors = () =>
+  JSON.parse(ab('errors --json')).data.errors.map((e) => e.text?.trim()).filter(Boolean);
 
 const snap = () => JSON.parse(ab('snapshot -i --json')).data;
 const pageText = () => (JSON.parse(ab('snapshot --json')).data.snapshot || '').toLowerCase();
@@ -69,13 +95,13 @@ function clickNamed(pattern) {
 
 ab(`open ${BASE}/`);
 ab('wait 2000');
-ab('errors --clear');
 ab('console --clear');
 ab('reload');
 ab('wait 2000');
 
 assert('home loads', /toni/i.test(ab('get title')), ab('get title'));
-assert('page errors', ab('errors') === '', ab('errors').slice(0, 200));
+const homeErrors = pageErrors();
+assert('page errors', homeErrors.length === 0, homeErrors.join(' | ').slice(0, 300));
 const consoleErrors = ab('console')
   .split('\n')
   .filter((l) => /^\s*(error|severe)/i.test(l));
@@ -204,7 +230,8 @@ assert('reader renders the essay', readerText.includes('the cut'));
 const sections = Number(evaljs("String(document.querySelectorAll('a[href^=\\'#\\']').length)"));
 assert('reader rail has section marks', /§01/.test(readerText), `${sections} anchors`);
 assert('reader next-nav', /where to go next|pairs|leads to/i.test(readerText));
-assert('reader page errors', ab('errors') === '', ab('errors').slice(0, 200));
+const readerErrors = pageErrors();
+assert('reader page errors', readerErrors.length === 0, readerErrors.join(' | ').slice(0, 300));
 shot('05-reader.png');
 
 /* —— 7. retired URLs still land somewhere —— */

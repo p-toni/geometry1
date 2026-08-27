@@ -14,6 +14,24 @@ function token(css: string, name: string): string {
   return found[1]!;
 }
 
+/** Like `token`, but follows one hop of `var(--alias)` before giving up. */
+function resolveToken(css: string, name: string): string {
+  const decl = [...css.matchAll(new RegExp(`--${name}:\\s*([^;]+);`, 'gi'))].at(-1);
+  if (!decl) throw new Error(`no declaration of --${name}`);
+  const value = decl[1]!.trim();
+  if (value.startsWith('#')) return value;
+  const alias = /var\(--([a-z0-9-]+)\)/i.exec(value);
+  if (!alias) throw new Error(`--${name} is neither a hex nor a var(): ${value}`);
+  return token(css, alias[1]!);
+}
+
+/** The token the home's focus ring is actually drawn with, whatever it is today. */
+function focusRingToken(): string {
+  const rule = /:focus-visible\s*\{[^}]*?outline:[^;]*?var\(--([a-z0-9-]+)\)/i.exec(next);
+  if (!rule) throw new Error('no :focus-visible outline using a token in next.css');
+  return rule[1]!;
+}
+
 function relativeLuminance(hex: string): number {
   const channels = [1, 3, 5].map((i) => {
     const c = parseInt(hex.slice(i, i + 2), 16) / 255;
@@ -75,6 +93,22 @@ describe('accent contrast', () => {
 
   it('keeps body ink at AAA on paper', () => {
     expect(contrast(token(tokens, 'ink'), token(tokens, 'paper'))).toBeGreaterThanOrEqual(7);
+  });
+});
+
+/**
+ * WCAG 2.2 1.4.11. Resolved from the stylesheet rather than hardcoded, so
+ * pointing the outline at a decorative hairline fails here rather than shipping.
+ */
+describe('focus indicator', () => {
+  const ring = focusRingToken();
+
+  it('clears 3:1 on paper', () => {
+    expect(contrast(resolveToken(tokens, ring), token(tokens, 'paper'))).toBeGreaterThanOrEqual(3);
+  });
+
+  it('clears 3:1 on the dark ground', () => {
+    expect(contrast(token(next, ring), token(next, 'paper'))).toBeGreaterThanOrEqual(3);
   });
 });
 

@@ -231,8 +231,12 @@ html.nx-dark body {
   color: var(--accent);
   padding-left: 10px;
 }
+/* WCAG 2.2 (1.4.11) — a focus indicator needs 3:1 against what it sits on.
+   --accent-line is a decorative hairline at 1.83:1 light / 2.19:1 dark and
+   cannot carry this; --accent is 5.64:1 and 4.70:1, and matches the focus
+   rings the reader already draws. */
 .nx-line:focus-visible {
-  outline: 2px solid var(--accent-line);
+  outline: 2px solid var(--accent);
   outline-offset: -2px;
 }
 
