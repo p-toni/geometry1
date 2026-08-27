@@ -65,7 +65,12 @@ describe('accent contrast', () => {
     const light = chromaHue(token(tokens, 'accent-base'));
     const dark = chromaHue(token(next, 'accent'));
     expect(Math.abs(dark.hue - light.hue)).toBeLessThan(8);
+    // Below ~0.85 the dark accent falls back toward the terracotta it replaced.
+    // At parity it overshoots: the accent is darker than the light ground and
+    // lighter than the dark one, and chroma does not read the same either side
+    // of that flip. The band holds it between reading as sienna and as an alert.
     expect(dark.chroma / light.chroma).toBeGreaterThan(0.85);
+    expect(dark.chroma / light.chroma).toBeLessThan(1.0);
   });
 
   it('keeps body ink at AAA on paper', () => {
