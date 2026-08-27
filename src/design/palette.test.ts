@@ -72,6 +72,16 @@ function inGamut(lightness: number, chroma: number, hue: number): boolean {
   ].every((c) => c >= -0.0005 && c <= 1.0005);
 }
 
+/** OKLab distance — perceived difference between two colours, all three axes at once. */
+function perceptualGap(a: string, b: string): number {
+  const [x, y] = [a, b].map((hex) => {
+    const { lightness, chroma, hue } = oklch(hex);
+    const rad = (hue * Math.PI) / 180;
+    return { l: lightness, a: chroma * Math.cos(rad), b: chroma * Math.sin(rad) };
+  }) as [{ l: number; a: number; b: number }, { l: number; a: number; b: number }];
+  return Math.hypot(x.l - y.l, x.a - y.a, x.b - y.b);
+}
+
 /** Share of the chroma sRGB allows at this lightness and hue that a colour uses. */
 function gamutFill(hex: string): number {
   const { lightness, chroma, hue } = oklch(hex);
@@ -141,6 +151,21 @@ describe('accent contrast', () => {
   it('is a different hue from the ink, not a warmer one', () => {
     const gap = Math.abs(oklch(token(tokens, 'accent-base')).hue - oklch(token(tokens, 'ink')).hue);
     expect(Math.min(gap, 360 - gap)).toBeGreaterThan(45);
+  });
+
+  /**
+   * Contrast with the ground is the wrong target for this accent. It marks one
+   * thesis line among five siblings set in --ink, so the ink is what it has to
+   * clear, and moving away from the paper can move it *toward* the ink. A first
+   * phthalo pass did exactly that: 7.70:1 on paper, the best of any candidate,
+   * and near-invisible on the page at a gap of 0.159. Crimson held 0.327 and the
+   * dark scope holds 0.304; below ~0.22 the line stops reading as marked.
+   */
+  it.each([
+    ['light', () => perceptualGap(token(tokens, 'accent-base'), token(tokens, 'ink'))],
+    ['dark', () => perceptualGap(token(next, 'accent'), token(next, 'ink'))],
+  ])('separates from the ink in the %s theme', (_theme, gap) => {
+    expect(gap()).toBeGreaterThan(0.22);
   });
 
   it('keeps body ink at AAA on paper', () => {

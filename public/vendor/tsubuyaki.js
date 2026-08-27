@@ -84,7 +84,7 @@
 
       const ground = hex(this.getAttribute('ground') || '#0a0a0a');
       const ink = hex(this.getAttribute('ink') || '#ffffff');
-      const accent = hex(this.getAttribute('accent') || '#115951');
+      const accent = hex(this.getAttribute('accent') || '#1a796d');
 
       // Lay the ground.
       for (let p = 0; p < px.length; p += 4) {

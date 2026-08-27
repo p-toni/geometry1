@@ -22,16 +22,23 @@
   --meter-empty: #f3efe8;
   --play-plate: #f3efe8;
   /* Accent — one source for the light theme; the dark scope sets its own.
-     Phthalo green, blue shade (PG7): OKLCH L 0.420, C 0.068, hue 183.
-     The chroma reads low against the crimson it replaces but fills 92% of
-     the sRGB gamut at that lightness — blue-green tops out near 0.075 where
-     red reaches 0.216 — so it is a saturated pigment rather than a muted one.
-     7.70:1 on paper.
+     Phthalo green, blue shade (PG7): OKLCH L 0.521, C 0.086, hue 182.
+     Chroma fills 92% of the sRGB gamut at that lightness — blue-green tops
+     out near 0.093 where red reaches 0.216 — so it is a saturated pigment
+     rather than a muted one. 4.95:1 on paper.
+
+     Lightness is set by distance from --ink, not by contrast with the paper.
+     The accent's job is to pick one thesis line out of five siblings set in
+     ink, so what it must clear is the ink: OKLab ΔE 0.258 here, against the
+     dark scope's 0.304 and the crimson's 0.327. An earlier pass optimised
+     for paper contrast instead, reached 7.70:1 at L 0.420, and was nearly
+     invisible — it had moved *toward* the ink, and darker than
+     --read-accent-deep, inverting the two.
 
      Supports below hold their lightness, so the page's tonal structure is
      unchanged, and keep their chroma unless this hue's narrower gamut forces
      it down. --mark and --read-accent-deep are the two that were clamped. */
-  --accent-base: #115951;
+  --accent-base: #1a796d;
   --signal: var(--accent-base);
   --fresh: var(--accent-base);
   --accent: var(--accent-base);

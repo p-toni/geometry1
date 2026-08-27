@@ -154,7 +154,7 @@ const SWATCHES = [
   { name: 'rule', hex: '#ebe6dd', bordered: false },
   { name: 'faint', hex: '#a8a39c', bordered: false },
   { name: 'ink', hex: '#2a2824', bordered: false },
-  { name: 'accent', hex: '#115951', bordered: false },
+  { name: 'accent', hex: '#1a796d', bordered: false },
 ];
 
 const TYPE_SCALE = [
@@ -556,7 +556,7 @@ function FiguresSection() {
             <div className="esys-spec-title">Fixed for essays</div>
             polarity → light only
             <br />
-            accent → phthalo green #115951
+            accent → phthalo green #1a796d
             <br />
             ratio → 16:9 or 4:5
             <br />
