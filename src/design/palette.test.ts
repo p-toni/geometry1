@@ -40,8 +40,8 @@ function relativeLuminance(hex: string): number {
   return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
 }
 
-/** OKLCH chroma and hue — the axes a contrast check is blind to. */
-function chromaHue(hex: string): { chroma: number; hue: number } {
+/** OKLCH — the axes a contrast check is blind to. */
+function oklch(hex: string): { lightness: number; chroma: number; hue: number } {
   const [r, g, b] = [1, 3, 5].map((i) => {
     const c = parseInt(hex.slice(i, i + 2), 16) / 255;
     return c <= 0.04045 ? c / 12.92 : ((c + 0.055) / 1.055) ** 2.4;
@@ -51,7 +51,38 @@ function chromaHue(hex: string): { chroma: number; hue: number } {
   const s = Math.cbrt(0.0883024619 * r + 0.2817188376 * g + 0.6299787005 * b);
   const a = 1.9779984951 * l - 2.4285922050 * m + 0.4505937099 * s;
   const bb = 0.0259040371 * l + 0.7827717662 * m - 0.8086757660 * s;
-  return { chroma: Math.hypot(a, bb), hue: ((Math.atan2(bb, a) * 180) / Math.PI + 360) % 360 };
+  return {
+    lightness: 0.2104542553 * l + 0.7936177850 * m - 0.0040720468 * s,
+    chroma: Math.hypot(a, bb),
+    hue: ((Math.atan2(bb, a) * 180) / Math.PI + 360) % 360,
+  };
+}
+
+/** Whether sRGB can hold this OKLCH colour without clipping a channel. */
+function inGamut(lightness: number, chroma: number, hue: number): boolean {
+  const a = chroma * Math.cos((hue * Math.PI) / 180);
+  const b = chroma * Math.sin((hue * Math.PI) / 180);
+  const l = (lightness + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+  const m = (lightness - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+  const s = (lightness - 0.0894841775 * a - 1.2914855480 * b) ** 3;
+  return [
+    4.0767416621 * l - 3.3077115913 * m + 0.2309699292 * s,
+    -1.2684380046 * l + 2.6097574011 * m - 0.3413193965 * s,
+    -0.0041960863 * l - 0.7034186147 * m + 1.7076147010 * s,
+  ].every((c) => c >= -0.0005 && c <= 1.0005);
+}
+
+/** Share of the chroma sRGB allows at this lightness and hue that a colour uses. */
+function gamutFill(hex: string): number {
+  const { lightness, chroma, hue } = oklch(hex);
+  let lo = 0;
+  let hi = 0.4;
+  for (let i = 0; i < 40; i += 1) {
+    const mid = (lo + hi) / 2;
+    if (inGamut(lightness, mid, hue)) lo = mid;
+    else hi = mid;
+  }
+  return chroma / lo;
 }
 
 function contrast(a: string, b: string): number {
@@ -80,15 +111,36 @@ describe('accent contrast', () => {
    * still reading as that colour. Both themes must be the same accent.
    */
   it('reads as the same colour in both themes', () => {
-    const light = chromaHue(token(tokens, 'accent-base'));
-    const dark = chromaHue(token(next, 'accent'));
-    expect(Math.abs(dark.hue - light.hue)).toBeLessThan(8);
-    // Below ~0.85 the dark accent falls back toward the terracotta it replaced.
-    // At parity it overshoots: the accent is darker than the light ground and
-    // lighter than the dark one, and chroma does not read the same either side
-    // of that flip. The band holds it between reading as sienna and as an alert.
-    expect(dark.chroma / light.chroma).toBeGreaterThan(0.85);
-    expect(dark.chroma / light.chroma).toBeLessThan(1.0);
+    const light = token(tokens, 'accent-base');
+    const dark = token(next, 'accent');
+    expect(Math.abs(oklch(dark).hue - oklch(light).hue)).toBeLessThan(8);
+    // Raw chroma is not comparable across the polarity flip. sRGB holds much
+    // more chroma at the dark accent's lightness than at the light accent's,
+    // and how saturated a colour looks is how much of that headroom it spends,
+    // not its absolute value. Comparing fills states the property that matters
+    // — one pigment in both themes — for any hue. A raw 0.85–1.0 chroma band
+    // only ever worked for red, whose gamut is wide at both lightnesses.
+    expect(Math.abs(gamutFill(dark) - gamutFill(light))).toBeLessThan(0.2);
+  });
+
+  /**
+   * Sitting on the gamut boundary is what glares: a clipped channel has no
+   * headroom left and stops reading as pigment. The crimson this replaced shipped
+   * at fill 1.00 on paper and is the reason this assertion exists.
+   */
+  it('keeps both accents off the sRGB boundary', () => {
+    expect(gamutFill(token(tokens, 'accent-base'))).toBeLessThan(0.95);
+    expect(gamutFill(token(next, 'accent'))).toBeLessThan(0.95);
+  });
+
+  /**
+   * The accent has to separate from the ink, and the whole neutral palette sits
+   * on one warm hue axis. An accent close to it reads as emphasis-by-degree at
+   * best and as unstyled text at worst — which is what the sienna did.
+   */
+  it('is a different hue from the ink, not a warmer one', () => {
+    const gap = Math.abs(oklch(token(tokens, 'accent-base')).hue - oklch(token(tokens, 'ink')).hue);
+    expect(Math.min(gap, 360 - gap)).toBeGreaterThan(45);
   });
 
   it('keeps body ink at AAA on paper', () => {

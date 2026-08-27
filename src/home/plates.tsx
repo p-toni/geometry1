@@ -2,7 +2,7 @@
  * NEXT plates — hand-authored SVG spatial events, one per pool node.
  *
  * Each plate is a wordless composition on paper: ink marks, hairlines,
- * one crimson event. Drawn in code so the proposal owns its assets.
+ * one accent event. Drawn in code so the proposal owns its assets.
  * Motifs follow each essay's described spatial event (see home/data.ts).
  */
 
@@ -14,7 +14,7 @@ const INK = 'var(--plate-ink, #2a2824)';
 const SOFT = 'var(--plate-soft, #55504a)';
 const FAINT = 'var(--plate-faint, #8d877d)';
 const LINE = 'var(--plate-line, #d8d1c5)';
-const ACCENT = 'var(--plate-accent, #ca0008)';
+const ACCENT = 'var(--plate-accent, #115951)';
 
 function Frame({ children }: { children: ReactNode }) {
   return (
@@ -50,7 +50,7 @@ function Grain() {
 /* round pen caps everywhere */
 const PEN = { strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
 
-/* —— the container: eight register slots in a column; the sixth empty; a crimson pin marks the waypoint —— */
+/* —— the container: eight register slots in a column; the sixth empty; an accent pin marks the waypoint —— */
 function TheContainer() {
   const slots = [0, 1, 2, 3, 4, 5, 6, 7];
   return (
@@ -124,7 +124,7 @@ function AllowedIgnorance() {
   );
 }
 
-/* —— bounded me: a hard circular envelope; inner loops still move; a crimson contact sits on the wall —— */
+/* —— bounded me: a hard circular envelope; inner loops still move; an accent contact sits on the wall —— */
 function BoundedMe() {
   return (
     <Frame>
@@ -139,7 +139,7 @@ function BoundedMe() {
   );
 }
 
-/* —— geometry over retrieval: an empty source ring above a graph that still stands, with one crimson node —— */
+/* —— geometry over retrieval: an empty source ring above a graph that still stands, with one accent node —— */
 function GeometryRetrieval() {
   return (
     <Frame>
@@ -161,7 +161,7 @@ function GeometryRetrieval() {
   );
 }
 
-/* —— marginalia: two quiet horizontal measures; one crimson tick still bites —— */
+/* —— marginalia: two quiet horizontal measures; one accent tick still bites —— */
 function Marginalia() {
   return (
     <Frame>
@@ -261,7 +261,7 @@ function ToolsNeedEdges() {
   );
 }
 
-/* —— weak geometry: three sides of a frame; the bottom is missing; one crimson corner is load-bearing —— */
+/* —— weak geometry: three sides of a frame; the bottom is missing; one accent corner is load-bearing —— */
 function WeakGeometry() {
   return (
     <Frame>
@@ -304,7 +304,7 @@ function GeometryWork() {
   );
 }
 
-/* —— human responsibility mapping (work): a chalk boundary with a reversible gap; a crimson contact in the opening —— */
+/* —— human responsibility mapping (work): a chalk boundary with a reversible gap; an accent contact in the opening —— */
 function ResponsibilityMapping() {
   return (
     <Frame>
