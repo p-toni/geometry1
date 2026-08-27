@@ -21,25 +21,29 @@
   --meter-border: #ddd6cc;
   --meter-empty: #f3efe8;
   --play-plate: #f3efe8;
-  /* Accent — one source for the light theme; the dark scope sets its own. */
-  --accent-base: #a0522d;
+  /* Accent — one source for the light theme; the dark scope sets its own.
+     Crimson at the lightness the sienna it replaced held (OKLCH L 0.527),
+     so every mark keeps its weight and only the hue and chroma move.
+     5.64:1 on paper. #dc000a is the same hue at 4.89:1 if the brand red
+     is wanted literally. */
+  --accent-base: #ca0008;
   --signal: var(--accent-base);
   --fresh: var(--accent-base);
   --accent: var(--accent-base);
-  --accent-line: #d4b4a0;
-  --mark: #d36b41;
+  --accent-line: #d8b1ab;
+  --mark: #d66659;
   --hover-wash: rgba(232, 222, 208, 0.22);
   --plate-outline: rgba(0, 0, 0, 0.1);
   --select: #ece4d8;
   --header-icons: #a8a39c;
 
   --read-accent: var(--accent-base);
-  --read-accent-deep: #8a4526;
-  --read-accent-tint: #f4ece6;
-  --read-accent-border: #d4b4a0;
+  --read-accent-deep: #8c4138;
+  --read-accent-tint: #f6ebe9;
+  --read-accent-border: #d8b1ab;
   --read-owned: var(--accent-base);
-  --read-owned-tint: #f7f1ec;
-  --read-owned-border: #e0c4b4;
+  --read-owned-tint: #f8f0ef;
+  --read-owned-border: #e3c2bc;
 
   --cluster-writing: var(--accent-base);
   --cluster-work: #6c675f;

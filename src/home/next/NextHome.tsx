@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
 import {
   ACCENT,
+  ACCENT_DARK,
   HOME_INTRO,
   HOME_NOW,
   HOME_NOW_UPDATED,
@@ -344,7 +345,7 @@ export function NextHome() {
                 <SignalMark
                 kind={door.mark}
                 size={MARK_BY_REGISTER[register]}
-                accent={theme === 'dark' ? '#c96b42' : ACCENT}
+                accent={theme === 'dark' ? ACCENT_DARK : ACCENT}
                 ink={theme === 'dark' ? '#b5ac9e' : undefined}
                 mid={theme === 'dark' ? '#8a8071' : undefined}
                 replayOn="parent"

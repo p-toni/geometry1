@@ -1,5 +1,7 @@
 /** Hex literals that match `tokens.css`. Libraries that cannot take CSS vars import these. */
 export const PAPER = '#faf8f5';
 export const PAPER_2 = '#f3efe8';
-export const ACCENT = '#a0522d';
-export const MARK = '#d36b41';
+export const ACCENT = '#ca0008';
+/** The dark scope's accent — `next.css` `.nx-root[data-theme='dark']`. */
+export const ACCENT_DARK = '#d06457';
+export const MARK = '#d66659';

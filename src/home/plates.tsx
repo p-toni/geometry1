@@ -2,7 +2,7 @@
  * NEXT plates — hand-authored SVG spatial events, one per pool node.
  *
  * Each plate is a wordless composition on paper: ink marks, hairlines,
- * one sienna event. Drawn in code so the proposal owns its assets.
+ * one crimson event. Drawn in code so the proposal owns its assets.
  * Motifs follow each essay's described spatial event (see home/data.ts).
  */
 
@@ -14,7 +14,7 @@ const INK = 'var(--plate-ink, #2a2824)';
 const SOFT = 'var(--plate-soft, #55504a)';
 const FAINT = 'var(--plate-faint, #8d877d)';
 const LINE = 'var(--plate-line, #d8d1c5)';
-const SIENNA = 'var(--plate-accent, #a0522d)';
+const ACCENT = 'var(--plate-accent, #ca0008)';
 
 function Frame({ children }: { children: ReactNode }) {
   return (
@@ -50,7 +50,7 @@ function Grain() {
 /* round pen caps everywhere */
 const PEN = { strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
 
-/* —— the container: eight register slots in a column; the sixth empty; a sienna pin marks the waypoint —— */
+/* —— the container: eight register slots in a column; the sixth empty; a crimson pin marks the waypoint —— */
 function TheContainer() {
   const slots = [0, 1, 2, 3, 4, 5, 6, 7];
   return (
@@ -83,8 +83,8 @@ function TheContainer() {
         );
       })}
       {/* the pin — the waypoint that continues */}
-      <circle cx={116} cy={60 + 5 * 50 + 17} r={5} fill={SIENNA} />
-      <line x1={121} y1={60 + 5 * 50 + 17} x2={140} y2={60 + 5 * 50 + 17} stroke={SIENNA} strokeWidth={2.5} {...PEN} />
+      <circle cx={116} cy={60 + 5 * 50 + 17} r={5} fill={ACCENT} />
+      <line x1={121} y1={60 + 5 * 50 + 17} x2={140} y2={60 + 5 * 50 + 17} stroke={ACCENT} strokeWidth={2.5} {...PEN} />
       <text x={116} y={470} textAnchor="middle" fontSize={13} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="2">
         1202
       </text>
@@ -110,7 +110,7 @@ function AllowedIgnorance() {
           y1={y}
           x2={x + (crack ? 10 : 12)}
           y2={y + (crack ? 4 : 0)}
-          stroke={crack ? SIENNA : SOFT}
+          stroke={crack ? ACCENT : SOFT}
           strokeWidth={crack ? 2.4 : 1.4}
         />,
       );
@@ -124,7 +124,7 @@ function AllowedIgnorance() {
   );
 }
 
-/* —— bounded me: a hard circular envelope; inner loops still move; a sienna contact sits on the wall —— */
+/* —— bounded me: a hard circular envelope; inner loops still move; a crimson contact sits on the wall —— */
 function BoundedMe() {
   return (
     <Frame>
@@ -133,13 +133,13 @@ function BoundedMe() {
       <ellipse cx={200} cy={250} rx={130} ry={62} fill="none" stroke={SOFT} strokeWidth={1.6} transform="rotate(-18 200 250)" />
       <ellipse cx={200} cy={250} rx={62} ry={118} fill="none" stroke={FAINT} strokeWidth={1.3} transform="rotate(24 200 250)" />
       {/* the contact on the wall */}
-      <circle cx={318} cy={172} r={7} fill="none" stroke={SIENNA} strokeWidth={3} />
-      <circle cx={318} cy={172} r={3.2} fill={SIENNA} />
+      <circle cx={318} cy={172} r={7} fill="none" stroke={ACCENT} strokeWidth={3} />
+      <circle cx={318} cy={172} r={3.2} fill={ACCENT} />
     </Frame>
   );
 }
 
-/* —— geometry over retrieval: an empty source ring above a graph that still stands, with one sienna node —— */
+/* —— geometry over retrieval: an empty source ring above a graph that still stands, with one crimson node —— */
 function GeometryRetrieval() {
   return (
     <Frame>
@@ -156,12 +156,12 @@ function GeometryRetrieval() {
       {[80, 130, 180, 230, 280].map((x, i) => (
         <circle key={x} cx={x} cy={[380, 340, 352, 300, 318][i]} r={3.5} fill={SOFT} />
       ))}
-      <circle cx={320} cy={262} r={5} fill={SIENNA} />
+      <circle cx={320} cy={262} r={5} fill={ACCENT} />
     </Frame>
   );
 }
 
-/* —— marginalia: two quiet horizontal measures; one sienna tick still bites —— */
+/* —— marginalia: two quiet horizontal measures; one crimson tick still bites —— */
 function Marginalia() {
   return (
     <Frame>
@@ -169,7 +169,7 @@ function Marginalia() {
       {[0, 1, 2, 3, 4, 6, 7].map((i) => (
         <line key={i} x1={90 + i * 34} y1={182} x2={90 + i * 34} y2={198} stroke={SOFT} strokeWidth={1.6} />
       ))}
-      <line x1={90 + 5 * 34} y1={174} x2={90 + 5 * 34} y2={206} stroke={SIENNA} strokeWidth={3.5} />
+      <line x1={90 + 5 * 34} y1={174} x2={90 + 5 * 34} y2={206} stroke={ACCENT} strokeWidth={3.5} />
       <line x1={70} y1={310} x2={330} y2={310} stroke={FAINT} strokeWidth={1.4} />
       {[0, 1, 2, 4, 5, 6, 7].map((i) => (
         <line key={i} x1={90 + i * 34} y1={304} x2={90 + i * 34} y2={316} stroke={FAINT} strokeWidth={1.4} />
@@ -201,11 +201,11 @@ function MePlusAi() {
       <path
         d="M 90 97 C 160 97 180 265 200 265 C 220 265 240 327 262 327 L 300 327"
         fill="none"
-        stroke={SIENNA}
+        stroke={ACCENT}
         strokeWidth={2.4}
         {...PEN}
       />
-      <circle cx={300} cy={327} r={4.5} fill={SIENNA} />
+      <circle cx={300} cy={327} r={4.5} fill={ACCENT} />
     </Frame>
   );
 }
@@ -222,12 +222,12 @@ function TheWorldAnswers() {
       <path
         d="M 200 280 C 200 340 150 360 130 400 C 118 425 160 445 200 445 C 240 445 282 425 270 400 C 250 360 200 340 200 280"
         fill="none"
-        stroke={SIENNA}
+        stroke={ACCENT}
         strokeWidth={2.2}
         strokeDasharray="5 4"
       />
-      <circle cx={130} cy={400} r={5} fill={SIENNA} />
-      <circle cx={270} cy={400} r={5} fill="none" stroke={SIENNA} strokeWidth={2.2} />
+      <circle cx={130} cy={400} r={5} fill={ACCENT} />
+      <circle cx={270} cy={400} r={5} fill="none" stroke={ACCENT} strokeWidth={2.2} />
     </Frame>
   );
 }
@@ -261,7 +261,7 @@ function ToolsNeedEdges() {
   );
 }
 
-/* —— weak geometry: three sides of a frame; the bottom is missing; one sienna corner is load-bearing —— */
+/* —— weak geometry: three sides of a frame; the bottom is missing; one crimson corner is load-bearing —— */
 function WeakGeometry() {
   return (
     <Frame>
@@ -269,8 +269,8 @@ function WeakGeometry() {
       {/* the missing bottom, ghosted */}
       <line x1={90} y1={400} x2={310} y2={400} stroke={FAINT} strokeWidth={1.4} strokeDasharray="3 6" />
       {/* the load-bearing corner */}
-      <circle cx={90} cy={400} r={9} fill="none" stroke={SIENNA} strokeWidth={3.5} />
-      <line x1={76} y1={414} x2={104} y2={386} stroke={SIENNA} strokeWidth={1.8} />
+      <circle cx={90} cy={400} r={9} fill="none" stroke={ACCENT} strokeWidth={3.5} />
+      <line x1={76} y1={414} x2={104} y2={386} stroke={ACCENT} strokeWidth={1.8} />
     </Frame>
   );
 }
@@ -299,12 +299,12 @@ function GeometryWork() {
       {[0, 1, 2, 3, 4, 5].map((i) => (
         <line key={i} x1={192} y1={160 + i * 50} x2={208} y2={160 + i * 50} stroke={INK} strokeWidth={1.8} />
       ))}
-      <circle cx={200} cy={410} r={6.5} fill={SIENNA} />
+      <circle cx={200} cy={410} r={6.5} fill={ACCENT} />
     </Frame>
   );
 }
 
-/* —— human responsibility mapping (work): a chalk boundary with a reversible gap; a sienna contact in the opening —— */
+/* —— human responsibility mapping (work): a chalk boundary with a reversible gap; a crimson contact in the opening —— */
 function ResponsibilityMapping() {
   return (
     <Frame>
@@ -315,8 +315,8 @@ function ResponsibilityMapping() {
       <line x1={170} y1={136} x2={170} y2={164} stroke={SOFT} strokeWidth={1.6} />
       <line x1={230} y1={136} x2={230} y2={164} stroke={SOFT} strokeWidth={1.6} />
       {/* the contact in the opening */}
-      <circle cx={200} cy={150} r={8} fill={SIENNA} />
-      <path d="M 200 156 C 200 220 170 250 170 340" fill="none" stroke={SIENNA} strokeWidth={2} strokeDasharray="3 4" />
+      <circle cx={200} cy={150} r={8} fill={ACCENT} />
+      <path d="M 200 156 C 200 220 170 250 170 340" fill="none" stroke={ACCENT} strokeWidth={2} strokeDasharray="3 4" />
       <text x={200} y={390} textAnchor="middle" fontSize={12} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="2">
         REVERSIBLE
       </text>
@@ -341,12 +341,12 @@ function Macroscopic() {
       <polyline
         points={stars.map(([x, y]) => `${x},${y}`).join(' ')}
         fill="none"
-        stroke={SIENNA}
+        stroke={ACCENT}
         strokeWidth={1.6}
         {...PEN}
       />
       {stars.map(([x, y]) => (
-        <circle key={`${x}-${y}`} cx={x} cy={y} r={3.2} fill={SIENNA} />
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={3.2} fill={ACCENT} />
       ))}
     </Frame>
   );
@@ -386,7 +386,7 @@ function Synapse() {
     <Frame>
       <path d={d} fill="none" stroke={SOFT} strokeWidth={1.6} {...PEN} />
       {pts.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 5 : 3} fill={i === pts.length - 1 ? SIENNA : INK} />
+        <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 5 : 3} fill={i === pts.length - 1 ? ACCENT : INK} />
       ))}
       {/* replay loop back */}
       <path d="M 330 250 C 360 180, 120 180, 80 400" fill="none" stroke={FAINT} strokeWidth={1.2} strokeDasharray="3 5" />
@@ -416,8 +416,8 @@ function MediaAtlas() {
         <line x1={165} y1={285} x2={290} y2={285} stroke={SOFT} strokeWidth={1.4} />
       </g>
       {/* the visible anchor */}
-      <circle cx={200} cy={230} r={7} fill="none" stroke={SIENNA} strokeWidth={2.5} />
-      <circle cx={200} cy={230} r={2.5} fill={SIENNA} />
+      <circle cx={200} cy={230} r={7} fill="none" stroke={ACCENT} strokeWidth={2.5} />
+      <circle cx={200} cy={230} r={2.5} fill={ACCENT} />
     </Frame>
   );
 }
@@ -437,7 +437,7 @@ function SpecV1() {
         );
       })}
       {/* struck through — retired, not deleted */}
-      <line x1={88} y1={142} x2={312} y2={142} stroke={SIENNA} strokeWidth={2.5} {...PEN} />
+      <line x1={88} y1={142} x2={312} y2={142} stroke={ACCENT} strokeWidth={2.5} {...PEN} />
       <text x={200} y={440} textAnchor="middle" fontSize={12} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="2">
         KEPT VISIBLE
       </text>
@@ -461,7 +461,7 @@ function CodexFieldwork() {
         );
       })}
       <line x1={200} y1={110} x2={200} y2={410} stroke={INK} strokeWidth={2.4} />
-      <circle cx={200} cy={410} r={6} fill={SIENNA} />
+      <circle cx={200} cy={410} r={6} fill={ACCENT} />
     </Frame>
   );
 }
@@ -485,12 +485,12 @@ function TheLoom() {
             y1={y + lift}
             x2={305}
             y2={y + lift}
-            stroke={i === 2 ? SIENNA : SOFT}
+            stroke={i === 2 ? ACCENT : SOFT}
             strokeWidth={i === 2 ? 2.4 : 1.5}
           />
         );
       })}
-      <circle cx={200} cy={284 - 10} r={5} fill={SIENNA} />
+      <circle cx={200} cy={284 - 10} r={5} fill={ACCENT} />
     </Frame>
   );
 }
@@ -506,7 +506,7 @@ function Fallback({ id }: { id: string }) {
   return (
     <Frame>
       {dots.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={i === 7 ? 6 : 1.8} fill={i === 7 ? SIENNA : FAINT} />
+        <circle key={i} cx={x} cy={y} r={i === 7 ? 6 : 1.8} fill={i === 7 ? ACCENT : FAINT} />
       ))}
     </Frame>
   );

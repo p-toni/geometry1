@@ -64,7 +64,7 @@
       if (!ctx || !this._w) return;
       const W = this._w, H = this._h;
       const ink = this.getAttribute('ink') || '#2b2721';
-      const accent = this.getAttribute('accent') || '#a0522d';
+      const accent = this.getAttribute('accent') || '#ca0008';
       const amp = this._num('amp', 26);
       const thr = this._num('threshold', 0.55);
       const t = this._t;

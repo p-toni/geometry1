@@ -154,7 +154,7 @@ const SWATCHES = [
   { name: 'rule', hex: '#ebe6dd', bordered: false },
   { name: 'faint', hex: '#a8a39c', bordered: false },
   { name: 'ink', hex: '#2a2824', bordered: false },
-  { name: 'accent', hex: '#a0522d', bordered: false },
+  { name: 'accent', hex: '#ca0008', bordered: false },
 ];
 
 const TYPE_SCALE = [
@@ -191,7 +191,7 @@ const TYPE_SCALE = [
   },
 ];
 
-/** Listing 1 — keywords sienna, comments faint, everything else ink. No third colour. */
+/** Listing 1 — keywords crimson, comments faint, everything else ink. No third colour. */
 const LISTING: (() => ReactNode)[] = [
   () => <code className="esys-comment"># the edge is a parameter, not an accident</code>,
   () => (
@@ -319,7 +319,7 @@ export const SystemPart = memo(function SystemPart({ controls }: { controls: Fig
       <section id="s-ink" className="esys-sec">
         <SectionHead num="04" title="Ink" />
         <p className="esys-p esys-p--lede">
-          Warm paper, warm black, one sienna accent. The accent is a pin, not a palette — it marks the
+          Warm paper, warm black, one crimson accent. The accent is a pin, not a palette — it marks the
           single thing on a page that the reader is being asked to look at.
         </p>
         <div className="esys-swatches">
@@ -444,7 +444,7 @@ function FiguresSection() {
         Ten classes, one drawing language. No gridlines, no fills, no legends floating in a box —
         series are labelled where they end. Axes are a single baseline with tick marks; the y-axis is
         implied by the labels and drawn only when a zero line matters. Everything is 1px, everything
-        is mono-labelled, and exactly one mark per figure may be sienna.
+        is mono-labelled, and exactly one mark per figure may be crimson.
       </p>
 
       <figure className="esys-fig">
@@ -556,7 +556,7 @@ function FiguresSection() {
             <div className="esys-spec-title">Fixed for essays</div>
             polarity → light only
             <br />
-            accent → sienna #a0522d
+            accent → crimson #ca0008
             <br />
             ratio → 16:9 or 4:5
             <br />
@@ -633,7 +633,7 @@ function FiguresSection() {
         </div>
         <div className="esys-cap">
           <b>Listing 1 — Code.</b> 12.5px on plate fill with a hairline gutter of faint line numbers.
-          Syntax colour is the accent and the faint grey only: keywords sienna, comments faint,
+          Syntax colour is the accent and the faint grey only: keywords crimson, comments faint,
           everything else ink. No third colour, no theme.
         </div>
       </div>

@@ -9,7 +9,7 @@
   --plate-soft: #55504a;
   --plate-faint: #8d877d;
   --plate-line: #d8d1c5;
-  --plate-accent: #a0522d;
+  --plate-accent: #ca0008;
   min-height: 100vh;
   max-width: 700px; /* 24px full register needs ~693px for a one-line longest sentence */
   margin-inline: auto;
@@ -37,8 +37,10 @@ html.nx-dark body {
   --line: #2c2924;
   --line-hair: #262320;
   --link-line: #3a362f;
-  --accent: #c96b42;
-  --accent-line: #6b432c;
+  /* Dark crimson goes lighter and less saturated, not darker — 5.02:1 on
+     --paper, matching the 5.04:1 the sienna-family dark accent held. */
+  --accent: #d06457;
+  --accent-line: #6e4039;
   --select: #3a2f26;
   --hover-wash: rgba(255, 240, 220, 0.06);
   --plate-ground: #1a1713;
@@ -46,7 +48,7 @@ html.nx-dark body {
   --plate-soft: #b5ac9e;
   --plate-faint: #7a7266;
   --plate-line: #3a352d;
-  --plate-accent: #c96b42;
+  --plate-accent: #d06457;
 }
 
 .nx-root[data-theme='dark'] .nx-top__social a,

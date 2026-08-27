@@ -33,23 +33,23 @@ const POSTER_EVENT: Record<string, string> = {
   'the-cut':
     'One rod becomes two at a quiet diagonal; the load at the seam doubles.',
   'the-container':
-    'Eight register slots in a column; the sixth is empty; a sienna pin marks the waypoint that continues.',
+    'Eight register slots in a column; the sixth is empty; a crimson pin marks the waypoint that continues.',
   'allowed-ignorance':
     'A dense field of ticks collapses through a cut; a crack returns on the remaining plane.',
   'bounded-me':
-    'A hard circular envelope; inner loops still move; a sienna contact sits on the wall.',
+    'A hard circular envelope; inner loops still move; a crimson contact sits on the wall.',
   'geometry-retrieval':
-    'An empty source ring above a graph that still stands, with one sienna node.',
-  marginalia: 'Two quiet horizontal measures; one sienna tick still bites.',
+    'An empty source ring above a graph that still stands, with one crimson node.',
+  marginalia: 'Two quiet horizontal measures; one crimson tick still bites.',
   'me-plus-ai': 'Six stacked gates; a stream threads some of them and stops.',
   'the-world-answers': 'A closed map; a probe leaves and returns from below.',
   'tools-need-edges':
     'Streamlines descend and stop at a gate; the far side is empty.',
   'weak-geometry':
-    'Three sides of a frame; the bottom is missing; one sienna corner is load-bearing.',
+    'Three sides of a frame; the bottom is missing; one crimson corner is load-bearing.',
   geometry: 'Scattered chalk ticks gather into one vertical spine on charcoal.',
   'human-responsibility-mapping':
-    'A chalk boundary with a reversible gap and a sienna contact in the opening.',
+    'A chalk boundary with a reversible gap and a crimson contact in the opening.',
   macroscopic: 'A quiet charcoal field; one small constellation surfaces.',
   wing: 'A central page; notices orbit outside and do not enter.',
   synapse: 'A replayable path of waypoints, with authority kept in a separate square.',
@@ -206,4 +206,4 @@ export const SOCIAL = {
   rss: '/feed.xml',
 } as const;
 
-export { ACCENT } from '../design/swatches';
+export { ACCENT, ACCENT_DARK } from '../design/swatches';
