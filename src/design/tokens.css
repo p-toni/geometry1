@@ -22,40 +22,30 @@
   --meter-empty: #f3efe8;
   --play-plate: #f3efe8;
   /* Accent — one source for the light theme; the dark scope sets its own.
-     Phthalo green, blue shade (PG7): OKLCH L 0.521, C 0.086, hue 182.
-     Chroma fills 92% of the sRGB gamut at that lightness — blue-green tops
-     out near 0.093 where red reaches 0.216 — so it is a saturated pigment
-     rather than a muted one. 4.95:1 on paper.
+     Azure #0066aa: OKLCH L 0.498, C 0.134, hue 248. Red is 0, so it sits
+     on the sRGB wall — that is the colour. 5.69:1 on paper. The accent's
+     job is to pick one thesis line out of five siblings set in ink:
+     OKLab ΔE 0.262 here, against the dark scope's 0.333.
 
-     Lightness is set by distance from --ink, not by contrast with the paper.
-     The accent's job is to pick one thesis line out of five siblings set in
-     ink, so what it must clear is the ink: OKLab ΔE 0.258 here, against the
-     dark scope's 0.304 and the crimson's 0.327. An earlier pass optimised
-     for paper contrast instead, reached 7.70:1 at L 0.420, and was nearly
-     invisible — it had moved *toward* the ink, and darker than
-     --read-accent-deep, inverting the two.
-
-     Supports below hold their lightness, so the page's tonal structure is
-     unchanged, and keep their chroma unless this hue's narrower gamut forces
-     it down. --mark and --read-accent-deep are the two that were clamped. */
-  --accent-base: #1a796d;
+     Supports keep lightness and chroma; only hue rotates. */
+  --accent-base: #0066aa;
   --signal: var(--accent-base);
   --fresh: var(--accent-base);
   --accent: var(--accent-base);
-  --accent-line: #9bc6be;
-  --mark: #37a092;
+  --accent-line: #a5bfd9;
+  --mark: #3692df;
   --hover-wash: rgba(232, 222, 208, 0.22);
   --plate-outline: rgba(0, 0, 0, 0.1);
   --select: #ece4d8;
   --header-icons: #a8a39c;
 
   --read-accent: var(--accent-base);
-  --read-accent-deep: #20685f;
-  --read-accent-tint: #e5f1ee;
-  --read-accent-border: #9bc6be;
+  --read-accent-deep: #215e92;
+  --read-accent-tint: #e8eff6;
+  --read-accent-border: #a5bfd9;
   --read-owned: var(--accent-base);
-  --read-owned-tint: #ecf4f3;
-  --read-owned-border: #b0d3cd;
+  --read-owned-tint: #eef3f8;
+  --read-owned-border: #b8cee3;
 
   --cluster-writing: var(--accent-base);
   --cluster-work: #6c675f;

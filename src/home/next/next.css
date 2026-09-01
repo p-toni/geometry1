@@ -9,7 +9,7 @@
   --plate-soft: #55504a;
   --plate-faint: #8d877d;
   --plate-line: #d8d1c5;
-  --plate-accent: #1a796d;
+  --plate-accent: #0066aa;
   min-height: 100vh;
   max-width: 700px; /* 24px full register needs ~693px for a one-line longest sentence */
   margin-inline: auto;
@@ -37,14 +37,13 @@ html.nx-dark body {
   --line: #2c2924;
   --line-hair: #262320;
   --link-line: #3a362f;
-  /* The accent's polarity inverts here: on paper it sits 0.24 L *below* the
-     ground and behaves like pigment; on this ground it sits 0.46 L above and
-     behaves like light. Raw chroma is not comparable across that flip, because
-     the sRGB gamut widens with lightness: this is C 0.091 against the light
-     accent's 0.068, but both fill ~80-92% of what their lightness allows, so
-     they read as one pigment. 5.80:1. */
-  --accent: #3f9e91;
-  --accent-line: #1b5a52;
+  /* The accent's polarity inverts here: on paper it sits 0.48 L *below* the
+     ground and behaves like pigment; on this ground it sits 0.45 L above and
+     behaves like light. Azure clips red — fill 1.00 — and that is the colour
+     on paper. A clipped channel at this lightness would read as neon, so the
+     dark scope holds the same hue at fill 0.82. 5.43:1. */
+  --accent: #378fd9;
+  --accent-line: #2f5171;
   --select: #3a2f26;
   --hover-wash: rgba(255, 240, 220, 0.06);
   --plate-ground: #1a1713;
@@ -52,7 +51,7 @@ html.nx-dark body {
   --plate-soft: #b5ac9e;
   --plate-faint: #7a7266;
   --plate-line: #3a352d;
-  --plate-accent: #3f9e91;
+  --plate-accent: #378fd9;
 }
 
 .nx-root[data-theme='dark'] .nx-top__social a,
@@ -232,8 +231,8 @@ html.nx-dark body {
   padding-left: 10px;
 }
 /* WCAG 2.2 (1.4.11) — a focus indicator needs 3:1 against what it sits on.
-   --accent-line is a decorative hairline at 1.77:1 light / 2.34:1 dark and
-   cannot carry this; --accent is 7.70:1 and 5.80:1, and matches the focus
+   --accent-line is a decorative hairline at 1.79:1 light / 2.26:1 dark and
+   cannot carry this; --accent is 5.69:1 and 5.43:1, and matches the focus
    rings the reader already draws. */
 .nx-line:focus-visible {
   outline: 2px solid var(--accent);

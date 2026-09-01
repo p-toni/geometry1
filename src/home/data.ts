@@ -33,23 +33,23 @@ const POSTER_EVENT: Record<string, string> = {
   'the-cut':
     'One rod becomes two at a quiet diagonal; the load at the seam doubles.',
   'the-container':
-    'Eight register slots in a column; the sixth is empty; a green pin marks the waypoint that continues.',
+    'Eight register slots in a column; the sixth is empty; a blue pin marks the waypoint that continues.',
   'allowed-ignorance':
     'A dense field of ticks collapses through a cut; a crack returns on the remaining plane.',
   'bounded-me':
-    'A hard circular envelope; inner loops still move; a green contact sits on the wall.',
+    'A hard circular envelope; inner loops still move; a blue contact sits on the wall.',
   'geometry-retrieval':
-    'An empty source ring above a graph that still stands, with one green node.',
-  marginalia: 'Two quiet horizontal measures; one green tick still bites.',
+    'An empty source ring above a graph that still stands, with one blue node.',
+  marginalia: 'Two quiet horizontal measures; one blue tick still bites.',
   'me-plus-ai': 'Six stacked gates; a stream threads some of them and stops.',
   'the-world-answers': 'A closed map; a probe leaves and returns from below.',
   'tools-need-edges':
     'Streamlines descend and stop at a gate; the far side is empty.',
   'weak-geometry':
-    'Three sides of a frame; the bottom is missing; one green corner is load-bearing.',
+    'Three sides of a frame; the bottom is missing; one blue corner is load-bearing.',
   geometry: 'Scattered chalk ticks gather into one vertical spine on charcoal.',
   'human-responsibility-mapping':
-    'A chalk boundary with a reversible gap and a green contact in the opening.',
+    'A chalk boundary with a reversible gap and a blue contact in the opening.',
   macroscopic: 'A quiet charcoal field; one small constellation surfaces.',
   wing: 'A central page; notices orbit outside and do not enter.',
   synapse: 'A replayable path of waypoints, with authority kept in a separate square.',

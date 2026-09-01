@@ -312,7 +312,7 @@
       const S = Math.round(displayS * pxScale);
       this._S = S;
       this._kind = KINDS[this.getAttribute('kind')] || enclosure;
-      this._accent = this.getAttribute('accent') || '#1a796d';
+      this._accent = this.getAttribute('accent') || '#0066aa';
       this._ink = this.getAttribute('ink') || INK_DEFAULT;
       this._mid = this.getAttribute('mid') || MID_DEFAULT;
 

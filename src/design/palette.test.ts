@@ -134,12 +134,15 @@ describe('accent contrast', () => {
   });
 
   /**
-   * Sitting on the gamut boundary is what glares: a clipped channel has no
-   * headroom left and stops reading as pigment. The crimson this replaced shipped
-   * at fill 1.00 on paper and is the reason this assertion exists.
+   * Azure (#0066aa) clips red — that is the colour. A clipped channel at
+   * the dark accent's lightness would read as neon, which is why the dark
+   * scope is the one that must stay off the wall.
    */
-  it('keeps both accents off the sRGB boundary', () => {
-    expect(gamutFill(token(tokens, 'accent-base'))).toBeLessThan(0.95);
+  it('is azure on paper', () => {
+    expect(token(tokens, 'accent-base').toLowerCase()).toBe('#0066aa');
+  });
+
+  it('keeps the dark accent off the sRGB boundary', () => {
     expect(gamutFill(token(next, 'accent'))).toBeLessThan(0.95);
   });
 

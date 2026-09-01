@@ -14,7 +14,7 @@ const INK = 'var(--plate-ink, #2a2824)';
 const SOFT = 'var(--plate-soft, #55504a)';
 const FAINT = 'var(--plate-faint, #8d877d)';
 const LINE = 'var(--plate-line, #d8d1c5)';
-const ACCENT = 'var(--plate-accent, #1a796d)';
+const ACCENT = 'var(--plate-accent, #0066aa)';
 
 function Frame({ children }: { children: ReactNode }) {
   return (
