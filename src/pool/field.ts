@@ -24,6 +24,8 @@ export const positions: Record<string, readonly [number, number]> = {
   'lock-in': [1182, 662],
   'point-cloud': [1018, 692],
   tsubuyaki: [1120, 574],
+  lanterns: [1074, 612],
+  fold: [1096, 538],
   about: [322, 722],
 };
 

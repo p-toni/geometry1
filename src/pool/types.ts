@@ -91,7 +91,13 @@ export type PoolNode = {
   /** Work projects: personal pressure, then the software shape. */
   why?: string;
   problem?: string;
+  /** First-principles cut of the problem. */
+  principle?: string;
   solution?: string;
+  /** Short description of the value produced. */
+  value?: string;
+  /** Problem-space distilled from the problem statement. */
+  space?: string;
   /** Repo or running proof. Omit if not public. */
   proof?: string;
   media?: boolean;

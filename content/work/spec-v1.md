@@ -2,6 +2,7 @@
 id: spec-v1
 kind: doc
 cluster: work
+space: map
 title: spec v1
 date: archive
 rank: 8

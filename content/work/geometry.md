@@ -6,8 +6,11 @@ title: geometry
 date: live
 rank: 0
 why: I needed one place that could hold unfinished essays, tools, and studies without pretending they were shipped.
-problem: They kept falling into different rooms. The spatial field was a surface I had to pan, not a home I could read.
-solution: One column, one reader, one pool. The map is the content, not a canvas.
+problem: Work fell into different rooms. I had to pan a surface instead of reading a home.
+principle: If I cannot re-enter it, I do not own it.
+solution: One column, one reader, one pool.
+value: The unfinished stays on one spine.
+space: re-entry
 proof: https://github.com/p-toni/geometry
 excerpt:
   - "I needed one place that could hold unfinished essays, tools, and studies without pretending they were shipped."

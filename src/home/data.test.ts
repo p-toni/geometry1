@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { homePlay, homeWork, homeWriting, isWorkSpec, proofLabel, writingNode } from './data';
+import {
+  homePlay,
+  homeWork,
+  homeWorkHighlight,
+  homeWriting,
+  proofLabel,
+  writingNode,
+} from './data';
 
 describe('home data', () => {
   it('lists writing freshest first (rank, then date)', () => {
@@ -26,41 +33,63 @@ describe('home data', () => {
     expect(homePlay().length).toBeGreaterThan(0);
   });
 
-  it('keeps play studies unlinked until they have a feed or proof', () => {
-    const play = homePlay();
-    // The rule, not the roster: exactly one outbound feed, and every other study
-    // stays on the site. Listing the ids here made adding a study fail the suite.
-    const feeds = play.filter((p) => p.href);
-    expect(feeds).toHaveLength(1);
-    expect(feeds[0]!.id).toBe('xcom');
-    const studies = play.filter((p) => !p.href);
-    expect(studies.length).toBeGreaterThan(0);
-    expect(studies.every((p) => p.id !== 'xcom')).toBe(true);
+  it('lists the finished play door in order', () => {
+    expect(homePlay().map((p) => p.id)).toEqual([
+      'lanterns',
+      'fold',
+      'tsubuyaki',
+    ]);
   });
 
-  it('shapes current software as specs and parks method/archive', () => {
+  it('lists lanterns as a play sketch, not an outbound feed', () => {
+    const item = homePlay().find((p) => p.id === 'lanterns');
+    expect(item?.kind).toBe('sketch');
+    expect(item?.href).toBeUndefined();
+    expect(item?.dek.length).toBeGreaterThan(0);
+  });
+
+  it('keeps the play door on-site — no outbound rows', () => {
+    expect(homePlay().every((p) => !p.href)).toBe(true);
+  });
+
+  it('lists every work item as a card, rank first', () => {
     const work = homeWork();
-    const specs = work.filter(isWorkSpec);
-    const compact = work.filter((w) => !isWorkSpec(w));
-    expect(specs.map((w) => w.id)).toEqual([
+    expect(work.map((w) => w.id)).toEqual([
       'geometry',
-      'human-responsibility-mapping',
-      'macroscopic',
-      'wing',
       'synapse',
+      'macroscopic',
+      'human-responsibility-mapping',
+      'wing',
       'media-atlas',
-    ]);
-    expect(compact.map((w) => w.id)).toEqual([
       'codex-fieldwork',
       'the-loom',
       'spec-v1',
     ]);
-    const geometry = specs[0]!;
+    const geometry = work[0]!;
     expect(geometry.why?.length).toBeGreaterThan(0);
     expect(geometry.proof).toMatch(/^https:\/\//);
-    expect(geometry.meta).toBe('ongoing');
-    expect(compact.find((w) => w.id === 'codex-fieldwork')?.meta).toBe('method');
-    expect(compact.find((w) => w.id === 'spec-v1')?.meta).toBe('archive');
+    expect(geometry.spec.length).toBeGreaterThan(0);
+    expect(work.every((w) => w.spec.length > 0)).toBe(true);
+  });
+
+  it('highlights five work cards on the home', () => {
+    expect(homeWorkHighlight().map((w) => w.id)).toEqual([
+      'geometry',
+      'synapse',
+      'macroscopic',
+      'human-responsibility-mapping',
+      'wing',
+    ]);
+  });
+
+  it('gives highlight work a five-part spec', () => {
+    for (const item of homeWorkHighlight()) {
+      expect(item.problem?.length).toBeGreaterThan(0);
+      expect(item.principle?.length).toBeGreaterThan(0);
+      expect(item.solution?.length).toBeGreaterThan(0);
+      expect(item.value?.length).toBeGreaterThan(0);
+      expect(item.space).toMatch(/^[a-z-]+$/);
+    }
   });
 
   it('labels proof URLs', () => {

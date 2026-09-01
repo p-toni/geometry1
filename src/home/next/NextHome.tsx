@@ -1,4 +1,14 @@
-import { Fragment, useEffect, useState, type CSSProperties, type ReactNode } from 'react';
+import {
+  Fragment,
+  createElement,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  type CSSProperties,
+  type ReactNode,
+} from 'react';
+import { Link, Navigate, useLocation, useMatch, useNavigate } from 'react-router-dom';
 import {
   ACCENT,
   ACCENT_DARK,
@@ -8,11 +18,15 @@ import {
   SOCIAL,
   homePlay,
   homeWork,
+  homeWorkHighlight,
   homeWriting,
-  isWorkSpec
+  proofLabel,
+  type HomeListItem
 } from '../data';
+import { playPath, roomFromPathname, roomPath, workPath, type RoomDoor } from '../../lib/legacyRoutes';
 import { SignalMark } from '../SignalMark';
-import { NodePlate } from '../plates';
+import { NodePlate, WorkPlate } from '../plates';
+import { loadVendorScript } from '../loadVendors';
 import { useSweepNav } from '../sweepNav';
 import './next.css';
 
@@ -26,7 +40,7 @@ import './next.css';
  */
 
 type Door = {
-  key: string;
+  key: RoomDoor;
   /** Full argument sentence. */
   full: string;
   /** Navigational line (default register). */
@@ -106,77 +120,363 @@ function EssaysPanel() {
   );
 }
 
+function prefersReducedMotion(): boolean {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+const EASE_MORPH = 'cubic-bezier(0.77, 0, 0.175, 1)';
+const MORPH_OPEN_MS = 280;
+const MORPH_CLOSE_MS = 220;
+
+let morphOrigin: DOMRect | null = null;
+
+function setMorphOrigin(node: EventTarget | null) {
+  const host = node instanceof Element ? node : null;
+  if (!host) return;
+  const plate =
+    host.closest('[data-work-plate], [data-play-plate]') ??
+    host.querySelector('[data-work-plate], [data-play-plate]');
+  if (plate instanceof HTMLElement) morphOrigin = plate.getBoundingClientRect();
+}
+
+function takeMorphOrigin(): DOMRect | null {
+  const rect = morphOrigin;
+  morphOrigin = null;
+  return usableRect(rect);
+}
+
+function usableRect(rect: DOMRect | null | undefined): DOMRect | null {
+  if (!rect || rect.width < 8 || rect.height < 8) return null;
+  return rect;
+}
+
+function invertUniform(first: DOMRect, last: DOMRect): string {
+  const scale = last.width ? first.width / last.width : 1;
+  return `translate(${first.left - last.left}px, ${first.top - last.top}px) scale(${scale})`;
+}
+
+function sourcePlate(id: string): HTMLElement | null {
+  const node = document.querySelector(
+    `[data-work-plate="${id}"], [data-play-plate="${id}"]`,
+  );
+  return node instanceof HTMLElement ? node : null;
+}
+
+function useItemMorph(id: string, title: string, onClose: () => void) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const sheetRef = useRef<HTMLDivElement>(null);
+  const mastRef = useRef<HTMLDivElement>(null);
+  const originRef = useRef<DOMRect | null>(takeMorphOrigin());
+  const closingRef = useRef(false);
+  const openAnimRef = useRef<Animation | null>(null);
+
+  const requestClose = useCallback(() => {
+    if (closingRef.current) return;
+    const sheet = sheetRef.current;
+    const mast = mastRef.current;
+    const origin = usableRect(sourcePlate(id)?.getBoundingClientRect());
+    if (!sheet || !mast || !origin || prefersReducedMotion()) {
+      onClose();
+      return;
+    }
+    closingRef.current = true;
+    const last = mast.getBoundingClientRect();
+    const from = getComputedStyle(mast).transform;
+    sheet.dataset.morph = 'to';
+    openAnimRef.current?.cancel();
+    const anim = mast.animate(
+      [
+        { transform: from === 'none' ? 'none' : from },
+        { transform: invertUniform(origin, last) },
+      ],
+      { duration: MORPH_CLOSE_MS, delay: 60, easing: EASE_MORPH, fill: 'forwards' },
+    );
+    anim.finished.then(onClose, onClose);
+  }, [id, onClose]);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    const sheet = sheetRef.current;
+    const mast = mastRef.current;
+    if (!dialog || !sheet || !mast) return;
+    if (!dialog.open) dialog.showModal();
+    void sheet.offsetWidth;
+    const origin = originRef.current;
+    const plate = sourcePlate(id);
+    mast.style.transformOrigin = 'top left';
+    let fade = 0;
+    if (origin && !prefersReducedMotion()) {
+      sheet.dataset.morph = 'from';
+      plate?.setAttribute('data-morphing', '');
+      const last = mast.getBoundingClientRect();
+      const anim = mast.animate(
+        [{ transform: invertUniform(origin, last) }, { transform: 'none' }],
+        { duration: MORPH_OPEN_MS, easing: EASE_MORPH, fill: 'none' },
+      );
+      openAnimRef.current = anim;
+      fade = window.setTimeout(() => {
+        if (!closingRef.current) sheet.dataset.morph = 'open';
+      }, 90);
+    } else {
+      sheet.dataset.morph = 'open';
+    }
+    const onCancel = (event: Event) => {
+      event.preventDefault();
+      requestClose();
+    };
+    dialog.addEventListener('cancel', onCancel);
+    return () => {
+      window.clearTimeout(fade);
+      dialog.removeEventListener('cancel', onCancel);
+      plate?.removeAttribute('data-morphing');
+      openAnimRef.current?.cancel();
+    };
+  }, [id, requestClose]);
+
+  useEffect(() => {
+    const previous = document.title;
+    document.title = `${title} · toni.ltd`;
+    return () => {
+      document.title = previous;
+    };
+  }, [title]);
+
+  return { dialogRef, sheetRef, mastRef, requestClose };
+}
+
+function ItemModal({
+  item,
+  onClose,
+  labelledBy,
+  mastClassName,
+  mast,
+  children,
+}: {
+  item: HomeListItem;
+  onClose: () => void;
+  labelledBy: string;
+  mastClassName?: string;
+  mast: ReactNode;
+  children: ReactNode;
+}) {
+  const { dialogRef, sheetRef, mastRef, requestClose } = useItemMorph(
+    item.id,
+    item.title,
+    onClose,
+  );
+  return (
+    <dialog
+      ref={dialogRef}
+      className="nxp-work-dialog"
+      aria-labelledby={labelledBy}
+      onClick={(event) => {
+        if (event.target === event.currentTarget) requestClose();
+      }}
+    >
+      <div className="nxp-work-sheet" ref={sheetRef}>
+        <div
+          className={
+            mastClassName ? `nxp-work-sheet__mast ${mastClassName}` : 'nxp-work-sheet__mast'
+          }
+          ref={mastRef}
+        >
+          {mast}
+          <button
+            type="button"
+            className="nxp-work-sheet__close"
+            onClick={requestClose}
+            aria-label="Close"
+          >
+            ×
+          </button>
+        </div>
+        <div className="nxp-work-sheet__body">{children}</div>
+      </div>
+    </dialog>
+  );
+}
+
+function WorkModal({ item, onClose }: { item: HomeListItem; onClose: () => void }) {
+  return (
+    <ItemModal
+      item={item}
+      onClose={onClose}
+      labelledBy="nxp-work-title"
+      mast={<WorkPlate id={item.id} />}
+    >
+      {item.space ? <span className="nxp-spec__space">{item.space}</span> : null}
+      <h2 id="nxp-work-title" className="nxp-work-sheet__title" tabIndex={-1}>
+        {item.title}
+      </h2>
+      <div className="nxp-work-sheet__claim">
+        {item.problem ? <p className="nxp-spec__problem">{item.problem}</p> : null}
+        {item.principle ? <p className="nxp-spec__principle">{item.principle}</p> : null}
+        {item.solution ? <p className="nxp-spec__solution">{item.solution}</p> : null}
+        {item.value ? <p className="nxp-spec__value">{item.value}</p> : null}
+      </div>
+      {item.proof ? (
+        <a
+          className="nxp-work-sheet__proof"
+          href={item.proof}
+          target="_blank"
+          rel="noreferrer"
+        >
+          {proofLabel(item.proof)} ↗
+        </a>
+      ) : null}
+    </ItemModal>
+  );
+}
+
+function PlayModal({ item, onClose }: { item: HomeListItem; onClose: () => void }) {
+  return (
+    <ItemModal
+      item={item}
+      onClose={onClose}
+      labelledBy="nxp-play-title"
+      mastClassName="nxp-work-sheet__mast--play"
+      mast={
+        <>
+          <PlaySketch id={item.id} />
+          {PLAY_EQ[item.id] ? (
+            <pre className="nxp-play-eq">{PLAY_EQ[item.id]}</pre>
+          ) : null}
+        </>
+      }
+    >
+      {item.playKind ? <span className="nxp-spec__space">{item.playKind}</span> : null}
+      <h2 id="nxp-play-title" className="nxp-work-sheet__title" tabIndex={-1}>
+        {item.title}
+      </h2>
+      {item.dek ? <p className="nxp-work-sheet__dek">{item.dek}</p> : null}
+    </ItemModal>
+  );
+}
+
 function WorkPanel() {
-  const sweepTo = useSweepNav();
-  const specs = homeWork().filter(isWorkSpec);
-  const compact = homeWork().filter((w) => !isWorkSpec(w));
+  const work = homeWorkHighlight();
   return (
     <div className="nxp nxp--work">
       <div className="nxp-specs">
-        {specs.map((w) => (
-          <a
-            key={w.id}
-            className="nxp-spec"
-            href={w.proof ?? `/read/${w.id}`}
-            target={w.proof ? '_blank' : undefined}
-            rel={w.proof ? 'noreferrer' : undefined}
-            onClick={w.proof ? undefined : sweepTo(`/read/${w.id}`)}
-          >
-            <span className="nxp-spec__plate">
-              <NodePlate id={w.id} />
-            </span>
-            <span className="nxp-spec__status">{w.meta}</span>
-            <h3>{w.title}</h3>
+        {work.map((w) => (
+          <article key={w.id} className="nxp-spec">
+            <Link
+              className="nxp-spec__plate"
+              to={workPath(w.id)}
+              data-work-plate={w.id}
+              aria-label={`Open ${w.title}`}
+              onClick={(event) => setMorphOrigin(event.currentTarget)}
+            >
+              <WorkPlate id={w.id} />
+            </Link>
+            {w.space ? <span className="nxp-spec__space">{w.space}</span> : null}
+            {w.proof ? (
+              <a
+                className="nxp-spec__go"
+                href={w.proof}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <h3>{w.title}</h3>
+                <span className="nxp-spec__proof">proof ↗</span>
+              </a>
+            ) : (
+              <Link
+                className="nxp-spec__go"
+                to={workPath(w.id)}
+                onClick={(event) => setMorphOrigin(event.currentTarget)}
+              >
+                <h3>{w.title}</h3>
+              </Link>
+            )}
             {w.problem ? <p className="nxp-spec__problem">{w.problem}</p> : null}
             {w.solution ? <p className="nxp-spec__solution">{w.solution}</p> : null}
-            <span className="nxp-spec__proof">{w.proof ? 'proof ↗' : 'spec →'}</span>
-          </a>
+          </article>
         ))}
       </div>
-      {compact.length ? (
-        <ul className="nxp-minor">
-          {compact.map((w) => (
-            <li key={w.id}>
-              <a
-                href={w.proof ?? `/read/${w.id}`}
-                target={w.proof ? '_blank' : undefined}
-                rel={w.proof ? 'noreferrer' : undefined}
-                onClick={w.proof ? undefined : sweepTo(`/read/${w.id}`)}
-              >
-                <span>{w.title}</span>
-                <span className="nxp-minor__meta">{w.meta}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      ) : null}
     </div>
   );
 }
 
+type PlayLiveTag = 'lanterns-field' | 'fold-field' | 'tsubuyaki-field';
+
+const PLAY_LIVE: Partial<Record<string, PlayLiveTag>> = {
+  lanterns: 'lanterns-field',
+  fold: 'fold-field',
+  tsubuyaki: 'tsubuyaki-field',
+};
+
+const PLAY_EQ: Partial<Record<string, string>> = {
+  lanterns:
+    'm = i%5\n' +
+    'k = (i/5)%96/7 - 7\n' +
+    'e = i/5/864 - 5\n' +
+    'd = mag(k, e)\n' +
+    'c = d/2 - t + m*1.1 + e/8\n' +
+    'q = 62 + 12m + 5d + k*sin(j/480 - t/2 + m) + 12*sin(d*d*.07 - t + m)',
+  fold:
+    "x' = sin(1.73 y - t/7) - cos(1.21 x)\n" +
+    "y' = sin(2.04 x) - cos(0.88 y)\n" +
+    'd = mag(x, y)\n' +
+    'c = d*d*0.45 - t/6\n' +
+    'q = 70 + 7/(d + 0.5)',
+  tsubuyaki:
+    'k = i%173/40 - 2.1\n' +
+    'e = i/9515 - 2.1\n' +
+    'd = mag(k, e)\n' +
+    'c = d*d*2.1 - t + i%2*3\n' +
+    'q = 34 + sin(3k + 2e - t)*d*19',
+};
+
+function PlaySketch({ id, samples }: { id: string; samples?: string }) {
+  const tag = PLAY_LIVE[id];
+  const [ready, setReady] = useState(false);
+  useEffect(() => {
+    let live = true;
+    void loadVendorScript(`/vendor/${id}.js`)
+      .then(() => { if (live) setReady(true); })
+      .catch(() => undefined);
+    return () => { live = false; };
+  }, [id]);
+  return ready && tag ? createElement(tag, samples ? { samples } : {}) : null;
+}
+
+function PlaySketchPlate({ id }: { id: string }) {
+  return (
+    <span
+      className="nxp-play__plate nxp-play__plate--live"
+      data-play-plate={id}
+      aria-hidden="true"
+    >
+      <PlaySketch id={id} samples="6000" />
+    </span>
+  );
+}
+
 function PlayPanel() {
-  const sweepTo = useSweepNav();
   const play = homePlay();
   return (
     <div className="nxp nxp--play">
       <ul className="nxp-play">
         {play.map((p) => {
-          const external = Boolean(p.href);
+          const live = Boolean(PLAY_LIVE[p.id]);
           return (
             <li key={p.id}>
-              <a
-                href={p.href ?? `/read/${p.id}`}
-                target={external ? '_blank' : undefined}
-                rel={external ? 'noreferrer' : undefined}
-                onClick={external ? undefined : sweepTo(`/read/${p.id}`)}
+              <Link
+                to={playPath(p.id)}
+                onClick={(event) => setMorphOrigin(event.currentTarget)}
               >
-                <span className="nxp-play__plate">
-                  <NodePlate id={p.id} />
-                </span>
+                {live ? (
+                  <PlaySketchPlate id={p.id} />
+                ) : (
+                  <span className="nxp-play__plate" data-play-plate={p.id}>
+                    <NodePlate id={p.id} />
+                  </span>
+                )}
                 <span className="nxp-play__kind">{p.playKind}</span>
                 <span className="nxp-play__name">{p.title}</span>
                 <span className="nxp-play__dek">{p.dek}</span>
-              </a>
+              </Link>
             </li>
           );
         })}
@@ -231,7 +531,21 @@ const PANELS: Record<string, () => ReactNode> = {
 
 export function NextHome() {
   const sweepTo = useSweepNav();
-  const [active, setActive] = useState<string>('essays');
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+  const workMatch = useMatch('/work/:id');
+  const workId = workMatch?.params.id;
+  const workItem = workId ? homeWork().find((w) => w.id === workId) : undefined;
+  const closeWork = useCallback(() => {
+    navigate(roomPath('work'), { replace: true });
+  }, [navigate]);
+  const playMatch = useMatch('/play/:id');
+  const playId = playMatch?.params.id;
+  const playItem = playId ? homePlay().find((p) => p.id === playId) : undefined;
+  const closePlay = useCallback(() => {
+    navigate(roomPath('play'), { replace: true });
+  }, [navigate]);
+  const active = roomFromPathname(pathname);
   const [register, setRegister] = useState<Register>('full');
   const [theme, setTheme] = useState<'light' | 'dark'>(() => {
     if (typeof window === 'undefined') return 'light';
@@ -274,6 +588,9 @@ export function NextHome() {
     setRegister((r) => REGISTER_ORDER[Math.min(REGISTER_ORDER.indexOf(r) + 1, REGISTER_ORDER.length - 1)]);
   const expand = () =>
     setRegister((r) => REGISTER_ORDER[Math.max(REGISTER_ORDER.indexOf(r) - 1, 0)]);
+
+  if (workId && !workItem) return <Navigate to={roomPath('work')} replace />;
+  if (playId && !playItem) return <Navigate to={roomPath('play')} replace />;
 
   return (
     <>
@@ -331,14 +648,13 @@ export function NextHome() {
         {DOORS.map((door, i) => {
           const selected = door.key === active;
           return (
-            <button
+            <Link
               key={door.key}
-              type="button"
+              to={roomPath(door.key)}
               className="nx-line"
               data-active={selected || undefined}
               data-register={register}
-              aria-expanded={selected}
-              onClick={() => setActive(door.key)}
+              aria-current={selected ? 'page' : undefined}
               style={{ '--i': i } as CSSProperties}
             >
               <span className="nx-line__mark">
@@ -355,7 +671,7 @@ export function NextHome() {
                 {doorText(door, register)}
               </span>
               <span className="nx-line__label">{door.label}</span>
-            </button>
+            </Link>
           );
         })}
       </nav>
@@ -365,6 +681,13 @@ export function NextHome() {
         <Panel />
       </section>
       </main>
+
+      {workItem ? (
+        <WorkModal key={workItem.id} item={workItem} onClose={closeWork} />
+      ) : null}
+      {playItem ? (
+        <PlayModal key={playItem.id} item={playItem} onClose={closePlay} />
+      ) : null}
 
       <footer className="nx-footer">
         <span>toni limited co. — website built by many intelligences</span>

@@ -10,6 +10,10 @@ excerpt:
 links:
   - target: sea
     rel: sibling
+  - target: lanterns
+    rel: sibling
+  - target: fold
+    rel: sibling
 ---
 
 #つぶやきProcessing is a Japanese practice with one rule: the whole program must fit in a tweet. Not a link to a program, not a gist — the source itself, 280 characters, posted as text you can read on the way past.

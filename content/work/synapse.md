@@ -2,12 +2,15 @@
 id: synapse
 kind: project
 cluster: work
+space: replay
 title: synapse
 date: rebuild
-rank: 5
+rank: 1
 why: I couldn't trust an agent I could only watch from the outside.
 problem: Behavior is too slippery to inspect after the fact.
-solution: Replayable runs, explicit contracts, evidence kept separate from authority.
+principle: If I cannot replay it, I am watching, not checking.
+solution: Replayable runs. Contracts. Evidence kept off the authority path.
+value: A change can show what happened, under which contract.
 excerpt:
   - "I couldn't trust an agent I could only watch from the outside."
 links:

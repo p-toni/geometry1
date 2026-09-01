@@ -2,12 +2,15 @@
 id: wing
 kind: project
 cluster: work
+space: center
 title: wing
 date: pilot
 rank: 4
 why: High-stakes writing kept getting treated as text generation.
 problem: The artifact lost the center. Claims, sources, and next moves lived somewhere else.
-solution: A workbench around the page. Agents can notice and package; they don't take the draft.
+principle: If the page is not the work, the work has already been handed over.
+solution: A workbench around the page. Agents notice and package; they don't take the draft.
+value: High-stakes writing stays a human surface.
 excerpt:
   - "High-stakes writing kept getting treated as text generation."
 links:

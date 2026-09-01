@@ -2,7 +2,7 @@ import { mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-import { readPath } from '../src/lib/legacyRoutes.ts';
+import { ROOM_PATHS, nodePath } from '../src/lib/legacyRoutes.ts';
 import type { Pool, PoolNode } from '../src/pool/types.ts';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -22,7 +22,7 @@ function descriptionFor(node: PoolNode): string {
 }
 
 function canonicalFor(node: PoolNode): string {
-  return `${siteUrl}${readPath(node.id)}/`;
+  return `${siteUrl}${nodePath(node)}/`;
 }
 
 function replaceTag(html: string, pattern: RegExp, replacement: string): string {
@@ -96,10 +96,15 @@ const baseHtml = readFileSync(join(distDir, 'index.html'), 'utf8');
 const nodes = Object.values(pool.nodes).sort((a, b) => a.rank - b.rank || a.title.localeCompare(b.title));
 
 for (const node of nodes) {
-  writeHtml(['read', node.id], withMeta(baseHtml, node));
+  const parts = nodePath(node).replace(/^\//, '').split('/');
+  writeHtml(parts, withMeta(baseHtml, node));
 }
 
-const urls = [`${siteUrl}/`, ...nodes.map((node) => canonicalFor(node))];
+const urls = [
+  `${siteUrl}/`,
+  ...Object.values(ROOM_PATHS).map((path) => `${siteUrl}${path}/`),
+  ...nodes.map((node) => canonicalFor(node)),
+];
 
 writeFileSync(
   join(distDir, 'sitemap.xml'),

@@ -17,6 +17,8 @@ export const FIG_BLOCKS: Record<string, Block> = {
   connector: { t: 'drawn', kind: 'connector' },
   'curve-break': { t: 'drawn', kind: 'curve-break' },
   tsubuyaki: { t: 'drawn', kind: 'tsubuyaki' },
+  lanterns: { t: 'drawn', kind: 'lanterns' },
+  fold: { t: 'drawn', kind: 'fold' },
   rotation: { t: 'drawn', kind: 'rotation' },
   crack: { t: 'drawn', kind: 'crack' },
   table: { t: 'table', headers: [], rows: [] },

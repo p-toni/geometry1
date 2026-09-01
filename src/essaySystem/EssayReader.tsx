@@ -1,7 +1,7 @@
 import { useEffect, useLayoutEffect, useMemo } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import '../design/essay-system.css';
-import { RETIRED_READ_IDS, readPath } from '../lib/legacyRoutes';
+import { RETIRED_READ_IDS, readPath, workPath } from '../lib/legacyRoutes';
 import { generatedPool } from '../pool/generated';
 import { EssayBlock } from './EssayBlocks';
 import { BackLink, EssayFootNav } from './EssayNav';
@@ -65,6 +65,7 @@ export function EssayReader() {
   }, [doc]);
 
   if (retired) return <Navigate to={readPath(id)} replace />;
+  if (node?.cluster === 'work') return <Navigate to={workPath(id)} replace />;
   if (!node || !doc) return <Navigate to="/" replace />;
 
   const { noteControls, noteDetail, pinned, railOn, revealed } = apparatus;

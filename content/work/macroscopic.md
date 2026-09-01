@@ -2,12 +2,15 @@
 id: macroscopic
 kind: project
 cluster: work
+space: attention
 title: macroscopic
 date: active
-rank: 3
+rank: 2
 why: Life and work context arrives in fragments, then a dashboard tries to shout it all back.
 problem: Surfaces get loud. Memory gets thin. Agency boundaries blur.
-solution: A quiet kernel — remember more, surface less, ask before acting.
+principle: Attention is a budget. Crossing it without asking is a takeover.
+solution: Remember more. Surface less. Ask before acting.
+value: Context holds without shouting back.
 excerpt:
   - "Life and work context arrives in fragments, then a dashboard tries to shout it all back."
 links:

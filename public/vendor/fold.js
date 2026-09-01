@@ -1,23 +1,24 @@
-// <tsubuyaki-field> — the tweet-sized sketch, running natively.
+// <fold-field> — sequential folding map, running natively.
 //
-// The posted artifact is p5.js compressed to 280 characters. This is the same system
-// with the same constants, drawn straight into an ImageData buffer: 40,000 canvas calls
-// a frame is slow, 40,000 array writes is not. Accumulating into a Uint8ClampedArray
-// also gives saturating additive blending for free, which is what makes the dense
-// regions read as lit tissue rather than flat fill.
+// Posted artifact is p5.js. Same constants, drawn into an ImageData buffer.
+// Each sample is the next state of the last — a trajectory, not a grid.
 //
-//   k = i%173/40 - 2.1        lateral
-//   e = i/9515 - 2.1          axial
-//   d = mag(k,e)
-//   c = d*d*2.1 - t + i%2*3   quadratic phase, parity opposition
-//   q = 34 + sin(k*3+e*2-t)*d*19
+//   x' = sin(1.73 y - t/7) - cos(1.21 x)
+//   y' = sin(2.04 x) - cos(0.88 y)
+//   d = mag(x,y)
+//   c = d*d*0.45 - t/6
+//   q = 70 + 7/(d+0.5)
+//   X = 246 + q x + 10 sin(c)
+//   Y = 200 + q y * 0.82 + 7 cos(c/2)
 (function () {
-  if (customElements.get('tsubuyaki-field')) return;
+  if (customElements.get('fold-field')) return;
 
-  const SRC = 400; // the sketch's native square; everything scales from it
+  const SRC = 400;
 
-  class TsubuyakiField extends HTMLElement {
-    static get observedAttributes() { return ['ground', 'ink', 'accent', 'samples', 'speed', 'paused']; }
+  class FoldField extends HTMLElement {
+    static get observedAttributes() {
+      return ['ground', 'ink', 'accent', 'samples', 'speed', 'paused'];
+    }
 
     connectedCallback() {
       if (this._built) return;
@@ -33,17 +34,18 @@
 
       this._ro = new ResizeObserver(() => this._size());
       this._ro.observe(this);
-      this._io = new IntersectionObserver((es) => { this._vis = es[0].isIntersecting; }, { rootMargin: '120px' });
+      this._io = new IntersectionObserver((es) => {
+        this._vis = es[0].isIntersecting;
+      }, { rootMargin: '120px' });
       this._io.observe(this);
       this._size();
 
-      // Reduced motion keeps the organism, drops the evolution: one frame, held.
       this._reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
       const loop = () => {
         this._raf = requestAnimationFrame(loop);
         if (!this._vis) return;
         if (this._reduce || this.hasAttribute('paused')) return;
-        this._t += 0.0131 * this._num('speed', 1); // PI/240
+        this._t += 0.0157 * this._num('speed', 1); // PI/200
         this._draw();
       };
       this._draw();
@@ -68,7 +70,7 @@
       const w = this.clientWidth;
       const h = this.clientHeight;
       if (!w || !h) return;
-      const dpr = Math.min(1.5, window.devicePixelRatio || 1); // 40k points; 2x buys little
+      const dpr = Math.min(1.5, window.devicePixelRatio || 1);
       this._w = Math.round(w * dpr);
       this._h = Math.round(h * dpr);
       this._c.width = this._w;
@@ -85,45 +87,42 @@
 
       const ground = hex(this.getAttribute('ground') || '#0a0a0a');
       const ink = hex(this.getAttribute('ink') || '#ffffff');
-      const accent = hex(this.getAttribute('accent') || '#0066aa');
+      const accent = hex(this.getAttribute('accent') || '#ab3f50');
 
-      // Lay the ground.
       for (let p = 0; p < px.length; p += 4) {
         px[p] = ground[0]; px[p + 1] = ground[1]; px[p + 2] = ground[2]; px[p + 3] = 255;
       }
 
-      // Sample count follows area, so a wide plate is not sparser than a small one.
       const area = (W * H) / (SRC * SRC);
-      const n = Math.round(this._num('samples', 4e4) * Math.min(3, Math.max(0.5, area)));
+      const n = Math.round(this._num('samples', 2e4) * Math.min(3, Math.max(0.5, area)));
       const S = Math.min(W, H) / SRC;
       const cx = W / 2, cy = H / 2;
       const t = this._t;
-      const a = 34 / 255;
+      const a = 64 / 255;
       const dr = ink[0] * a, dg = ink[1] * a, db = ink[2] * a;
 
-      // Track the hottest accumulation so the accent can find the densest tissue.
       let peak = 0;
       const hits = new Uint16Array(W * H);
+      let sx = 0.2, sy = 0.1;
 
       for (let i = n; i--;) {
-        const k = (i % 173) / 40 - 2.1;
-        const e = i / 9515 - 2.1;
-        const d = Math.sqrt(k * k + e * e);
-        const c = d * d * 2.1 - t + (i % 2) * 3;
-        const q = 34 + Math.sin(k * 3 + e * 2 - t) * d * 19;
-        const x = (cx + (q * Math.cos(c) + k * 34) * S) | 0;
-        const y = (cy + (q * Math.sin(c) * 0.8 + e * 34) * S) | 0;
+        const nx = Math.sin(1.73 * sy - t / 7) - Math.cos(1.21 * sx);
+        const ny = Math.sin(2.04 * sx) - Math.cos(0.88 * sy);
+        sx = nx;
+        sy = ny;
+        const d = Math.sqrt(sx * sx + sy * sy);
+        const c = d * d * 0.45 - t / 6;
+        const q = 70 + 7 / (d + 0.5);
+        const x = (cx + (46 + q * sx + 10 * Math.sin(c)) * S) | 0;
+        const y = (cy + (q * sy * 0.82 + 7 * Math.cos(c / 2)) * S) | 0;
         if (x < 0 || y < 0 || x >= W || y >= H) continue;
         const o = y * W + x;
         const h = ++hits[o];
         if (h > peak) peak = h;
         const p = o * 4;
-        px[p] += dr; px[p + 1] += dg; px[p + 2] += db; // Uint8Clamped saturates for us
+        px[p] += dr; px[p + 1] += dg; px[p + 2] += db;
       }
 
-      // The one accent event: the hottest few tenths of a percent of the tissue — where
-      // the body folds hardest onto itself. Chosen by histogram rather than a fraction
-      // of the peak, because a single hot pixel would otherwise set the bar alone.
       if (peak > 3) {
         const hist = new Uint32Array(peak + 1);
         let litCount = 0;
@@ -152,5 +151,5 @@
     return [(v >> 16) & 255, (v >> 8) & 255, v & 255];
   }
 
-  customElements.define('tsubuyaki-field', TsubuyakiField);
+  customElements.define('fold-field', FoldField);
 })();

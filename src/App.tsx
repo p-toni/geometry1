@@ -14,7 +14,16 @@ export default function App() {
         {/* A throw in any route used to render a blank page. It now renders a sentence. */}
         <ErrorBoundary>
           <Routes>
-            <Route path="/" element={<NextHome />} />
+            <Route path="/" element={<NextHome />}>
+              <Route path="who" />
+              <Route path="essays" />
+              <Route path="work" />
+              <Route path="work/:id" />
+              <Route path="play" />
+              <Route path="play/:id" />
+              <Route path="now" />
+              <Route path="hi" />
+            </Route>
             <Route path="/writing/:id" element={<LegacyReadRedirect />} />
             <Route path="/read/:id/full" element={<LegacyReadRedirect />} />
             <Route path="/essay-system" element={<EssaySystemPage />} />

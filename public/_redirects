@@ -50,4 +50,24 @@
 /writing/:id /read/:id 301
 /writing/:id/ /read/:id 301
 
+# Work items left /read/:id when the work panel stopped using the reader.
+/read/codex-fieldwork /work/codex-fieldwork 301
+/read/codex-fieldwork/ /work/codex-fieldwork 301
+/read/geometry /work/geometry 301
+/read/geometry/ /work/geometry 301
+/read/human-responsibility-mapping /work/human-responsibility-mapping 301
+/read/human-responsibility-mapping/ /work/human-responsibility-mapping 301
+/read/macroscopic /work/macroscopic 301
+/read/macroscopic/ /work/macroscopic 301
+/read/media-atlas /work/media-atlas 301
+/read/media-atlas/ /work/media-atlas 301
+/read/spec-v1 /work/spec-v1 301
+/read/spec-v1/ /work/spec-v1 301
+/read/synapse /work/synapse 301
+/read/synapse/ /work/synapse 301
+/read/the-loom /work/the-loom 301
+/read/the-loom/ /work/the-loom 301
+/read/wing /work/wing 301
+/read/wing/ /work/wing 301
+
 /*    /index.html   200

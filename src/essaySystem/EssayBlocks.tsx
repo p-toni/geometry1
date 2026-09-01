@@ -9,6 +9,8 @@ import {
   ConnectorFigure,
   CurveBreakFigure,
   TsubuyakiFigure,
+  LanternsFigure,
+  FoldFigure,
   CoreSetsFigure,
   CrackFigure,
   FlowDiagram,
@@ -219,6 +221,10 @@ export function EssayBlock({
               <CurveBreakFigure />
             ) : item.kind === 'tsubuyaki' ? (
               <TsubuyakiFigure />
+            ) : item.kind === 'lanterns' ? (
+              <LanternsFigure />
+            ) : item.kind === 'fold' ? (
+              <FoldFigure />
             ) : item.kind === 'rotation' ? (
               <RotationFigure />
             ) : (

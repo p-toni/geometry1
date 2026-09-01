@@ -3,6 +3,82 @@ import type { Pool } from './types';
 
 export const generatedPool: Pool = {
   "nodes": {
+    "fold": {
+      "id": "fold",
+      "kind": "sketch",
+      "cluster": "play",
+      "title": "fold",
+      "date": "2026-09-01",
+      "rank": 1,
+      "weight": 0.95,
+      "links": [
+        [
+          "lanterns",
+          "sibling"
+        ],
+        [
+          "tsubuyaki",
+          "sibling"
+        ]
+      ],
+      "excerpt": [
+        "A folding map. Each point is the next state of the last — one body, a seed that shears and refolds."
+      ],
+      "body": [
+        {
+          "t": "p",
+          "x": "One trajectory, twenty thousand steps. No stored outline. The next point is a fold of the last."
+        },
+        {
+          "t": "drawn",
+          "kind": "fold",
+          "cap": "The program, running, with its whole source underneath it. The text is not a description of the image. It is the image's only cause."
+        },
+        {
+          "t": "p",
+          "x": "The posted artifact is p5.js. What runs here is the same arithmetic in a pixel buffer, as on [[lanterns|lanterns]] and [[tsubuyaki|tsubuyaki]]."
+        }
+      ],
+      "sourcePath": "/content/play/fold.md"
+    },
+    "lanterns": {
+      "id": "lanterns",
+      "kind": "sketch",
+      "cluster": "play",
+      "title": "lanterns",
+      "date": "2026-08-31",
+      "rank": 0,
+      "weight": 1,
+      "links": [
+        [
+          "tsubuyaki",
+          "sibling"
+        ],
+        [
+          "fold",
+          "sibling"
+        ]
+      ],
+      "excerpt": [
+        "Five related bodies from one generator. Family id nests the radius and offsets the phase — siblings, not copies."
+      ],
+      "body": [
+        {
+          "t": "p",
+          "x": "Five lanterns, one loop. The family id is a developmental variable: it nests radius and shifts phase, so the siblings are shells of the same calyx."
+        },
+        {
+          "t": "drawn",
+          "kind": "lanterns",
+          "cap": "The program, running, with its whole source underneath it. The text is not a description of the image. It is the image's only cause."
+        },
+        {
+          "t": "p",
+          "x": "The posted artifact is p5.js. What runs here is the same arithmetic in a pixel buffer, as on [[tsubuyaki|tsubuyaki]]."
+        }
+      ],
+      "sourcePath": "/content/play/lanterns.md"
+    },
     "lock-in": {
       "id": "lock-in",
       "kind": "voxel",
@@ -97,6 +173,14 @@ export const generatedPool: Pool = {
         [
           "sea",
           "sibling"
+        ],
+        [
+          "lanterns",
+          "sibling"
+        ],
+        [
+          "fold",
+          "sibling"
         ]
       ],
       "excerpt": [
@@ -139,8 +223,8 @@ export const generatedPool: Pool = {
       "cluster": "play",
       "title": "x.com",
       "date": "live",
-      "rank": 1,
-      "weight": 0.95,
+      "rank": 3,
+      "weight": 0.85,
       "links": [
         [
           "the-loom",
@@ -160,8 +244,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "codex fieldwork",
       "date": "method",
-      "rank": 1,
-      "weight": 0.95,
+      "rank": 6,
+      "weight": 0.7,
       "links": [
         [
           "geometry",
@@ -197,6 +281,7 @@ export const generatedPool: Pool = {
       "why": "Agents move the build faster than I can trust it.",
       "problem": "Work lands without a loop that can reject it. Taste arrives too late.",
       "solution": "A fieldwork loop — recover, decide, tune, test, commit. The agent is inspectable; judgment stays mine.",
+      "space": "loop",
       "sourcePath": "/content/work/codex-fieldwork.md"
     },
     "geometry": {
@@ -244,8 +329,11 @@ export const generatedPool: Pool = {
         }
       ],
       "why": "I needed one place that could hold unfinished essays, tools, and studies without pretending they were shipped.",
-      "problem": "They kept falling into different rooms. The spatial field was a surface I had to pan, not a home I could read.",
-      "solution": "One column, one reader, one pool. The map is the content, not a canvas.",
+      "problem": "Work fell into different rooms. I had to pan a surface instead of reading a home.",
+      "principle": "If I cannot re-enter it, I do not own it.",
+      "solution": "One column, one reader, one pool.",
+      "value": "The unfinished stays on one spine.",
+      "space": "re-entry",
       "proof": "https://github.com/p-toni/geometry",
       "sourcePath": "/content/work/geometry.md"
     },
@@ -255,8 +343,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "responsibility mapping",
       "date": "public",
-      "rank": 2,
-      "weight": 0.9,
+      "rank": 3,
+      "weight": 0.85,
       "links": [
         [
           "macroscopic",
@@ -294,8 +382,11 @@ export const generatedPool: Pool = {
         }
       ],
       "why": "Delegation decisions were being made on vibes.",
-      "problem": "Nobody could say what the model may do, what the human retains, or what proof would make a release honest.",
-      "solution": "One operating artifact — boundaries, evidence, evals, telemetry, and a gate that stays reversible.",
+      "problem": "Nobody could say what the model may do, what the human retains, or what would make a release honest.",
+      "principle": "An unnamed boundary is not a decision.",
+      "solution": "One artifact — boundaries, evidence, evals, a reversible gate.",
+      "value": "Delegation is inspectable before it ships.",
+      "space": "boundary",
       "proof": "https://github.com/p-toni/human-responsibility-mapping",
       "sourcePath": "/content/work/human-responsibility-mapping.md"
     },
@@ -305,8 +396,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "macroscopic",
       "date": "active",
-      "rank": 3,
-      "weight": 0.85,
+      "rank": 2,
+      "weight": 0.9,
       "links": [
         [
           "geometry",
@@ -337,7 +428,10 @@ export const generatedPool: Pool = {
       ],
       "why": "Life and work context arrives in fragments, then a dashboard tries to shout it all back.",
       "problem": "Surfaces get loud. Memory gets thin. Agency boundaries blur.",
-      "solution": "A quiet kernel — remember more, surface less, ask before acting.",
+      "principle": "Attention is a budget. Crossing it without asking is a takeover.",
+      "solution": "Remember more. Surface less. Ask before acting.",
+      "value": "Context holds without shouting back.",
+      "space": "attention",
       "sourcePath": "/content/work/macroscopic.md"
     },
     "media-atlas": {
@@ -346,8 +440,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "media atlas",
       "date": "alpha",
-      "rank": 6,
-      "weight": 0.7,
+      "rank": 5,
+      "weight": 0.75,
       "links": [
         [
           "geometry",
@@ -380,6 +474,7 @@ export const generatedPool: Pool = {
       "why": "Private archives were being reduced to search results.",
       "problem": "Media stopped being the thing you look at. It became a hit list.",
       "solution": "An inspectable map — objects, relations, layout, overlays, and curation stay in separate layers.",
+      "space": "map",
       "sourcePath": "/content/work/media-atlas.md"
     },
     "spec-v1": {
@@ -416,6 +511,7 @@ export const generatedPool: Pool = {
       "why": "I needed the retired stack to stay visible so it couldn't sneak back in as taste.",
       "problem": "Warm grids, JSON canvases, MDX widgets. A surface that wanted to be rearranged more than read.",
       "solution": "This is the fossil. v2 is one home and typed blocks.",
+      "space": "map",
       "sourcePath": "/content/work/spec-v1.md"
     },
     "synapse": {
@@ -424,8 +520,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "synapse",
       "date": "rebuild",
-      "rank": 5,
-      "weight": 0.75,
+      "rank": 1,
+      "weight": 0.95,
       "links": [
         [
           "the-container",
@@ -456,7 +552,10 @@ export const generatedPool: Pool = {
       ],
       "why": "I couldn't trust an agent I could only watch from the outside.",
       "problem": "Behavior is too slippery to inspect after the fact.",
-      "solution": "Replayable runs, explicit contracts, evidence kept separate from authority.",
+      "principle": "If I cannot replay it, I am watching, not checking.",
+      "solution": "Replayable runs. Contracts. Evidence kept off the authority path.",
+      "value": "A change can show what happened, under which contract.",
+      "space": "replay",
       "sourcePath": "/content/work/synapse.md"
     },
     "the-loom": {
@@ -503,6 +602,7 @@ export const generatedPool: Pool = {
       "why": "I wanted a page that could re-weave emphasis without erasing place.",
       "problem": "Fixed grids couldn't move. Free layouts forgot where anything lived.",
       "solution": "Blocks carried weight, freshness, and neighborhood. Geometry kept the useful part.",
+      "space": "map",
       "sourcePath": "/content/work/the-loom.md"
     },
     "wing": {
@@ -544,7 +644,10 @@ export const generatedPool: Pool = {
       ],
       "why": "High-stakes writing kept getting treated as text generation.",
       "problem": "The artifact lost the center. Claims, sources, and next moves lived somewhere else.",
-      "solution": "A workbench around the page. Agents can notice and package; they don't take the draft.",
+      "principle": "If the page is not the work, the work has already been handed over.",
+      "solution": "A workbench around the page. Agents notice and package; they don't take the draft.",
+      "value": "High-stakes writing stays a human surface.",
+      "space": "center",
       "sourcePath": "/content/work/wing.md"
     },
     "marginalia": {
@@ -2228,6 +2331,14 @@ export const generatedPool: Pool = {
       "tsubuyaki": [
         1120,
         574
+      ],
+      "lanterns": [
+        1074,
+        612
+      ],
+      "fold": [
+        1096,
+        538
       ],
       "about": [
         322,

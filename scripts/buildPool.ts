@@ -27,7 +27,10 @@ type Frontmatter = {
   href?: string;
   why?: string;
   problem?: string;
+  principle?: string;
   solution?: string;
+  value?: string;
+  space?: string;
   proof?: string;
   media?: boolean;
   struct?: EssayStruct;
@@ -265,7 +268,10 @@ for (const file of walkMd(contentDir)) {
     href: meta.href,
     why: meta.why,
     problem: meta.problem,
+    principle: meta.principle,
     solution: meta.solution,
+    value: meta.value,
+    space: meta.space,
     proof: meta.proof,
     media: meta.media,
     sourcePath: `/${relative(root, file).replace(/\\/g, '/')}`,

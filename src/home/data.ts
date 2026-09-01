@@ -16,8 +16,12 @@ export type HomeListItem = {
   playKind?: string;
   why?: string;
   problem?: string;
+  principle?: string;
   solution?: string;
+  value?: string;
   proof?: string;
+  space?: string;
+  spec: string[];
 };
 
 const POSTERS = [
@@ -47,12 +51,14 @@ const POSTER_EVENT: Record<string, string> = {
     'Streamlines descend and stop at a gate; the far side is empty.',
   'weak-geometry':
     'Three sides of a frame; the bottom is missing; one blue corner is load-bearing.',
-  geometry: 'Scattered chalk ticks gather into one vertical spine on charcoal.',
+  geometry: 'Scattered ticks gather onto one spine; a blue pin marks the end.',
   'human-responsibility-mapping':
-    'A chalk boundary with a reversible gap and a blue contact in the opening.',
-  macroscopic: 'A quiet charcoal field; one small constellation surfaces.',
-  wing: 'A central page; notices orbit outside and do not enter.',
+    'A boundary with a reversible gap and a blue contact in the opening.',
+  macroscopic: 'A quiet field; one small constellation surfaces.',
+  wing: 'A central page; notices sit outside and do not enter.',
   synapse: 'A replayable path of waypoints, with authority kept in a separate square.',
+  lanterns: 'Five nested lantern-bodies from one generator; siblings, not copies.',
+  fold: 'A folding map; each point is the next state of the last.',
   'media-atlas': 'Two offset layers; one object remains the visible anchor.',
 };
 
@@ -78,8 +84,6 @@ const STATUS_META: Record<string, string> = {
   method: 'method',
 };
 
-const WORK_COMPACT = new Set(['method', 'archive']);
-
 /** Short label for a proof URL — repo path on GitHub, else host. */
 export function proofLabel(url: string): string {
   try {
@@ -97,14 +101,17 @@ export function proofLabel(url: string): string {
 
 function posterFor(node: PoolNode): string {
   if (node.cluster === 'writing') return `/visuals/${node.id}.jpg`;
-  if (node.cluster === 'work') {
-    const key = node.date.trim().toLowerCase();
-    const meta = STATUS_META[key] ?? key;
-    if (!WORK_COMPACT.has(meta)) return `/visuals/${node.id}.jpg`;
-  }
   let h = 0;
   for (let i = 0; i < node.id.length; i++) h = (h * 31 + node.id.charCodeAt(i)) >>> 0;
   return POSTERS[h % POSTERS.length]!;
+}
+
+function specParagraphs(node: PoolNode): string[] {
+  const out: string[] = [];
+  for (const block of node.body) {
+    if (block.t === 'p' || block.t === 'thesis') out.push(block.x);
+  }
+  return out;
 }
 
 function yearOf(node: PoolNode): string {
@@ -155,13 +162,13 @@ function toListItem(node: PoolNode): HomeListItem {
     playKind: PLAY_KIND_LABEL[node.kind] ?? node.kind,
     why: node.why,
     problem: node.problem,
+    principle: node.principle,
     solution: node.solution,
+    value: node.value,
     proof: node.proof,
+    space: node.space,
+    spec: specParagraphs(node),
   };
-}
-
-export function isWorkSpec(item: HomeListItem): boolean {
-  return !WORK_COMPACT.has(item.meta);
 }
 
 export function homeWriting(): HomeListItem[] {
@@ -178,11 +185,36 @@ export function homeWork(): HomeListItem[] {
     .map(toListItem);
 }
 
+/** The five work cards on the home. The rest of the pool stays addressable at `/work/:id`. */
+export const WORK_HIGHLIGHT_IDS = [
+  'geometry',
+  'synapse',
+  'macroscopic',
+  'human-responsibility-mapping',
+  'wing',
+] as const;
+
+export function homeWorkHighlight(): HomeListItem[] {
+  const byId = new Map(homeWork().map((w) => [w.id, w]));
+  return WORK_HIGHLIGHT_IDS.flatMap((id) => {
+    const item = byId.get(id);
+    return item ? [item] : [];
+  });
+}
+
+/** The play door. Recovered stubs stay at `/read/:id`. */
+export const PLAY_DOOR_IDS = ['lanterns', 'fold', 'tsubuyaki'] as const;
+
 export function homePlay(): HomeListItem[] {
-  return Object.values(pool.nodes)
-    .filter((n) => n.cluster === 'play')
-    .sort((a, b) => a.rank - b.rank || a.title.localeCompare(b.title))
-    .map(toListItem);
+  const byId = new Map(
+    Object.values(pool.nodes)
+      .filter((n) => n.cluster === 'play')
+      .map((n) => [n.id, toListItem(n)]),
+  );
+  return PLAY_DOOR_IDS.flatMap((id) => {
+    const item = byId.get(id);
+    return item ? [item] : [];
+  });
 }
 
 export function writingNode(id: string): PoolNode | null {

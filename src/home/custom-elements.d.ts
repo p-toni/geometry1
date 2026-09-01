@@ -25,6 +25,22 @@ declare module 'react' {
         speed?: string;
         paused?: string;
       };
+      'lanterns-field': CEProps & {
+        ground?: string;
+        ink?: string;
+        accent?: string;
+        samples?: string;
+        speed?: string;
+        paused?: string;
+      };
+      'fold-field': CEProps & {
+        ground?: string;
+        ink?: string;
+        accent?: string;
+        samples?: string;
+        speed?: string;
+        paused?: string;
+      };
       'plate-lattice': CEProps & {
         ink?: string;
         accent?: string;

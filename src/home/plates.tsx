@@ -538,3 +538,210 @@ export function NodePlate({ id }: { id: string }) {
   const Motif = PLATES[id];
   return <Frame>{Motif ? <Motif /> : <Fallback id={id} />}</Frame>;
 }
+
+function WideFrame({ children }: { children: ReactNode }) {
+  return (
+    <svg
+      viewBox="0 0 400 126"
+      className="nx-plate nx-plate--wide"
+      role="img"
+      aria-hidden="true"
+      preserveAspectRatio="xMidYMid slice"
+    >
+      <rect width="400" height="126" fill="var(--plate-ground, #f5f0e7)" />
+      {children}
+    </svg>
+  );
+}
+
+/** Horizontal mark for work cards. Portrait motifs stay on essays and play. */
+function WideFallback({ id }: { id: string }) {
+  let h = 0;
+  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
+  const ticks = Array.from({ length: 7 }, (_, i) => 40 + ((h + i * 53) % 320));
+  const pin = 64 + (h % 272);
+  return (
+    <>
+      <line x1={20} y1={63} x2={380} y2={63} stroke={LINE} strokeWidth={1.4} />
+      {ticks.map((x, i) => (
+        <line
+          key={i}
+          x1={x}
+          y1={54}
+          x2={x}
+          y2={72}
+          stroke={i === 3 ? SOFT : FAINT}
+          strokeWidth={1.4}
+        />
+      ))}
+      <circle cx={pin} cy={63} r={5} fill={ACCENT} />
+    </>
+  );
+}
+
+/* —— geometry: scatter gathers onto one spine; a pin marks the end —— */
+function GeometryWorkWide() {
+  const scatter: [number, number, number][] = [
+    [36, 28, -18], [52, 96, 22], [70, 22, 12], [88, 104, -14],
+    [106, 40, 8], [122, 90, -20], [140, 48, 16], [156, 82, -8],
+    [174, 54, 10], [190, 74, -12],
+  ];
+  const gathered = [220, 242, 264, 286, 308, 330];
+  return (
+    <>
+      {scatter.map(([x, y, r], i) => (
+        <line
+          key={i}
+          x1={x}
+          y1={y}
+          x2={x + 11}
+          y2={y + (i % 2 ? 5 : -4)}
+          stroke={FAINT}
+          strokeWidth={1.5}
+          transform={`rotate(${r} ${x} ${y})`}
+        />
+      ))}
+      <line x1={48} y1={63} x2={368} y2={63} stroke={INK} strokeWidth={2.2} />
+      {gathered.map((x) => (
+        <line key={x} x1={x} y1={54} x2={x} y2={72} stroke={INK} strokeWidth={1.6} />
+      ))}
+      <circle cx={356} cy={63} r={5.5} fill={ACCENT} />
+    </>
+  );
+}
+
+/* —— synapse: replayable waypoints; authority sits off the path —— */
+function SynapseWide() {
+  const pts: [number, number][] = [
+    [32, 88], [86, 70], [140, 80], [196, 52], [252, 64], [308, 46],
+  ];
+  const d = pts.map(([x, y], i) => (i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`)).join(' ');
+  return (
+    <>
+      <path d={d} fill="none" stroke={SOFT} strokeWidth={1.6} {...PEN} />
+      <path
+        d="M 308 46 C 330 108, 60 112, 32 88"
+        fill="none"
+        stroke={FAINT}
+        strokeWidth={1.2}
+        strokeDasharray="3 5"
+        {...PEN}
+      />
+      {pts.map(([x, y], i) => (
+        <circle
+          key={i}
+          cx={x}
+          cy={y}
+          r={i === pts.length - 1 ? 5 : 3}
+          fill={i === pts.length - 1 ? ACCENT : INK}
+        />
+      ))}
+      <rect x={338} y={18} width={40} height={40} fill="none" stroke={INK} strokeWidth={1.8} />
+      <line x1={348} y1={32} x2={368} y2={32} stroke={SOFT} strokeWidth={1.3} />
+      <line x1={348} y1={44} x2={360} y2={44} stroke={FAINT} strokeWidth={1.2} />
+    </>
+  );
+}
+
+/* —— macroscopic: a quiet field; one small constellation surfaces —— */
+function MacroscopicWide() {
+  const quiet: [number, number][] = [
+    [28, 30], [56, 78], [84, 44], [110, 96], [138, 22], [164, 70],
+    [188, 108], [214, 18], [268, 96], [296, 28], [324, 80], [356, 48],
+    [44, 108], [72, 16], [250, 14], [372, 100],
+  ];
+  const stars: [number, number][] = [
+    [206, 50], [236, 36], [262, 58], [228, 72],
+  ];
+  return (
+    <>
+      {quiet.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={1.4} fill={FAINT} />
+      ))}
+      <polyline
+        points={stars.map(([x, y]) => `${x},${y}`).join(' ')}
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={1.5}
+        {...PEN}
+      />
+      {stars.map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={3} fill={ACCENT} />
+      ))}
+    </>
+  );
+}
+
+/* —— responsibility mapping: a boundary with a reversible gap; contact in the opening —— */
+function ResponsibilityWide() {
+  return (
+    <>
+      <line x1={24} y1={63} x2={168} y2={63} stroke={INK} strokeWidth={2.4} />
+      <line
+        x1={232}
+        y1={63}
+        x2={376}
+        y2={63}
+        stroke={INK}
+        strokeWidth={2.4}
+        strokeDasharray="6 5"
+      />
+      <line x1={168} y1={48} x2={168} y2={78} stroke={SOFT} strokeWidth={1.6} />
+      <line x1={232} y1={48} x2={232} y2={78} stroke={SOFT} strokeWidth={1.6} />
+      <circle cx={200} cy={63} r={6} fill={ACCENT} />
+    </>
+  );
+}
+
+/* —— wing: a central page; notices sit outside and do not enter —— */
+function WingWide() {
+  const notices: [number, number][] = [
+    [32, 28], [56, 58], [38, 90], [78, 40],
+    [286, 26], [318, 54], [298, 88], [346, 42],
+  ];
+  return (
+    <>
+      <rect x={158} y={20} width={84} height={86} fill="none" stroke={INK} strokeWidth={2} />
+      {[0, 1, 2, 3].map((i) => (
+        <line
+          key={i}
+          x1={170}
+          y1={38 + i * 16}
+          x2={230}
+          y2={38 + i * 16}
+          stroke={SOFT}
+          strokeWidth={1.3}
+        />
+      ))}
+      {notices.map(([x, y], i) => (
+        <rect
+          key={i}
+          x={x}
+          y={y}
+          width={18}
+          height={12}
+          fill="none"
+          stroke={FAINT}
+          strokeWidth={1.3}
+        />
+      ))}
+    </>
+  );
+}
+
+const WIDE_PLATES: Record<string, () => ReactNode> = {
+  geometry: GeometryWorkWide,
+  synapse: SynapseWide,
+  macroscopic: MacroscopicWide,
+  'human-responsibility-mapping': ResponsibilityWide,
+  wing: WingWide,
+};
+
+export function WorkPlate({ id }: { id: string }) {
+  const Motif = WIDE_PLATES[id];
+  return (
+    <WideFrame>
+      {Motif ? <Motif /> : <WideFallback id={id} />}
+    </WideFrame>
+  );
+}

@@ -2,9 +2,10 @@
 id: media-atlas
 kind: project
 cluster: work
+space: map
 title: media atlas
 date: alpha
-rank: 6
+rank: 5
 why: Private archives were being reduced to search results.
 problem: Media stopped being the thing you look at. It became a hit list.
 solution: An inspectable map — objects, relations, layout, overlays, and curation stay in separate layers.

@@ -2,6 +2,7 @@
 id: the-loom
 kind: project
 cluster: work
+space: map
 title: the loom
 date: archive
 rank: 7

@@ -50,9 +50,12 @@ struct:              # optional; lens seeds the reader standfirst/gloss fallback
     - label: Thesis
       concepts: ["allowed cuts", "omission"]
 href: https://…      # link / play nodes
-why: I needed…       # work projects — home spec
+why: I needed…       # work projects — private pressure
 problem: They kept…
+principle: If I cannot… # first-principles cut of the problem
 solution: One kernel…
+value: The unfinished…  # short value produced
+space: re-entry         # distilled from the problem statement
 proof: https://…        # repo or running proof; omit if not public
 media: true          # play nodes with render placeholders
 ---

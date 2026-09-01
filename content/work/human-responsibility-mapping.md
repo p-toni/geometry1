@@ -2,12 +2,15 @@
 id: human-responsibility-mapping
 kind: project
 cluster: work
+space: boundary
 title: responsibility mapping
 date: public
-rank: 2
+rank: 3
 why: Delegation decisions were being made on vibes.
-problem: Nobody could say what the model may do, what the human retains, or what proof would make a release honest.
-solution: One operating artifact — boundaries, evidence, evals, telemetry, and a gate that stays reversible.
+problem: Nobody could say what the model may do, what the human retains, or what would make a release honest.
+principle: An unnamed boundary is not a decision.
+solution: One artifact — boundaries, evidence, evals, a reversible gate.
+value: Delegation is inspectable before it ships.
 proof: https://github.com/p-toni/human-responsibility-mapping
 excerpt:
   - "Delegation decisions were being made on vibes."

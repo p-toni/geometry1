@@ -111,24 +111,41 @@ shot('01-home.png');
 /* —— 2. six doors, each opening its own room —— */
 
 const DOORS = [
-  ['WHO', /bounded learner|ape_toni/i],
-  ['ESSAYS', /the container|the cut/i],
-  ['WORK', /spec v1|archive/i],
-  ['PLAY', /point cloud/i],
-  ['NOW', /updated/i],
-  ['HI', /hi@toni\.ltd/i],
+  ['WHO', /bounded learner|ape_toni/i, '/who'],
+  ['ESSAYS', /the container|the cut/i, '/essays'],
+  ['WORK', /geometry|synapse/i, '/work'],
+  ['PLAY', /lanterns|fold|tsubuyaki/i, '/play'],
+  ['NOW', /updated/i, '/now'],
+  ['HI', /hi@toni\.ltd/i, '/hi'],
 ];
 
 const doorRefs = Object.entries(snap().refs).filter(
-  ([, m]) => m.role === 'button' && /\b(WHO|ESSAYS|WORK|PLAY|NOW|HI)$/.test(m.name ?? ''),
+  ([, m]) =>
+    (m.role === 'button' || m.role === 'link') &&
+    /\b(WHO|ESSAYS|WORK|PLAY|NOW|HI)$/.test(m.name ?? ''),
 );
 assert('six doors present', doorRefs.length === 6, `${doorRefs.length} doors`);
 
-for (const [label, marker] of DOORS) {
+for (const [label, marker, path] of DOORS) {
   clickNamed(new RegExp(`\\b${label}$`));
   assert(`door ${label.toLowerCase()} opens its room`, marker.test(pageText()));
+  assert(
+    `door ${label.toLowerCase()} has a route`,
+    new URL(ab('get url')).pathname === path,
+    ab('get url'),
+  );
 }
 shot('02-doors.png');
+
+goto('/play');
+assert('cold /play opens play', /lanterns|fold|tsubuyaki/i.test(pageText()));
+assert('cold /play stays on /play', new URL(ab('get url')).pathname === '/play', ab('get url'));
+goto('/work');
+assert('cold /work opens work', /geometry|synapse/i.test(pageText()));
+assert(
+  'cold /work has no dialog',
+  /false/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")),
+);
 
 /* —— 3. the compression dial walks full → line → word —— */
 
@@ -242,6 +259,60 @@ goto('/read/the-cut/full');
 assert('legacy /full redirects', !ab('get url').includes('/full'), ab('get url'));
 goto('/no-such-page');
 assert('unknown route falls home', new URL(ab('get url')).pathname === '/', ab('get url'));
+
+/* work items are a home modal at /work/:id, not the reader */
+goto('/');
+clickNamed('\\bWORK$');
+clickNamed('Open geometry');
+assert('work plate opens the item', ab('get url').includes('/work/geometry'), ab('get url'));
+assert(
+  'work dialog is open',
+  /true/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")),
+);
+assert('work dialog carries the spec', /re-enter it|p-toni\/geometry/i.test(pageText()));
+clickNamed(/^close$/i);
+assert('closing work returns to /work', new URL(ab('get url')).pathname === '/work', ab('get url'));
+assert(
+  'work door stays open after close',
+  /geometry/i.test(pageText()),
+);
+goto('/read/geometry');
+assert(
+  'work /read/:id redirects to /work',
+  ab('get url').includes('/work/geometry'),
+  ab('get url'),
+);
+goto('/work/wing');
+assert(
+  'work url opens the item cold',
+  /true/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")) &&
+    /wing/i.test(pageText()),
+);
+
+/* play sketches are a home modal at /play/:id, not the reader */
+goto('/play');
+clickNamed(/SKETCH lanterns/i);
+assert('play row opens the item', ab('get url').includes('/play/lanterns'), ab('get url'));
+assert(
+  'play dialog is open',
+  /true/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")),
+);
+assert(
+  'play dialog shows the sketch',
+  /true/i.test(evaljs("String(Boolean(document.querySelector('dialog lanterns-field, dialog canvas')))")),
+);
+clickNamed(/^close$/i);
+assert('closing play returns to /play', new URL(ab('get url')).pathname === '/play', ab('get url'));
+assert(
+  'play door stays open after close',
+  /lanterns|fold|tsubuyaki/i.test(pageText()),
+);
+goto('/play/fold');
+assert(
+  'play url opens the item cold',
+  /true/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")) &&
+    /fold/i.test(pageText()),
+);
 
 /* —— 8. the phone —— */
 

@@ -913,3 +913,81 @@ const TSUBUYAKI_SOURCE =
   'for(i=4e4;i--;)point(200+(q=34+sin((k=i%173/40-2.1)*3+(e=i/9515-2.1)*2-t)' +
   '*(d=mag(k,e))*19)*cos(c=d*d*2.1-t+i%2*3)+k*34,200+q*sin(c)*.8+e*34);' +
   't+=PI/240}//#つぶやきProcessing';
+
+/**
+ * Nested lantern family. Same vendor-element idiom as TsubuyakiFigure: the tweet is
+ * the artifact; the page runs the arithmetic without p5.
+ */
+export function LanternsFigure() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let live = true;
+    void loadVendorScript('/vendor/lanterns.js')
+      .then(() => { if (live) setReady(true); })
+      .catch(() => undefined);
+    return () => { live = false; };
+  }, []);
+
+  return (
+    <figure className="esys-sketch">
+      <div
+        className="esys-sketch__screen"
+        role="img"
+        aria-label={LANTERNS_LABEL}
+      >
+        {ready ? <lanterns-field accent={ACCENT} /> : null}
+      </div>
+      <figcaption className="esys-sketch__source">{LANTERNS_SOURCE}</figcaption>
+    </figure>
+  );
+}
+
+const LANTERNS_LABEL =
+  'Five nested pale lantern-bodies on a near-black ground, folded from one ' +
+  'shared generator. Family residue nests radius and offsets phase, so the ' +
+  'siblings read as shells of the same calyx rather than copies. A few warm ' +
+  'orange glints mark where the inner spine folds hardest. The veils ' +
+  'reorganise without the cluster translating as a whole.';
+
+const LANTERNS_SOURCE =
+  't=0,draw=_=>{t||createCanvas(w=400,w);background(8);stroke(w,48);' +
+  'for(t+=.017,i=3e4;i--;point(200+q*cos(c),200+q*sin(c/2)*.9+k*e*2*sin(d*2-t+m)))' +
+  'm=i%5,k=(j=i/5)%96/7-7,e=j/864-5,d=mag(k,e),c=d/2-t+m*1.1+e/8,' +
+  'q=62+m*12+d*5+k*sin(j/480-t/2+m)+12*sin(d*d*.07-t+m)}//#つぶやきProcessing';
+
+/**
+ * Folding-map sketch. Trajectory is the material: each point is the next
+ * state of the last.
+ */
+export function FoldFigure() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    let live = true;
+    void loadVendorScript('/vendor/fold.js')
+      .then(() => { if (live) setReady(true); })
+      .catch(() => undefined);
+    return () => { live = false; };
+  }, []);
+
+  return (
+    <figure className="esys-sketch">
+      <div className="esys-sketch__screen" role="img" aria-label={FOLD_LABEL}>
+        {ready ? <fold-field accent={ACCENT} /> : null}
+      </div>
+      <figcaption className="esys-sketch__source">{FOLD_SOURCE}</figcaption>
+    </figure>
+  );
+}
+
+const FOLD_LABEL =
+  'A pale folded seed or wing on a near-black ground, drawn from a single ' +
+  'trajectory. Ridges shear and a dark cleft opens as the map refolds. A few ' +
+  'warm orange glints mark the densest crossings.';
+
+const FOLD_SOURCE =
+  't=0,draw=_=>{t||createCanvas(w=400,w);background(9);stroke(w,64);' +
+  'for(t+=PI/200,x=.2,y=.1,i=2e4;i--;point(246+q*x+10*sin(c),200+q*y*.82+7*cos(c/2)))' +
+  'n=sin(1.73*y-t/7)-cos(1.21*x),y=sin(2.04*x)-cos(.88*y),x=n,' +
+  'c=(d=mag(x,y))*d*.45-t/6,q=70+7/(d+.5)}//#つぶやきProcessing';
