@@ -1,17 +1,24 @@
 # geometry — agent authoring guide
 
-This site is a single hand-placed field. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
+This site is a thesis you can operate (`src/home/next/NextHome.tsx`) fed by a content pool. Content lives as markdown files with YAML frontmatter. A build step compiles them into `public/pool.json` and `src/pool/generated.ts`.
+
+The home is **six doors** — one sentence each, together forming the argument (who → essays → work → play → now → hi). Clicking a door opens its room below; a compression dial rewrites all six at three registers (`full` → `line` → `word`). Panels read the pool by cluster: **writing** → the essays room, **work** → the work room, **play** → the play room. Essays open at `/read/:id` — the single reader, set in the **Essay System** (`src/essaySystem/`). It renders typed `Block[]` directly, not a parallel prose model. `/writing/:id` redirects there.
+
+The spatial field UI was **removed** — the product surface is `src/home/next/` plus `src/essaySystem/`, and nothing else renders a page. Design tokens live only in `src/design/tokens.css` (no parallel `--h-*` palette). Pool placement still uses `src/pool/field.ts` (hand-placed node coordinates — not the old FieldApp).
 
 ## Workflow
 
 ```bash
-pnpm pool:seed    # optional: re-seed from geometry v1 prose
 pnpm pool:build   # required after any content edit
-pnpm constellation:build   # required after writing-essay edits (spatial graphs)
 pnpm dev          # local preview
 pnpm test         # vitest
-pnpm build        # pool:build + constellation:build + typecheck + static export
+pnpm test:browser # agent-browser smoke test — needs `pnpm dev` running
+pnpm lint         # oxlint; the baseline is zero warnings
+pnpm build        # pool:build + typecheck + static export + seo
 ```
+
+Anything kept on disk but deliberately not shipped and not tracked lives in `_local/`
+(pre-rewrite writings, retired essay visuals, the unwired point-cloud `.splt`).
 
 ## File layout
 
@@ -30,19 +37,26 @@ id: allowed-ignorance
 kind: essay          # essay | note | project | doc | shader | voxel | sharp | link | about
 cluster: writing
 title: allowed ignorance
-date: today
+date: 2026-07-28     # prefer real dates; 'today'/'live' cannot age (freshScore = 0)
 rank: 0              # 0 = freshest; affects Now lens height
 excerpt:             # optional; auto-derived from first paragraphs if omitted
   - "One-line thesis or hook."
 links:
   - target: increasing-returns
     rel: cites       # see Rel type in src/pool/types.ts
-struct:              # optional; powers constellation descent
+struct:              # optional; lens seeds the reader standfirst/gloss fallbacks
   lens: "understanding after the right omissions"
-  sections:
+  sections:         # descriptive only; no longer drives any build
     - label: Thesis
       concepts: ["allowed cuts", "omission"]
-href: https://…      # link nodes only
+href: https://…      # link / play nodes
+why: I needed…       # work projects — private pressure
+problem: They kept…
+principle: If I cannot… # first-principles cut of the problem
+solution: One kernel…
+value: The unfinished…  # short value produced
+space: re-entry         # distilled from the problem statement
+proof: https://…        # repo or running proof; omit if not public
 media: true          # play nodes with render placeholders
 ---
 ```
@@ -51,72 +65,53 @@ media: true          # play nodes with render placeholders
 
 ## Body → Blocks → Figures
 
-The markdown body (below `---`) is parsed by `src/lib/parseBlocks.ts` into typed `Block[]` atoms. Each block maps 1:1 to a Figure component (FIG.01–12).
+The markdown body (below `---`) is parsed by `src/lib/parseBlocks.ts` into typed `Block[]` atoms. `src/essaySystem/essayModel.ts` recasts those into the Essay System's closed set of shapes.
 
-| Markdown | Block type | Figure |
-|----------|------------|--------|
-| `## Heading` | `h` | — |
-| plain paragraph | `p` | — |
-| `> thesis: …` or `> **…**` | `thesis` | Thesis |
-| `> [aside\|honesty\|update] …` | `callout` | Callout |
-| `[[sidenote:anchor\|text]]` | `sidenote` | Sidenote |
-| `![caption](src)` | `plate` | Plate |
-| `\| table \|` (generic) | `table` | DiagnosticTable |
-| `\| type \| force \|` table | `edge-taxonomy` | EdgeTaxonomy |
-| `1. step` list | `steps` | ProtocolStepper |
-| `<!-- block:motif -->` | `motif` | LateFailure |
-| `<!-- block:point-edge -->` | `point-edge` | PointEdge |
-| `<!-- block:curvature -->` | `curvature` | Curvature |
-| `[[backlink:title\|rel\|targetId]]` | `backlink` | Backlink |
+| Markdown | Block type | Essay System form |
+|----------|------------|-------------------|
+| `## Heading` | `h` | §NN section mark, mirrored in the rail |
+| plain paragraph | `p` | Prose |
+| `> thesis: …` or `> **…**` | `thesis` | Claim CNN, mirrored in the rail |
+| `> [aside\|honesty\|update] …` | `callout` | Definition box |
+| `![caption](src)` | `plate` | Image plate (light polarity only) or drawn figure |
+| `:::contrast a \| b` | `contrast` | Comparison table, accent on the owned pole |
+| `\| type \| force \|` table | `edge-taxonomy` | Comparison table |
+| `1. step` list | `ladder` | Numbered stops (the "step" verb) |
+| `:::diagram` fence | `diagram` | Conceptual diagram, one accent event |
+| `<!-- block:motif -->` | `motif` | Late-failure figure |
+| `> pull: …` | `pull` | Pull quote |
+| `[[Title\|id]]` | inline | Summoned reference, resolves in the margin |
 
-Full essay chrome (title, date, cluster) is rendered by **Masthead** in `ReadPanel` — do not repeat `# Title` in the body. `FigureReader` renders body blocks only.
+Adding a `Block` type means adding its shape to `essayModel.ts`. A test asserts every
+block type any essay actually uses survives the recast — the reader must never silently
+drop content.
+
+Essay chrome (title, standfirst, date, colophon) is rendered by `EssayReader` — do not repeat `# Title` in the body.
 
 ## Reading modes
 
 1. **Excerpt** — `excerpt` frontmatter or first two `p` blocks
-2. **Full** — entire `body` via `FigureReader` (URL `?full=1`)
-3. **Constellation** — spatial argument descent from essay `##` / `###` sections (see below)
+2. **Full** — entire `body` at `/read/:id`, set in the Essay System
 
-## Constellation (argument descent)
-
-Every **writing** essay that supports descent must have a **section spine** in the body:
-
-- Prefer `## Section` headings; `### Section` is accepted when no `##` exist (e.g. me-plus-ai).
-- Section order in the markdown is essay order in the spatial layout.
-- Optional `struct` frontmatter still powers the field-graph spine; spatial layout reads the body digest.
-
-Build pipeline (`pnpm constellation:build`):
-
-1. `buildConstellationDigest()` — sections from body headings
-2. Graph from agent source (`constellation/sources/{id}.json`), LLM, or `localGenerate`
-3. `hydrateConstellationGraph()` — **always** adds `sectionSlug` + `meta.sectionSlugs` from digest
-4. Renderer uses **authored layout** when graph has `*-lens` + section-anchored inquiries
-
-Agent-authored graphs should include:
-
-```yaml
-people:
-  - id: {id}-lens          # required — center node
-  - id: …                  # section inquiries with sectionSlug matching digest slugs
-  - id: …                  # optional link inquiries (meta: "cites · …" — no sectionSlug)
-meta.sectionSlugs:         # filled automatically on build from digest
-```
-
-After editing `content/writing/*.md` or `constellation/sources/*.json`, run `pnpm pool:build && pnpm constellation:build`.
-
-**Build gates:** `pool:build` fails if a constellation essay lacks `##`/`###` sections. `constellation:build` fails if hydration cannot produce an authored-layout-ready graph (lens + section-anchored inquiries).
+The former spatial constellation descent was removed; `##`/`###` headings remain required for the reader's §NN section marks and rail.
 
 ## Rules for agents
 
 - Edit atoms, not JSX. Never add MDX or React in content files.
 - After editing any `content/**/*.md` or `src/pool/field.ts`, run `pnpm pool:build`.
-- After editing any writing essay, run `pnpm constellation:build` (or full `pnpm build`).
 - New nodes require both a content file **and** a hand-placed `positions[id]` entry.
 - Use `[[backlink:…]]` for in-essay navigation to other pool nodes.
 - Keep links directed and use only relations from `Rel` in `src/pool/types.ts`.
 
-## Retired (v1)
+## Retired
 
 - MDX essays under `/essays/`
 - `bodyPath`, per-canvas JSON, zustand canvas store
 - v1 widget components
+- Constellation argument descent (spatial graphs, `constellation/`, `pnpm constellation:*`)
+- The scrolling home (`HomeLayout`/`HomePage`/`ThesisSection`, `home.css`) — replaced by the six doors
+- `src/design/surface.css` — the field subsystem's styling; it outlived the UI by three commits
+- The v1 content-migration scripts and `pnpm pool:seed` / `pool:migrate` / `pool:restore`
+- `lib/freshness`, `lib/graph`, `lib/readMode`, `lib/spring`, `lib/search`, `pool/essayStructure`
+
+Nothing above is coming back. If a change seems to need one of them, the change is wrong.

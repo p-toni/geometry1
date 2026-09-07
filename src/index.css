@@ -1,64 +1,81 @@
 @import './design/fonts.css';
 @import './design/tokens.css';
-@import './design/surface.css';
-@import 'tailwindcss';
 
-@theme {
-  --color-paper: var(--paper);
-  --color-card: var(--card);
-  --color-field: var(--field);
-  --color-ink: var(--ink);
-  --color-muted: var(--muted);
-  --color-signal: var(--signal);
-  --font-display: var(--font-display);
-  --font-body: var(--font-body);
-  --font-ui: var(--font-ui);
-  --font-mono: var(--font-mono);
-}
-
+/* Reset. Tailwind used to supply preflight on top of this; it was removed
+   because nothing in the app ever used a utility class, so the parts of
+   preflight the app relies on are spelled out here instead. */
 * {
   box-sizing: border-box;
 }
 
-html,
-body,
-#root {
+/* Headings are sized by the design system, never by UA defaults. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: inherit;
+  font-weight: inherit;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd,
+pre {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg,
+canvas {
+  display: block;
+  max-width: 100%;
+}
+
+html {
   height: 100%;
 }
 
 body {
   margin: 0;
-  overflow: hidden;
+  min-height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
   background: var(--paper);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.65;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background: var(--select);
+}
+
+#root {
+  min-height: 100%;
 }
 
 button,
 input {
   font: inherit;
-}
-
-@media (min-width: 701px) and (max-width: 900px) {
-  .field-read {
-    position: absolute !important;
-    inset: 0 !important;
-    width: 100% !important;
-    flex: none !important;
-    z-index: 20;
-  }
-}
-
-@media (max-width: 700px) {
-  .field-read {
-    position: absolute !important;
-    inset: auto 10px calc(var(--status-h) + 10px) 10px !important;
-    width: auto !important;
-    flex: none !important;
-    z-index: 20;
-  }
 }

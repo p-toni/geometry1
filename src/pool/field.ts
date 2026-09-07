@@ -5,17 +5,16 @@ export const FIELD_HEIGHT = 800;
 
 /** Hand-placed coordinates — synced to v2 single-spine prototype `this.POS`. */
 export const positions: Record<string, readonly [number, number]> = {
-  ilya: [130, 300],
-  'the-world-answers': [488, 206],
-  'allowed-ignorance': [322, 288],
-  'co-owning-the-loop': [546, 300],
-  'increasing-returns': [218, 410],
-  'geometry-retrieval': [420, 440],
-  'me-plus-ai': [602, 430],
-  'tools-need-edges': [188, 542],
-  'weak-geometry': [390, 560],
-  'bounded-me': [650, 560],
+  'the-contact': [340, 214],
+  'the-cut': [292, 268],
+  'the-container': [246, 240],
+  'the-curve': [404, 296],
+  marginalia: [174, 340],
   'codex-fieldwork': [850, 118],
+  specter: [868, 58],
+  authored: [978, 44],
+  fiction: [1088, 58],
+  greenfield: [1198, 74],
   geometry: [952, 208],
   macroscopic: [1038, 112],
   wing: [1214, 178],
@@ -28,6 +27,9 @@ export const positions: Record<string, readonly [number, number]> = {
   xcom: [1202, 500],
   'lock-in': [1182, 662],
   'point-cloud': [1018, 692],
+  tsubuyaki: [1120, 574],
+  lanterns: [1074, 612],
+  fold: [1096, 538],
   about: [322, 722],
 };
 
@@ -44,6 +46,10 @@ export const lenses: LensChip[] = [
     label: 'what are you building',
     query: 'what are you building',
     nodeIds: [
+      'specter',
+      'authored',
+      'fiction',
+      'greenfield',
       'geometry',
       'codex-fieldwork',
       'macroscopic',
@@ -53,25 +59,12 @@ export const lenses: LensChip[] = [
       'media-atlas',
       'the-loom',
       'spec-v1',
-      'geometry-retrieval',
-    ],
-  },
-  {
-    label: 'thinking on AI',
-    query: 'your thinking on AI',
-    nodeIds: [
-      'the-world-answers',
-      'allowed-ignorance',
-      'me-plus-ai',
-      'bounded-me',
-      'ilya',
-      'co-owning-the-loop',
     ],
   },
   {
     label: 'who are you',
     query: 'who are you',
-    nodeIds: ['about', 'xcom', 'co-owning-the-loop', 'point-cloud'],
+    nodeIds: ['about', 'xcom', 'point-cloud'],
   },
 ];
 

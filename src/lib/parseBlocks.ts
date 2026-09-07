@@ -4,13 +4,23 @@ import { collectDiagramFence, parseDiagramLine } from './diagram';
 import { collectLadder } from './ladder';
 import type { Block } from '../pool/types';
 
-const FIG_BLOCKS: Record<string, Block> = {
+export const FIG_BLOCKS: Record<string, Block> = {
   'late-failure-motif': { t: 'motif' },
   motif: { t: 'motif' },
   'point-to-edge': { t: 'point-edge' },
   'point-edge': { t: 'point-edge' },
   'curvature-test': { t: 'curvature' },
   curvature: { t: 'curvature' },
+  'core-sets': { t: 'drawn', kind: 'core-sets' },
+  'rod-change': { t: 'drawn', kind: 'rod-change' },
+  'channel-break': { t: 'drawn', kind: 'channel-break' },
+  connector: { t: 'drawn', kind: 'connector' },
+  'curve-break': { t: 'drawn', kind: 'curve-break' },
+  tsubuyaki: { t: 'drawn', kind: 'tsubuyaki' },
+  lanterns: { t: 'drawn', kind: 'lanterns' },
+  fold: { t: 'drawn', kind: 'fold' },
+  rotation: { t: 'drawn', kind: 'rotation' },
+  crack: { t: 'drawn', kind: 'crack' },
   table: { t: 'table', headers: [], rows: [] },
   steps: { t: 'steps', items: [] },
   'edge-taxonomy': { t: 'edge-taxonomy', rows: [] },
@@ -68,8 +78,40 @@ export function parseBlocks(markdown: string): Block[] {
     if (registryFig) {
       flushParagraph(paraBuf);
       const block = FIG_BLOCKS[registryFig[1]!];
-      if (block) blocks.push({ ...block });
       i++;
+      if (block) {
+        // A drawn figure may take its caption from the next italic line, as plates do.
+        if (block.t === 'drawn' && i < lines.length) {
+          const capMatch = lines[i]!.trim().match(/^\*(.+?)\*$/);
+          if (capMatch) {
+            blocks.push({ ...block, cap: capMatch[1]!.trim() });
+            i++;
+            continue;
+          }
+        }
+        blocks.push({ ...block });
+      }
+      continue;
+    }
+
+    const audioTag = trimmed.match(/^\[audio\|([^\]]+)\]$/);
+    if (audioTag) {
+      flushParagraph(paraBuf);
+      i++;
+      const label = audioTag[1]!.trim();
+      let cap: string | undefined;
+      let src: string | undefined;
+      if (i < lines.length) {
+        const next = lines[i]!.trim();
+        const pathMatch = next.match(/`([^`]+)`/);
+        const textMatch = next.match(/^\*(.+?)\*/);
+        if (textMatch) cap = textMatch[1]!.trim();
+        if (pathMatch) src = pathMatch[1];
+        if (pathMatch || textMatch) i++;
+      }
+      // A clip with no source is a control that cannot answer. Drop it loudly at build.
+      if (!src) throw new Error(`audio block "${label}" has no source path`);
+      blocks.push({ t: 'audio', src, label, cap });
       continue;
     }
 

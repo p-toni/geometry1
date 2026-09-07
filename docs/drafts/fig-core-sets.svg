@@ -1,0 +1,99 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 190" role="img"
+     aria-label="Eight scheduling slots shown in three states. Nominal: three of eight taken. At the 1202 alarm: all eight taken, five of them by phantom jobs tracking a position that does not exist. After the restart: the phantoms are flushed, the steering job resumes because a waypoint carried it through, and one unprotected readout is simply gone.">
+  <style>
+    .ink   { stroke: #2a2824; fill: none; }
+    .fill  { fill: #2a2824; }
+    .ghost { stroke: #ddd5c4; fill: none; }
+    .faint { stroke: #a89f8e; fill: none; }
+    .rule  { stroke: #cdc4b2; fill: none; }
+    .acc   { stroke: #a0522d; fill: none; }
+    .accf  { fill: #a0522d; }
+    text   { font-family: 'JetBrains Mono', ui-monospace, monospace; font-size: 9.5px; fill: #8d8474; }
+    .dim   { fill: #b3aa99; }
+
+    /* Rest state is the resolved figure. Motion replays how it got there. */
+    .s1, .s2, .s3, .s4, .s5 { opacity: 1; }
+    .thread { stroke-dasharray: 280; stroke-dashoffset: 0; }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .s1 { opacity: 0; animation: in .45s ease-out .10s forwards; }
+      .s2 { opacity: 0; animation: in .45s ease-out .85s forwards; }
+      .s3 { opacity: 0; animation: in .55s ease-out 1.45s forwards; }
+      .s4 { opacity: 0; animation: in .40s ease-out 2.25s forwards; }
+      .s5 { opacity: 0; animation: in .45s ease-out 3.45s forwards; }
+      .thread {
+        stroke-dashoffset: 280;
+        animation: draw .95s cubic-bezier(.4,0,.2,1) 2.70s forwards;
+      }
+      @keyframes in   { to { opacity: 1; } }
+      @keyframes draw { to { stroke-dashoffset: 0; } }
+    }
+  </style>
+
+  <text x="20" y="22">eight core sets</text>
+
+  <!-- ── panel A · nominal ─────────────────────────────────────── -->
+  <g class="s1">
+    <text x="40" y="44">nominal</text>
+    <rect class="fill" x="40"  y="64" width="14" height="24" />
+    <rect class="fill" x="57"  y="64" width="14" height="24" />
+    <rect class="fill" x="74"  y="64" width="14" height="24" />
+    <rect class="ghost" x="91.5"  y="64.5" width="13" height="23" />
+    <rect class="ghost" x="108.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="125.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="142.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="159.5" y="64.5" width="13" height="23" />
+    <text x="40" y="150">3 of 8 taken</text>
+  </g>
+
+  <!-- ── panel B · 1202 ────────────────────────────────────────── -->
+  <g class="s2">
+    <text x="274" y="44">1202</text>
+    <rect class="fill" x="274" y="64" width="14" height="24" />
+    <rect class="fill" x="291" y="64" width="14" height="24" />
+    <rect class="fill" x="308" y="64" width="14" height="24" />
+  </g>
+  <g class="s3">
+    <g class="faint" stroke-dasharray="2.5 2.5">
+      <rect x="325.5" y="64.5" width="13" height="23" />
+      <rect x="342.5" y="64.5" width="13" height="23" />
+      <rect x="359.5" y="64.5" width="13" height="23" />
+      <rect x="376.5" y="64.5" width="13" height="23" />
+      <rect x="393.5" y="64.5" width="13" height="23" />
+    </g>
+    <text x="274" y="150">all 8 taken — five of them</text>
+    <text x="274" y="164" class="dim">chasing an angle that does not exist</text>
+  </g>
+
+  <!-- ── the restart ───────────────────────────────────────────── -->
+  <g class="s4">
+    <line class="rule" x1="457.5" y1="48" x2="457.5" y2="136" stroke-dasharray="3 3" />
+    <text x="451" y="44" text-anchor="end">restart</text>
+  </g>
+
+  <!-- the dropped thread: stops at the restart, never arrives -->
+  <g class="s4">
+    <path class="faint" d="M315 88 L315 124 L444 124" />
+    <path class="faint" d="M444 119.5 L444 128.5" />
+  </g>
+
+  <!-- ── the one accent event: the waypoint carries it through ──── -->
+  <path class="acc thread" d="M298 88 L298 106 L532 106 L532 92" />
+  <circle class="accf s5" cx="457.5" cy="106" r="2.2" />
+  <path class="acc s5" d="M527.5 97 L532 92 L536.5 97" />
+
+  <!-- ── panel C · after restart ───────────────────────────────── -->
+  <g class="s5">
+    <text x="508" y="44">after restart</text>
+    <rect class="fill" x="508" y="64" width="14" height="24" />
+    <rect class="fill" x="525" y="64" width="14" height="24" />
+    <rect class="ghost" x="542.5" y="64.5" width="13" height="23" stroke-dasharray="2.5 2.5" />
+    <rect class="ghost" x="559.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="576.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="593.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="610.5" y="64.5" width="13" height="23" />
+    <rect class="ghost" x="627.5" y="64.5" width="13" height="23" />
+    <text x="508" y="150">the steering resumed.</text>
+    <text x="508" y="164" class="dim">the readout did not.</text>
+  </g>
+</svg>

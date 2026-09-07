@@ -1,8 +1,12 @@
 # Field engine — terrain & camera
 
-Handoff reference for the living field canvas (`FieldApp`).
+> **Archived.** The interactive FieldApp product surface was removed. This document
+> remains as historical handoff for terrain/minimap math. Do not re-mount a field UI
+> without an explicit product decision. Live product: `src/home/next/NextHome.tsx`.
 
-**Source of truth:** `toni.ltd - v2 single-spine.dc.html` — `_initGL()` / `_drawGL()` (WebGL terrain) and `renderVals()` terrain array (minimap). The React port lives in `src/field/shader/`.
+Handoff reference for the former living field canvas (`FieldApp`).
+
+**Source of truth (historical):** `toni.ltd - v2 single-spine.dc.html` — `_initGL()` / `_drawGL()` (WebGL terrain) and `renderVals()` terrain array (minimap). The React port lived in `src/field/shader/` (deleted).
 
 ## Layer stack (viewport)
 

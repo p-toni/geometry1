@@ -1,77 +1,119 @@
 :root {
-  --paper: #f6f4ef;
-  --paper-2: #f0ebe3;
-  --card: #faf8f4;
-  --field: #f0ebe3;
-  --ink: #1c1f24;
-  --muted: #6b7280;
-  --ink-2: #4a4f56;
-  --line: #ddd6cb;
-  --line-soft: #e8e2d8;
-  --line-hair: #f2ede6;
-  --signal: #1f4db8;
-  --fresh: #d4a53a;
+  /* Page — paper, not UI-kit */
+  --paper: #faf8f5;
+  --paper-2: #f3efe8;
+  --card: #faf8f5;
+  --field: #faf8f5;
+  --ink: #2a2824;
+  --body: #2a2824;
+  --now: #3f3a33;
+  --secondary: #6c675f;
+  --tertiary: #6c675f;
+  --muted: #6c675f;
+  --meta: #777169;
+  --spine: #a8a39c;
+  --line: #ebe6dd;
+  --line-soft: #ebe6dd;
+  --line-hair: #ebe6dd;
+  --thesis-rule: #ebe6dd;
+  --link-line: #ddd6cc;
+  --compress-line: #e4dfd6;
+  --meter-border: #ddd6cc;
+  --meter-empty: #f3efe8;
+  --play-plate: #f3efe8;
+  /* Accent — one source for the light theme; the dark scope sets its own.
+     Azure #0066aa: OKLCH L 0.498, C 0.134, hue 248. Red is 0, so it sits
+     on the sRGB wall — that is the colour. 5.69:1 on paper. The accent's
+     job is to pick one thesis line out of five siblings set in ink:
+     OKLab ΔE 0.262 here, against the dark scope's 0.333.
 
-  /* Read surface — warm editorial accent; reserve --signal for field nav */
-  --read-accent: #9a7344;
-  --read-accent-deep: #7a5a30;
-  --read-accent-tint: #f4efe6;
-  --read-accent-border: #d9cbb8;
-  --read-owned: #c2410c;
-  --read-owned-tint: #fdf4ef;
-  --read-owned-border: #e8c4b0;
+     Supports keep lightness and chroma; only hue rotates. */
+  --accent-base: #0066aa;
+  --signal: var(--accent-base);
+  --fresh: var(--accent-base);
+  --accent: var(--accent-base);
+  --accent-line: #a5bfd9;
+  --mark: #3692df;
+  --hover-wash: rgba(232, 222, 208, 0.22);
+  --plate-outline: rgba(0, 0, 0, 0.1);
+  --select: #ece4d8;
+  --header-icons: #a8a39c;
 
-  /* Cluster temperature — ochre / cobalt-family / sage / mauve (gold is --fresh only) */
-  --cluster-writing: #9a7344;
-  --cluster-work: #4a68a8;
-  --cluster-play: #657963;
-  --cluster-you: #8a7578;
-  --kicker: #6b6660;
+  --read-accent: var(--accent-base);
+  --read-accent-deep: #215e92;
+  --read-accent-tint: #e8eff6;
+  --read-accent-border: #a5bfd9;
+  --read-owned: var(--accent-base);
+  --read-owned-tint: #eef3f8;
+  --read-owned-border: #b8cee3;
 
-  /* Canela stand-in — large headlines only (FIG.01 title, type-display) */
-  --font-display: 'Newsreader', 'Georgia', serif;
-  /* Söhne stand-in — body prose, navigation, captions */
-  --font-body: 'Inter', system-ui, sans-serif;
-  /* Registry UI labels — keep the small UI voice on Inter; mono + Newsreader carry identity */
-  --font-ui: var(--font-body);
-  --font-mono: 'Space Mono', 'SF Mono', monospace;
+  --cluster-writing: var(--accent-base);
+  --cluster-work: #6c675f;
+  --cluster-play: #6c675f;
+  --cluster-you: #a8a39c;
+  --kicker: #a8a39c;
 
-  --radius-sm: 4px;
-  --radius-md: 6px;
+  --font-display: 'Junicode VF', Georgia, 'Times New Roman', serif;
+  --font-body: Aileron, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-ui: Aileron, ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
 
-  --shadow-raised: 0 2px 8px rgba(28, 31, 36, 0.08);
-  --shadow-lifted: 0 8px 20px rgba(28, 31, 36, 0.14);
-  --shadow-overlay: 0 16px 36px rgba(28, 31, 36, 0.24);
-  --shadow-inset: inset 0 2px 8px rgba(28, 31, 36, 0.09);
+  /* Layout — left-weighted editorial column */
+  --col: 640px;
+  --gutter: 28px;
+  --col-full: 1160px;
+  --spine-gap: 14px;
+  --main-max: 1160px;
+  --shell-pad-l: 120px;
+  --shell-pad-r: 48px;
+  --content-cap: 1160px;
+  --intro-measure: 540px;
+  --scroll-offset: 72px;
+  --scroll-margin: 80px;
 
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --shadow-card: 0 0 0 1px #0000000f, 0 1px 2px -1px #0000000f, 0 2px 4px 0 #0000000a;
+  --shadow-card-hover: 0 0 0 1px #00000014, 0 1px 2px -1px #00000014, 0 2px 4px 0 #0000000f;
+  --shadow-raised: var(--shadow-card);
+  --shadow-lifted: var(--shadow-card-hover);
+  --shadow-overlay: 0 8px 24px -10px #2a28241f;
+  --shadow-inset: none;
+
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-drawer: cubic-bezier(0.32, 0.72, 0, 1);
-  /* Inverse of --ease-drawer for mirrored exit paths */
   --ease-drawer-out: cubic-bezier(1, 0, 0.68, 0.28);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --motion-micro: 160ms;
   --motion-focus: 200ms;
   --motion-nav-open: 360ms;
   --motion-nav-hop: 280ms;
   --motion-sheet: 320ms;
   --motion-fade: 180ms;
-  /* Read prose — excerpt, masthead dek, and full essay body share one scale */
-  --prose-size: 16.5px;
-  --prose-leading: 1.78;
-  --prose-color: var(--ink);
-  --prose-paragraph-gap: 17px;
-  --prose-lead-size: 17px;
+  --ent-ms: 0.95s;
+  --ent-stagger: 0.12s;
+  --ent-blur: 8px;
+  --ent-rise: 16px;
+
+  --prose-size: 17px;
+  --prose-leading: 1.65;
+  --prose-color: #2a2824;
+  --prose-paragraph-gap: 26px;
+  --prose-lead-size: 18px;
   --prose-lead-leading: 1.55;
-  --prose-lead-color: var(--muted);
-  --prose-inset-size: 14.5px;
+  --prose-lead-color: #6c675f;
+  --prose-inset-size: 16px;
   --prose-inset-leading: 1.55;
-  --prose-inset-color: var(--ink-2);
+  --prose-inset-color: #6c675f;
   --prose-sm-size: 13px;
   --prose-sm-leading: 1.5;
-  --prose-sm-color: var(--muted);
-  --prose-h2-size: 20px;
-  --prose-h3-size: 16px;
-  --prose-h3-color: var(--ink-2);
+  --prose-sm-color: #a8a39c;
+  --prose-h2-size: 22px;
+  --prose-h3-size: 18px;
+  --prose-h3-color: #6c675f;
 
-  --header-h: 50px;
+  --header-h: 52px;
   --status-h: 30px;
   --grid-opacity: 0.5;
   --grain-opacity: 0.035;

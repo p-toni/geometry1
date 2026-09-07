@@ -2,16 +2,19 @@
 id: the-loom
 kind: project
 cluster: work
+space: map
 title: the loom
 date: archive
-rank: 7
+rank: 11
+why: I wanted a page that could re-weave emphasis without erasing place.
+problem: Fixed grids couldn't move. Free layouts forgot where anything lived.
+solution: Blocks carried weight, freshness, and neighborhood. Geometry kept the useful part.
 excerpt:
-  - "The earlier layout-engine idea behind Geometry."
-  - "Blocks had weight, freshness, and neighborhood; the page could re-weave emphasis without erasing place."
+  - "I wanted a page that could re-weave emphasis without erasing place."
 links:
   - target: geometry
     rel: part of
-  - target: geometry-retrieval
+  - target: the-container
     rel: idea
   - target: xcom
     rel: shipped on

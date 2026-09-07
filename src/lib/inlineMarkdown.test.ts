@@ -11,6 +11,18 @@ describe('parseInlineMarkdown', () => {
     ]);
   });
 
+  it('parses http links without leaking the URL into the label', () => {
+    const segs = parseInlineMarkdown(
+      '— [Ilya Sutskever](https://x.com/ilyasut/status/1710462485411561808), 2023',
+    );
+    expect(segs).toContainEqual({
+      kind: 'link',
+      value: 'Ilya Sutskever',
+      href: 'https://x.com/ilyasut/status/1710462485411561808',
+    });
+    expect(segs.some((s) => s.value.includes('https://'))).toBe(false);
+  });
+
   it('normalizes simple latex', () => {
     const segs = parseInlineMarkdown('window $\\theta$ bound');
     expect(segs.some((s) => s.value.includes('θ'))).toBe(true);

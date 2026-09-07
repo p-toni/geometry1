@@ -61,7 +61,6 @@ export type FieldGraph = {
   edges: FieldEdge[];
   /** section id → interior node ids (ladder rungs, etc.) */
   interiors: Record<string, string[]>;
-  /** Spec 05 — dashed corpus box in constellation. */
   boundary?: { corpus: boolean };
 };
 

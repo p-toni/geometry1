@@ -1,0 +1,81 @@
+# Retired writing slugs from the 2026-07 contact rewrite.
+/read/ilya /read/marginalia 301
+/read/ilya/ /read/marginalia 301
+/read/ilya/full /read/marginalia 301
+/read/ilya/full/ /read/marginalia 301
+/read/increasing-returns /read/marginalia 301
+/read/increasing-returns/ /read/marginalia 301
+/read/increasing-returns/full /read/marginalia 301
+/read/increasing-returns/full/ /read/marginalia 301
+/read/co-owning-the-loop /read/the-contact 301
+/read/co-owning-the-loop/ /read/the-contact 301
+/read/co-owning-the-loop/full /read/the-contact 301
+/read/co-owning-the-loop/full/ /read/the-contact 301
+
+# Retired in the 2026-08 restart. Each slug goes to the essay that inherited its argument.
+/read/allowed-ignorance /read/the-cut 301
+/read/allowed-ignorance/ /read/the-cut 301
+/read/allowed-ignorance/full /read/the-cut 301
+/read/allowed-ignorance/full/ /read/the-cut 301
+/read/weak-geometry /read/the-cut 301
+/read/weak-geometry/ /read/the-cut 301
+/read/weak-geometry/full /read/the-cut 301
+/read/weak-geometry/full/ /read/the-cut 301
+/read/tools-need-edges /read/the-cut 301
+/read/tools-need-edges/ /read/the-cut 301
+/read/tools-need-edges/full /read/the-cut 301
+/read/tools-need-edges/full/ /read/the-cut 301
+/read/the-world-answers /read/the-contact 301
+/read/the-world-answers/ /read/the-contact 301
+/read/the-world-answers/full /read/the-contact 301
+/read/the-world-answers/full/ /read/the-contact 301
+/read/me-plus-ai /read/the-contact 301
+/read/me-plus-ai/ /read/the-contact 301
+/read/me-plus-ai/full /read/the-contact 301
+/read/me-plus-ai/full/ /read/the-contact 301
+/read/bounded-me /read/the-container 301
+/read/bounded-me/ /read/the-container 301
+/read/bounded-me/full /read/the-container 301
+/read/bounded-me/full/ /read/the-container 301
+/read/geometry-retrieval /read/the-container 301
+/read/geometry-retrieval/ /read/the-container 301
+/read/geometry-retrieval/full /read/the-container 301
+/read/geometry-retrieval/full/ /read/the-container 301
+
+# /full was the excerpt/full split. One reader now.
+/read/:id/full /read/:id 301
+/read/:id/full/ /read/:id 301
+
+# Sheet-over-home reader.
+/writing/:id /read/:id 301
+/writing/:id/ /read/:id 301
+
+# Work items left /read/:id when the work panel stopped using the reader.
+/read/authored /work/authored 301
+/read/authored/ /work/authored 301
+/read/codex-fieldwork /work/codex-fieldwork 301
+/read/codex-fieldwork/ /work/codex-fieldwork 301
+/read/fiction /work/fiction 301
+/read/fiction/ /work/fiction 301
+/read/geometry /work/geometry 301
+/read/geometry/ /work/geometry 301
+/read/greenfield /work/greenfield 301
+/read/greenfield/ /work/greenfield 301
+/read/human-responsibility-mapping /work/human-responsibility-mapping 301
+/read/human-responsibility-mapping/ /work/human-responsibility-mapping 301
+/read/macroscopic /work/macroscopic 301
+/read/macroscopic/ /work/macroscopic 301
+/read/media-atlas /work/media-atlas 301
+/read/media-atlas/ /work/media-atlas 301
+/read/spec-v1 /work/spec-v1 301
+/read/spec-v1/ /work/spec-v1 301
+/read/specter /work/specter 301
+/read/specter/ /work/specter 301
+/read/synapse /work/synapse 301
+/read/synapse/ /work/synapse 301
+/read/the-loom /work/the-loom 301
+/read/the-loom/ /work/the-loom 301
+/read/wing /work/wing 301
+/read/wing/ /work/wing 301
+
+/*    /index.html   200

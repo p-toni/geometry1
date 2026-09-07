@@ -2,12 +2,15 @@
 id: codex-fieldwork
 kind: project
 cluster: work
-title: Codex fieldwork
-date: live
-rank: 1
+space: loop
+title: codex fieldwork
+date: method
+rank: 10
+why: Agents move the build faster than I can trust it.
+problem: Work lands without a loop that can reject it. Taste arrives too late.
+solution: A fieldwork loop — recover, decide, tune, test, commit. The agent is inspectable; judgment stays mine.
 excerpt:
-  - "The working method behind Geometry: taste-led edits, local browser QA, recovery, commit, deploy."
-  - "Codex keeps the build moving; human judgment decides what deserves to stay."
+  - "Agents move the build faster than I can trust it."
 links:
   - target: geometry
     rel: part of

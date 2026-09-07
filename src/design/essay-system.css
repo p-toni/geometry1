@@ -1,0 +1,1769 @@
+/* Essay System, Rev. 01 — the long-form page: one column, hairline apparatus,
+   drawn figures. Scoped entirely under .esys so it cannot leak into home. */
+
+.esys {
+  --plate: #fbf8f1;
+  --rule: var(--line);
+  --rule-soft: var(--line-soft);
+  --hair: var(--line-hair);
+  --tick: #777169; /* text, not a rule — must clear 4.5:1 at 9px */
+  --faint: var(--meta);
+  --faint-2: #77726a;
+  --soft: var(--secondary);
+
+  --measure: 640px;
+  --rail-w: 240px;
+
+  min-height: 100vh;
+  padding-bottom: 160px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+.esys ::selection {
+  background: #ece0cf;
+}
+
+.esys a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@keyframes esys-rise-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* —— Reading progress —— */
+
+.esys-progress {
+  position: fixed;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: 50;
+  background: #e8e1d2;
+}
+
+.esys-progress-bar {
+  height: 2px;
+  background: var(--accent);
+}
+
+/* —— Apparatus: everything a reader consults rather than reads —— */
+
+.esys-mono {
+  font-family: var(--font-mono);
+}
+
+.esys-kicker {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.esys-kicker--faint {
+  color: var(--faint);
+}
+
+.esys-note {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.65;
+  color: var(--faint-2);
+}
+
+.esys-cap {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.65;
+  letter-spacing: 0.02em;
+  color: var(--faint);
+}
+
+.esys-cap b {
+  font-weight: inherit;
+  color: var(--ink);
+}
+
+/* —— The machinery rail —— */
+
+.esys-rail {
+  position: fixed;
+  top: 92px;
+  left: calc(var(--shell-pad-l) + var(--measure) + 40px);
+  width: var(--rail-w);
+  z-index: 30;
+}
+
+@media (min-width: 1440px) {
+  .esys-rail {
+    left: calc(
+      max(var(--shell-pad-l), (100% - var(--content-cap)) / 2) + var(--measure) + 40px
+    );
+  }
+}
+
+.esys-rail-card {
+  border-left: 2px solid var(--accent);
+  padding: 0 0 18px 14px;
+  margin-bottom: 26px;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 200ms var(--ease-out-strong),
+    transform 200ms var(--ease-out-strong);
+}
+
+@starting-style {
+  .esys-rail-card {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.esys-rail-card-term {
+  margin-top: 8px;
+  font-size: 17px;
+  line-height: 1.3;
+}
+
+.esys-rail-card-term--sm {
+  font-size: 15px;
+}
+
+.esys-rail-card-body {
+  margin: 7px 0 0;
+  font-size: 14px;
+  line-height: 1.62;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-rail-card-src {
+  margin-top: 9px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+  font-variant-numeric: tabular-nums;
+}
+
+.esys-rail-group {
+  border-left: 1px solid var(--rule);
+  padding-left: 14px;
+}
+
+.esys-rail-group + .esys-rail-group {
+  margin-top: 22px;
+}
+
+.esys-rail-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint-2);
+  padding-bottom: 10px;
+}
+
+.esys-rail-list {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.esys-rail-link {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+  color: var(--faint-2);
+}
+
+.esys-rail-link span:first-child {
+  color: var(--tick);
+}
+
+.esys-rail-link.is-active {
+  color: var(--ink);
+}
+
+.esys-rail-link.is-active span:first-child {
+  color: var(--accent);
+}
+
+.esys-rail-link:hover,
+.esys-rail-link:hover span:first-child {
+  color: var(--accent);
+}
+
+.esys-rail-claims {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.esys-rail-claim {
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: #a49b8a;
+  text-wrap: pretty;
+}
+
+.esys-rail-claim.is-active {
+  color: var(--ink);
+}
+
+.esys-rail-claim:hover {
+  color: var(--accent);
+}
+
+.esys-rail-claim span:first-child {
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  padding-top: 3px;
+}
+
+.esys-scrub-range {
+  width: 100%;
+  margin: 12px 0 4px;
+  accent-color: var(--accent);
+  height: 2px;
+  cursor: ew-resize;
+}
+
+.esys-scrub-ends {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--tick);
+}
+
+.esys-scrub-readout {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.6;
+  color: var(--meta);
+  font-variant-numeric: tabular-nums;
+}
+
+.esys-scrub-readout dt {
+  color: var(--faint-2);
+}
+
+.esys-scrub-readout dd {
+  margin: 0;
+  color: var(--ink);
+}
+
+.esys-scrub-readout dd.is-accent {
+  color: var(--accent);
+}
+
+/* —— Column —— */
+
+.esys-main {
+  max-width: var(--measure);
+  margin: 0;
+  padding: 0 var(--shell-pad-r) 0 var(--shell-pad-l);
+}
+
+@media (min-width: 1440px) {
+  .esys-main {
+    padding-left: max(var(--shell-pad-l), calc((100% - var(--content-cap)) / 2));
+  }
+}
+
+@media (max-width: 768px) {
+  .esys-main {
+    padding: 0 1.5rem;
+  }
+}
+
+.esys-head {
+  padding: 88px 0 0;
+  animation: esys-rise-in 280ms var(--ease-out-strong) both;
+}
+
+.esys-slug {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+}
+
+.esys-hr {
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+  transform: translateY(-3px);
+}
+
+.esys-hr--ink {
+  background: var(--ink);
+}
+
+.esys-title {
+  margin: 40px 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 40px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.esys-standfirst {
+  margin: 26px 0 0;
+  max-width: var(--intro-measure);
+  font-family: var(--font-display);
+  font-size: 20px;
+  line-height: 1.5;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-colophon {
+  display: grid;
+  gap: 14px 28px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--meta);
+  border-top: 1px solid var(--rule);
+}
+
+.esys-colophon--head {
+  margin-top: 40px;
+  grid-template-columns: repeat(2, 1fr);
+  padding-top: 18px;
+}
+
+.esys-colophon--foot {
+  margin-top: 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 32px;
+  padding-top: 18px;
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--faint);
+}
+
+.esys-colophon span {
+  color: var(--faint-2);
+}
+
+.esys-part {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.esys-part--one {
+  margin: 92px 0 0;
+}
+
+.esys-part--two {
+  margin: 110px 0 0;
+}
+
+.esys-part b {
+  font-weight: inherit;
+  color: var(--accent);
+}
+
+.esys-sec {
+  padding: 78px 0 0;
+  scroll-margin-top: 80px;
+}
+
+.esys-sec--first {
+  padding-top: 54px;
+}
+
+.esys-sec--wide {
+  padding-top: 88px;
+}
+
+.esys-sec-head {
+  display: flex;
+  align-items: baseline;
+  gap: 12px;
+  scroll-margin-top: 80px;
+}
+
+.esys-sec-head > span {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+}
+
+.esys-sec-head h2 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+/* A body that opens on prose rather than a section mark still needs air under the
+   standfirst. Every play study opens this way. */
+.esys-standfirst + .esys-p {
+  margin-top: 34px;
+}
+
+.esys-p {
+  margin: 0 0 26px;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--body);
+  text-wrap: pretty;
+}
+
+.esys-p--lede {
+  margin: 18px 0 0;
+}
+
+.esys-p--opens {
+  margin-top: 22px;
+}
+
+/* —— Numbered rule rows (R1–R5, B1–B5) —— */
+
+.esys-rules {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+}
+
+.esys-rule {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 20px;
+  padding: 20px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.esys-rule:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.esys-rule-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  padding-top: 5px;
+}
+
+.esys-rule-term {
+  font-size: 19px;
+  line-height: 1.4;
+}
+
+.esys-rule-body {
+  margin: 6px 0 0;
+  font-size: 16.5px;
+  line-height: 1.62;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-rule-body code,
+.esys-inline-mono {
+  font-family: var(--font-mono);
+  font-size: 15px;
+}
+
+.esys-ink-full {
+  color: var(--ink);
+}
+
+.esys-ink-faint {
+  color: var(--faint);
+}
+
+.esys-ink-accent {
+  color: var(--accent);
+}
+
+/* —— Figures —— */
+
+.esys-fig {
+  margin: 48px 0 0;
+}
+
+.esys-fig--tight {
+  margin: 36px 0 0;
+}
+
+.esys-fig--body {
+  margin: 44px 0 36px;
+}
+
+.esys-plate {
+  border: 1px solid var(--rule);
+  background: var(--plate);
+  padding: 22px 18px 14px;
+}
+
+.esys-plate--pad {
+  padding: 20px;
+}
+
+.esys-plate--grid {
+  padding: 22px 18px 16px;
+}
+
+.esys-plate--mount {
+  padding: 14px;
+}
+
+.esys-plate--flush {
+  padding: 0;
+  overflow: hidden;
+}
+
+.esys-plate--diagram {
+  padding: 28px 18px 20px;
+}
+
+.esys-plate svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.esys-plate img {
+  display: block;
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  filter: sepia(0.1) saturate(0.9);
+}
+
+.esys-plate plate-lattice {
+  display: block;
+  height: 300px;
+}
+
+.esys-multiples {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px 22px;
+}
+
+.esys-multiple-label {
+  margin-top: 6px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  color: var(--meta);
+}
+
+.esys-panel {
+  cursor: crosshair;
+  transition: opacity 160ms ease;
+  outline: none;
+  background: none;
+  border: 0;
+  padding: 0;
+  text-align: left;
+  display: block;
+  width: 100%;
+  font: inherit;
+}
+
+.esys-panel:focus-visible {
+  outline: 1px solid var(--accent);
+  outline-offset: 6px;
+}
+
+/* Control that falls out of the margin below 1260px (B2). */
+.esys-fig-control {
+  margin-top: 14px;
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.esys-fig-control label,
+.esys-fig-control output {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--meta);
+  white-space: nowrap;
+}
+
+.esys-fig-control output {
+  color: var(--accent);
+  letter-spacing: 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.esys-fig-control input {
+  flex: 1;
+  accent-color: var(--accent);
+  height: 2px;
+  min-height: 44px;
+  cursor: ew-resize;
+}
+
+.esys-fig-subcap {
+  margin-top: 14px;
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: baseline;
+}
+
+.esys-fig-subcap dt {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  white-space: nowrap;
+}
+
+.esys-fig-subcap dd {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-sparkline {
+  display: inline-block;
+  width: 54px;
+  height: 14px;
+  vertical-align: -1px;
+  margin: 0 2px;
+}
+
+/* —— Structural forms —— */
+
+.esys-epigraph {
+  margin-top: 40px;
+  padding-left: 26px;
+  border-left: 1px solid #d9d1bf;
+}
+
+.esys-epigraph p {
+  margin: 0;
+  font-size: 19px;
+  line-height: 1.6;
+  font-style: italic;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-epigraph-src {
+  margin-top: 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--faint);
+}
+
+.esys-claim {
+  margin: 40px 0;
+  display: grid;
+  grid-template-columns: 46px 1fr;
+  gap: 18px;
+  align-items: start;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--rule);
+  padding: 18px 0;
+  scroll-margin-top: 100px;
+}
+
+.esys-claim-num {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  padding-top: 4px;
+}
+
+.esys-claim-text {
+  font-size: 20px;
+  line-height: 1.5;
+  letter-spacing: -0.004em;
+  text-wrap: pretty;
+}
+
+.esys-def {
+  margin: 40px 0;
+  background: var(--plate);
+  border: 1px solid var(--rule);
+  padding: 20px 22px;
+}
+
+.esys-def-term {
+  margin-top: 9px;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.esys-def p {
+  margin: 8px 0 0;
+  font-size: 17px;
+  line-height: 1.62;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-objection {
+  margin: 40px 0;
+  border-left: 2px solid var(--accent);
+  padding: 4px 0 4px 24px;
+}
+
+.esys-objection p {
+  margin: 10px 0 0;
+  font-size: 18.5px;
+  line-height: 1.66;
+  color: var(--body);
+  text-wrap: pretty;
+}
+
+.esys-objection p + p {
+  margin-top: 12px;
+  color: var(--soft);
+}
+
+.esys-pull {
+  margin: 44px 0 0;
+  padding: 4px 0;
+}
+
+.esys-pull::before {
+  content: '';
+  display: block;
+  width: 44px;
+  height: 1px;
+  background: var(--accent);
+  margin-bottom: 18px;
+}
+
+.esys-pull p {
+  margin: 0;
+  font-size: 28px;
+  line-height: 1.36;
+  font-weight: 300;
+  letter-spacing: -0.014em;
+  text-wrap: pretty;
+}
+
+.esys-softbreak {
+  margin: 48px 0 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  justify-content: center;
+}
+
+.esys-softbreak span {
+  width: 3px;
+  height: 3px;
+  background: #c2b9a6;
+}
+
+.esys-endmark {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+}
+
+/* A summoned reference: dotted underline, resolves in the margin (or in Notes). */
+.esys-ref {
+  border-bottom: 1px dotted var(--faint-2);
+  cursor: help;
+  background: none;
+  border-left: 0;
+  border-right: 0;
+  border-top: 0;
+  padding: 0;
+  font: inherit;
+  color: inherit;
+}
+
+.esys-ref:hover,
+.esys-ref:focus-visible,
+.esys-ref.is-pinned {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  outline: none;
+}
+
+.esys-ref--sup {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  vertical-align: super;
+  border-bottom: 0;
+  /* A single superscript digit is the smallest target in the system — pad it out. */
+  padding: 12px 8px 12px 10px;
+  margin: -12px -6px -12px -8px;
+}
+
+/* —— Specimens of the type scale —— */
+
+.esys-type-row {
+  display: grid;
+  grid-template-columns: 1fr 168px;
+  gap: 24px;
+  align-items: baseline;
+  padding: 20px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.esys-type-row:last-child {
+  border-bottom: 1px solid var(--rule);
+}
+
+.esys-type-spec {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.7;
+  color: var(--meta);
+}
+
+/* —— Ink —— */
+
+.esys-swatches {
+  margin-top: 30px;
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+}
+
+.esys-swatch-chip {
+  height: 62px;
+}
+
+.esys-swatch-label {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  line-height: 1.6;
+  color: var(--meta);
+}
+
+/* —— Spec blocks: two-column mono definition grids —— */
+
+.esys-specs {
+  margin-top: 34px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px 28px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  line-height: 1.7;
+  color: var(--soft);
+}
+
+.esys-spec {
+  border-top: 1px solid var(--rule);
+  padding-top: 12px;
+}
+
+.esys-spec-title {
+  color: var(--faint-2);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-size: 9px;
+  padding-bottom: 6px;
+}
+
+.esys-panelbox {
+  margin: 44px 0 0;
+  background: var(--plate);
+  border: 1px solid var(--rule);
+  padding: 22px;
+}
+
+.esys-panelbox p {
+  margin: 14px 0 0;
+  font-size: 17.5px;
+  line-height: 1.66;
+  color: var(--body);
+  text-wrap: pretty;
+}
+
+.esys-panelbox p:last-child {
+  margin-top: 18px;
+  font-size: 16.5px;
+  line-height: 1.64;
+  color: var(--soft);
+}
+
+.esys-keyed {
+  display: grid;
+  grid-template-columns: 112px 1fr;
+  gap: 10px 16px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.esys-keyed--tight {
+  grid-template-columns: 108px 1fr;
+  gap: 8px 16px;
+}
+
+.esys-keyed dt {
+  color: var(--faint-2);
+}
+
+.esys-keyed dd {
+  margin: 0;
+}
+
+.esys-keyed-head {
+  margin-top: 16px;
+}
+
+.esys-ruled-top {
+  margin-top: 20px;
+  border-top: 1px solid var(--rule);
+  padding-top: 14px;
+}
+
+/* —— Table 1 —— */
+
+.esys-table {
+  margin: 48px 0 0;
+}
+
+.esys-table table {
+  width: 100%;
+  border-collapse: collapse;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.esys-table th {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 12px 0 10px;
+  text-align: left;
+}
+
+.esys-table th + th,
+.esys-table td + td {
+  text-align: right;
+}
+
+.esys-table td {
+  font-size: 17.5px;
+  padding: 13px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.esys-table td + td {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  padding: 15px 0;
+  font-variant-numeric: tabular-nums;
+}
+
+.esys-table tr.is-accent td {
+  color: var(--accent);
+}
+
+/* —— Listing 1 —— */
+
+.esys-listing {
+  margin: 48px 0 0;
+}
+
+.esys-code {
+  border: 1px solid var(--rule);
+  background: var(--plate);
+  overflow-x: auto;
+}
+
+.esys-code ol {
+  margin: 0;
+  padding: 16px 0;
+  list-style: none;
+  display: grid;
+  grid-template-columns: 38px 1fr;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.9;
+}
+
+.esys-code li {
+  display: contents;
+}
+
+.esys-code-ln {
+  color: var(--tick);
+  text-align: right;
+  padding-right: 10px;
+  border-right: 1px solid var(--rule-soft);
+}
+
+.esys-code code {
+  padding-left: 18px;
+  color: var(--body);
+  white-space: pre;
+  font: inherit;
+}
+
+.esys-code .esys-kw {
+  color: var(--accent);
+}
+
+.esys-code .esys-comment {
+  color: var(--faint);
+}
+
+/* —— Verb table —— */
+
+.esys-verbs {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0 16px;
+  border-top: 1px solid var(--ink);
+  border-bottom: 1px solid var(--ink);
+}
+
+.esys-verbs dt {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: 12px 0 8px;
+}
+
+.esys-verbs dd {
+  margin: 0;
+  font-size: 16.5px;
+  line-height: 1.55;
+  padding: 4px 0 16px;
+  border-top: 1px solid var(--rule);
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+/* —— Specimen essay chrome —— */
+
+.esys-specimen {
+  padding: 56px 0 0;
+  scroll-margin-top: 80px;
+}
+
+.esys-specimen-title {
+  margin: 18px 0 0;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 36px;
+  line-height: 1.12;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  text-wrap: balance;
+}
+
+.esys-notes {
+  margin-top: 72px;
+  border-top: 1px solid var(--ink);
+  padding-top: 20px;
+}
+
+.esys-notes-list {
+  margin: 16px 0 0;
+  display: grid;
+  grid-template-columns: 26px 1fr;
+  gap: 10px 12px;
+}
+
+.esys-notes-list dt {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+}
+
+.esys-notes-list dd {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+/* —— A pool essay set in the system —— */
+
+.esys-specimen--standalone {
+  padding-top: 88px;
+}
+
+.esys-specimen--standalone .esys-slug a:hover {
+  color: var(--accent);
+}
+
+/* Section heads inside running prose need their own air; the spec page uses padding. */
+.esys-sec-head--body {
+  margin-top: 56px;
+  margin-bottom: 22px;
+}
+
+.esys-colophon--foot a {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px solid var(--rule);
+}
+
+.esys-colophon--foot a::after {
+  content: '';
+  position: absolute;
+  inset: -15px -6px;
+}
+
+.esys-colophon--foot a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+/*
+ * A summoned reference with no margin to resolve into. Same card as the rail's, set
+ * under the paragraph that raised it — the "static sub-caption line" the system
+ * prescribes for figures, applied to references.
+ */
+.esys-inline-note {
+  margin: 4px 0 26px;
+  border-left: 2px solid var(--accent);
+  padding: 2px 0 2px 18px;
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 200ms var(--ease-out-strong),
+    transform 200ms var(--ease-out-strong);
+}
+
+@starting-style {
+  .esys-inline-note {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+.esys-inline-note-term {
+  margin-top: 7px;
+  font-size: 18px;
+  line-height: 1.3;
+}
+
+.esys-inline-note p {
+  margin: 6px 0 0;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-inline-note-src {
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.06em;
+  color: var(--faint);
+}
+
+/* —— Navigation. Apparatus, so mono: the way back and the way onward. —— */
+
+.esys-back {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--faint);
+  white-space: nowrap;
+  /* 10px apparatus type still needs a finger-sized target; grow the box, not the layout. */
+  padding: 14px 6px;
+  margin: -14px -6px;
+  transition:
+    transform 160ms var(--ease-out-strong),
+    color var(--motion-fade) ease;
+}
+
+.esys-back:active {
+  transform: scale(0.97);
+}
+
+.esys-back:focus-visible {
+  color: var(--accent);
+}
+
+.esys-back span {
+  display: inline-block;
+  transition: transform 160ms var(--ease-out-strong);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .esys-back:hover {
+    color: var(--accent);
+  }
+
+  .esys-back:hover span {
+    transform: translateX(-3px);
+  }
+}
+
+/* Persistent return at the top of the margin (R2). */
+.esys-back--rail {
+  display: block;
+  padding-bottom: 22px;
+  margin-bottom: 0;
+}
+
+.esys-footnav {
+  margin-top: 72px;
+  border-top: 1px solid var(--ink);
+  padding-top: 20px;
+}
+
+.esys-onward-list {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+}
+
+.esys-onward {
+  display: grid;
+  grid-template-columns: 96px 1fr;
+  gap: 18px;
+  padding: 15px 0;
+  border-top: 1px solid var(--rule);
+  align-items: baseline;
+}
+
+.esys-onward:first-child {
+  border-top: 0;
+}
+
+.esys-onward-rel {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.esys-onward-title {
+  display: block;
+  font-size: 20px;
+  line-height: 1.35;
+}
+
+.esys-onward-gloss {
+  display: block;
+  margin-top: 4px;
+  font-size: 15.5px;
+  line-height: 1.55;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-onward:hover .esys-onward-title {
+  color: var(--accent);
+}
+
+.esys-timeline {
+  margin-top: 26px;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+
+.esys-timeline-newer {
+  text-align: right;
+}
+
+.esys-step-link {
+  display: inline-block;
+  padding: 4px 4px 6px;
+  margin: -4px -4px -6px;
+  font-size: 16px;
+  line-height: 1.4;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+.esys-step-link:hover {
+  color: var(--accent);
+}
+
+.esys-step-rel {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint-2);
+  padding-bottom: 5px;
+}
+
+/* Numbered stops (the "step" verb) sit in the flow, so they need the figure's rhythm. */
+.esys-rules--stops {
+  margin: 40px 0 36px;
+}
+
+/* Two-pole comparison: the owned column carries the accent. */
+.esys-table--compare table {
+  table-layout: fixed;
+}
+
+/* Both poles are prose, so neither column takes Table 1's mono numeral treatment. */
+.esys-table--compare th,
+.esys-table--compare th + th,
+.esys-table--compare td,
+.esys-table--compare td + td {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.5;
+  text-align: left;
+  padding: 13px 20px 13px 0;
+  color: var(--soft);
+  font-variant-numeric: normal;
+}
+
+.esys-table--compare th,
+.esys-table--compare th + th {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--faint);
+  padding: 12px 20px 10px 0;
+}
+
+.esys-table--compare th.is-accent {
+  color: var(--accent);
+}
+
+.esys-table--compare td.is-accent {
+  color: var(--ink);
+}
+
+.esys-notes-list--refs {
+  display: block;
+}
+
+.esys-note-row {
+  display: grid;
+  grid-template-columns: 168px 1fr;
+  gap: 12px;
+  padding: 11px 0;
+  border-top: 1px solid var(--rule);
+}
+
+.esys-note-row:first-child {
+  border-top: 0;
+}
+
+.esys-note-row dt {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+  padding-top: 3px;
+}
+
+.esys-note-row dd {
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.62;
+  color: var(--soft);
+  text-wrap: pretty;
+}
+
+/* —— Figures leave the measure ——
+ *
+ * The prose measure is set for reading; a drawn figure at that width renders its 9.5px
+ * mono labels too small to read, which is the one thing a figure exists to do. So a
+ * figure keeps its left edge on the prose and grows into the right margin instead. The
+ * text column does not move, so nothing about the reading rhythm changes.
+ *
+ * The cap is the machinery rail. Rail left = padding-left + measure + 40, and the figure
+ * starts at padding-left, so 648px leaves a 32px gutter between the two at every width
+ * the rail is shown. Below 1260 the rail is gone and the figure may take the room, held
+ * off the viewport edge. Below 760 it returns to the column and the plate scrolls, which
+ * is the concession already made for the code listing.
+ */
+.esys-fig--body,
+.esys-fig--tight {
+  width: min(var(--fig-w, 648px), calc(100vw - var(--shell-pad-l) - 24px));
+  max-width: none;
+}
+
+@media (max-width: 1259px) {
+  .esys-fig--body,
+  .esys-fig--tight {
+    --fig-w: 820px;
+  }
+}
+
+@media (max-width: 759px) {
+  .esys-fig--body,
+  .esys-fig--tight {
+    --fig-w: 100%;
+    width: 100%;
+  }
+}
+
+/* —— Breakpoints: ≥1260 rail, 760–1259 column only, <760 tighter gutters —— */
+
+@media (max-width: 1259px) {
+  .esys-rail {
+    display: none;
+  }
+}
+
+@media (max-width: 759px) {
+  .esys-main {
+    padding: 0 24px;
+  }
+
+  .esys-title {
+    font-size: 40px;
+  }
+
+  .esys-specimen-title {
+    font-size: 34px;
+  }
+
+  .esys-standfirst {
+    font-size: 20px;
+  }
+
+  .esys-p,
+  .esys-claim-text {
+    font-size: 18px;
+  }
+
+  .esys-pull p {
+    font-size: 23px;
+  }
+
+  .esys-swatches {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .esys-specs,
+  .esys-colophon--head {
+    grid-template-columns: 1fr;
+  }
+
+  .esys-multiples {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .esys-verbs {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .esys-type-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .esys-note-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+  }
+
+  /*
+   * Drawn figures are labelled in 8.5–9.5px mono. Scaling a 680-wide viewBox into a
+   * ~330px column would render those labels at ~4px, so the figure keeps its drawn size
+   * and the plate scrolls instead — the same concession the code listing already makes.
+   * Small multiples are excluded: their panels are laid out by the grid, not the viewBox.
+   */
+  .esys-plate {
+    overflow-x: auto;
+    scrollbar-width: thin;
+  }
+
+  .esys-plate > svg {
+    min-width: 600px;
+  }
+
+  .esys-onward {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .esys-timeline {
+    grid-template-columns: 1fr;
+    gap: 18px;
+  }
+
+  .esys-timeline-newer {
+    text-align: left;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esys-head {
+    animation: none;
+  }
+
+  .esys-rail-card,
+  .esys-inline-note {
+    transition: opacity 120ms ease;
+    transform: none;
+  }
+}
+
+/* ── Fig. core-sets ──────────────────────────────────────────────────────────
+   The resolved figure is the rest state. `.is-live` replays how it got there,
+   once, when the figure reaches the viewport. Reduced motion resolves at once.
+   Kept in step with CoreSetsFigure in essaySystem/figures.tsx.              */
+
+.esys-coresets .cs-a,
+.esys-coresets .cs-b,
+.esys-coresets .cs-c,
+.esys-coresets .cs-d,
+.esys-coresets .cs-e {
+  opacity: 1;
+}
+.esys-coresets .cs-thread {
+  stroke-dasharray: 280;
+  stroke-dashoffset: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .esys-coresets .cs-a,
+  .esys-coresets .cs-b,
+  .esys-coresets .cs-c,
+  .esys-coresets .cs-d,
+  .esys-coresets .cs-e {
+    opacity: 0;
+  }
+  .esys-coresets .cs-thread {
+    stroke-dashoffset: 280;
+  }
+
+  .esys-coresets.is-live .cs-a { animation: cs-in 0.45s ease-out 0.1s forwards; }
+  .esys-coresets.is-live .cs-b { animation: cs-in 0.45s ease-out 0.85s forwards; }
+  .esys-coresets.is-live .cs-c { animation: cs-in 0.55s ease-out 1.45s forwards; }
+  .esys-coresets.is-live .cs-d { animation: cs-in 0.4s ease-out 2.25s forwards; }
+  .esys-coresets.is-live .cs-e { animation: cs-in 0.45s ease-out 3.45s forwards; }
+  .esys-coresets.is-live .cs-thread {
+    animation: cs-draw 0.95s cubic-bezier(0.4, 0, 0.2, 1) 2.7s forwards;
+  }
+
+  @keyframes cs-in { to { opacity: 1; } }
+  @keyframes cs-draw { to { stroke-dashoffset: 0; } }
+}
+
+/* ── Audio clip ──────────────────────────────────────────────────────────────
+   A control that answers every press. Nothing loads until pressed, nothing
+   plays on its own, and failure is stated rather than swallowed. The key is
+   sized for a thumb — an edge that invites a press it cannot answer is worse
+   than no edge, and so is one the hand cannot hit.                          */
+
+.esys-audio {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 18px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--paper-2);
+}
+
+.esys-audio__key {
+  flex: none;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--meter-border);
+  border-radius: 50%;
+  background: var(--paper);
+  color: var(--ink);
+  cursor: pointer;
+  padding: 0;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.esys-audio__key:hover:not(:disabled) {
+  border-color: var(--read-accent);
+  color: var(--read-accent);
+}
+.esys-audio__key:focus-visible {
+  outline: 2px solid var(--read-accent);
+  outline-offset: 3px;
+}
+.esys-audio__key:disabled {
+  cursor: not-allowed;
+  color: var(--secondary);
+  border-color: var(--line);
+}
+.esys-audio.is-playing .esys-audio__key { color: var(--read-accent); border-color: var(--read-accent); }
+
+.esys-audio__body { flex: 1 1 auto; min-width: 0; }
+
+.esys-audio__label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--secondary);
+  margin-bottom: 9px;
+}
+
+.esys-audio__track {
+  position: relative;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  background: linear-gradient(var(--line-soft), var(--line-soft)) center / 100% 1px no-repeat;
+}
+.esys-audio__fill {
+  height: 1px;
+  background: var(--read-accent);
+  transition: width 0.12s linear;
+}
+.esys-audio.is-loading .esys-audio__fill { background: var(--secondary); }
+
+.esys-audio__state {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--read-accent-deep);
+}
+
+.esys-audio__time {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  /* Not --meta: that token is 2.36:1 on paper and fails AA for text. */
+  color: var(--secondary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .esys-audio__fill { transition: none; }
+  .esys-audio__key { transition: none; }
+}
+
+@media (max-width: 600px) {
+  .esys-audio { gap: 12px; padding: 12px 14px; }
+  .esys-audio__time { font-size: 10px; }
+}
+
+/* The tsubuyaki field is a lit screen, not a plate — it carries its own dark ground,
+   so it takes no paper padding and no rule. Square, because the sketch is. */
+.esys-tsubuyaki {
+  margin: 30px 0 8px;
+}
+
+.esys-tsubuyaki__screen {
+  background: #0a0a0a;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.esys-tsubuyaki__screen tsubuyaki-field {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* The whole program, at the size it was written to fit. */
+.esys-tsubuyaki__source {
+  max-width: 520px;
+  margin: 10px auto 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.62;
+  color: var(--meta);
+  word-break: break-all;
+}
+
+.esys-sketch {
+  margin: 30px 0 8px;
+}
+
+.esys-sketch__screen {
+  background: #0a0a0a;
+  aspect-ratio: 1;
+  width: 100%;
+  max-width: 520px;
+  margin-inline: auto;
+}
+
+.esys-sketch__screen > * {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.esys-sketch__source {
+  max-width: 520px;
+  margin: 10px auto 0;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  line-height: 1.62;
+  color: var(--meta);
+  word-break: break-all;
+}

@@ -4,7 +4,7 @@ kind: link
 cluster: play
 title: x.com
 date: live
-rank: 1
+rank: 3
 href: https://x.com/ape_toni
 excerpt:
   - "The running feed — half-built things, in public."

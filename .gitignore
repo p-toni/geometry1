@@ -15,6 +15,12 @@ dist
 dist-ssr
 *.local
 
+# Kept on disk, never shipped and never tracked: the pre-rewrite writings, the
+# visuals of retired essays, the unwired point-cloud .splt, and screen captures.
+_local/
+_to_delete/
+*.mov
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
@@ -25,3 +31,4 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+tasks/

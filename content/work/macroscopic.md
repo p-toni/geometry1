@@ -2,12 +2,17 @@
 id: macroscopic
 kind: project
 cluster: work
+space: attention
 title: macroscopic
 date: active
-rank: 3
+rank: 6
+why: Life and work context arrives in fragments, then a dashboard tries to shout it all back.
+problem: Surfaces get loud. Memory gets thin. Agency boundaries blur.
+principle: Attention is a budget. Crossing it without asking is a takeover.
+solution: Remember more. Surface less. Ask before acting.
+value: Context holds without shouting back.
 excerpt:
-  - "A product system for holding fragmented life and work context without turning it into a dashboard."
-  - "The wager: surface less, remember better, ask permission before action."
+  - "Life and work context arrives in fragments, then a dashboard tries to shout it all back."
 links:
   - target: geometry
     rel: theme
