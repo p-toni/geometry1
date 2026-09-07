@@ -5,7 +5,7 @@ cluster: work
 space: attention
 title: macroscopic
 date: active
-rank: 2
+rank: 6
 why: Life and work context arrives in fragments, then a dashboard tries to shout it all back.
 problem: Surfaces get loud. Memory gets thin. Agency boundaries blur.
 principle: Attention is a budget. Crossing it without asking is a takeover.

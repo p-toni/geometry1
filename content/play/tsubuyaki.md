@@ -4,7 +4,7 @@ kind: sketch
 cluster: play
 title: tsubuyaki
 date: 2026-08-25
-rank: 2
+rank: 0
 excerpt:
   - "Two hundred and eighty characters of p5.js. The body is not stored anywhere — it is recomputed, forty thousand points a frame, from six lines of arithmetic."
 links:

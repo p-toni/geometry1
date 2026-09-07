@@ -9,8 +9,8 @@ export const generatedPool: Pool = {
       "cluster": "play",
       "title": "fold",
       "date": "2026-09-01",
-      "rank": 1,
-      "weight": 0.95,
+      "rank": 2,
+      "weight": 0.9,
       "links": [
         [
           "lanterns",
@@ -47,8 +47,8 @@ export const generatedPool: Pool = {
       "cluster": "play",
       "title": "lanterns",
       "date": "2026-08-31",
-      "rank": 0,
-      "weight": 1,
+      "rank": 1,
+      "weight": 0.95,
       "links": [
         [
           "tsubuyaki",
@@ -167,8 +167,8 @@ export const generatedPool: Pool = {
       "cluster": "play",
       "title": "tsubuyaki",
       "date": "2026-08-25",
-      "rank": 2,
-      "weight": 0.9,
+      "rank": 0,
+      "weight": 1,
       "links": [
         [
           "sea",
@@ -238,14 +238,62 @@ export const generatedPool: Pool = {
       "href": "https://x.com/ape_toni",
       "sourcePath": "/content/play/xcom.md"
     },
+    "authored": {
+      "id": "authored",
+      "kind": "project",
+      "cluster": "work",
+      "title": "authored",
+      "date": "alpha",
+      "rank": 1,
+      "weight": 0.95,
+      "links": [
+        [
+          "the-cut",
+          "idea"
+        ]
+      ],
+      "excerpt": [
+        "Approval starts before the approval button."
+      ],
+      "body": [
+        {
+          "t": "p",
+          "x": "AUTHORED is a prototype kernel for staying the author of a mandate an agent is asking you to accept."
+        },
+        {
+          "t": "p",
+          "x": "The intent is hashed before any model sees it. Every field in the resulting mandate is attributed — principal, agent, or external. A self-reported record is testimony, not evidence."
+        },
+        {
+          "t": "p",
+          "x": "One frozen vector makes the cut visible. The principal asked for a standing desk under $500, reversible. The mandate that came back had swapped the merchant, inflated the total, and killed reversibility. The kernel blocked it."
+        },
+        {
+          "t": "thesis",
+          "k": "cut",
+          "x": "Someone decides which differences survive. That happens before the button."
+        },
+        {
+          "t": "p",
+          "x": "Label this a prototype. Signature verification and the inspector page are still deferred."
+        }
+      ],
+      "why": "The mandate I was being asked to accept had already been rewritten before I saw it.",
+      "problem": "Approval starts before the approval button.",
+      "principle": "Capture the intent before any agent enters. Attribute every field that changes.",
+      "solution": "Original intent beside the resulting mandate, with one consequential alteration exposed.",
+      "value": "The kernel is a prototype. Signing, the inspector, and a frozen schema are still deferred.",
+      "space": "authorship",
+      "sourcePath": "/content/work/authored.md"
+    },
     "codex-fieldwork": {
       "id": "codex-fieldwork",
       "kind": "project",
       "cluster": "work",
       "title": "codex fieldwork",
       "date": "method",
-      "rank": 6,
-      "weight": 0.7,
+      "rank": 10,
+      "weight": 0.5,
       "links": [
         [
           "geometry",
@@ -284,14 +332,62 @@ export const generatedPool: Pool = {
       "space": "loop",
       "sourcePath": "/content/work/codex-fieldwork.md"
     },
+    "fiction": {
+      "id": "fiction",
+      "kind": "project",
+      "cluster": "work",
+      "title": "fiction",
+      "date": "rebuild",
+      "rank": 2,
+      "weight": 0.9,
+      "links": [
+        [
+          "the-contact",
+          "theme"
+        ],
+        [
+          "the-curve",
+          "idea"
+        ]
+      ],
+      "excerpt": [
+        "A convincing view is not yet a world."
+      ],
+      "body": [
+        {
+          "t": "p",
+          "x": "Fiction is a world compiler: a source image becomes a provenance-aware scene that has to survive being moved."
+        },
+        {
+          "t": "p",
+          "x": "The reference compile is honest about the inverse problem. Silhouette IoU sits at 0.38 against a locked 0.80. Planar evidence cannot cover vertical architecture. The source camera still looks convincing. A second viewpoint does not."
+        },
+        {
+          "t": "thesis",
+          "k": "view",
+          "x": "A passing appearance composite is not a reconstruction claim."
+        },
+        {
+          "t": "p",
+          "x": "The failed gate is the case study. The ambitious trailer is not."
+        }
+      ],
+      "why": "A render that looked right from the source camera was still not a world.",
+      "problem": "A convincing view is not yet a world.",
+      "principle": "A representation must survive movement, editing, and a second viewpoint.",
+      "solution": "The reference image, the reconstructed scene, and a failure that only appears when the viewpoint moves.",
+      "value": "The canonical reconstruction gate is still failing. Planar evidence cannot cover vertical architecture.",
+      "space": "representation",
+      "sourcePath": "/content/work/fiction.md"
+    },
     "geometry": {
       "id": "geometry",
       "kind": "project",
       "cluster": "work",
       "title": "geometry",
       "date": "live",
-      "rank": 0,
-      "weight": 1,
+      "rank": 8,
+      "weight": 0.6,
       "links": [
         [
           "the-loom",
@@ -337,14 +433,59 @@ export const generatedPool: Pool = {
       "proof": "https://github.com/p-toni/geometry",
       "sourcePath": "/content/work/geometry.md"
     },
+    "greenfield": {
+      "id": "greenfield",
+      "kind": "project",
+      "cluster": "work",
+      "title": "greenfield",
+      "date": "pilot",
+      "rank": 3,
+      "weight": 0.85,
+      "links": [
+        [
+          "the-container",
+          "idea"
+        ]
+      ],
+      "excerpt": [
+        "What should remain mine as the machine becomes more capable?"
+      ],
+      "body": [
+        {
+          "t": "p",
+          "x": "Greenfield is an agency loop that watches surfaces I approve, and asks before it acts."
+        },
+        {
+          "t": "p",
+          "x": "The architecture exists: local-first, raw artifacts never leave the machine, interventions sparse and contestable. The question it is actually for needs a lived week, not a demo."
+        },
+        {
+          "t": "p",
+          "x": "Until the owner pilot produces one intervention — why it appeared, how I contested it, whether it helped — this is an open investigation."
+        },
+        {
+          "t": "callout",
+          "v": "aside",
+          "label": "container",
+          "x": "Agents may propose. The owner must approve. The kernel does not get a vote."
+        }
+      ],
+      "why": "The machine was getting more capable, and I could not say what should remain mine.",
+      "problem": "What should remain mine as the machine becomes more capable?",
+      "principle": "Agents may propose. The owner must approve. The kernel does not get a vote.",
+      "solution": "One intervention, why it appeared, how I contested it, and whether it helped.",
+      "value": "The architecture is built. Whether it earns a place in a real week is still open.",
+      "space": "agency",
+      "sourcePath": "/content/work/greenfield.md"
+    },
     "human-responsibility-mapping": {
       "id": "human-responsibility-mapping",
       "kind": "project",
       "cluster": "work",
       "title": "responsibility mapping",
       "date": "public",
-      "rank": 3,
-      "weight": 0.85,
+      "rank": 4,
+      "weight": 0.8,
       "links": [
         [
           "macroscopic",
@@ -396,8 +537,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "macroscopic",
       "date": "active",
-      "rank": 2,
-      "weight": 0.9,
+      "rank": 6,
+      "weight": 0.7,
       "links": [
         [
           "geometry",
@@ -440,8 +581,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "media atlas",
       "date": "alpha",
-      "rank": 5,
-      "weight": 0.75,
+      "rank": 9,
+      "weight": 0.55,
       "links": [
         [
           "geometry",
@@ -483,8 +624,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "spec v1",
       "date": "archive",
-      "rank": 8,
-      "weight": 0.6,
+      "rank": 12,
+      "weight": 0.3999999999999999,
       "links": [
         [
           "geometry",
@@ -514,14 +655,62 @@ export const generatedPool: Pool = {
       "space": "map",
       "sourcePath": "/content/work/spec-v1.md"
     },
+    "specter": {
+      "id": "specter",
+      "kind": "project",
+      "cluster": "work",
+      "title": "specter",
+      "date": "alpha",
+      "rank": 0,
+      "weight": 1,
+      "links": [
+        [
+          "the-contact",
+          "idea"
+        ],
+        [
+          "human-responsibility-mapping",
+          "theme"
+        ]
+      ],
+      "excerpt": [
+        "Evidence needs somewhere to change the decision."
+      ],
+      "body": [
+        {
+          "t": "p",
+          "x": "Specter is an operator running missions with an agent under an explicit, versioned contract."
+        },
+        {
+          "t": "p",
+          "x": "A proposed action does not execute until evidence has a place to land that can stop it. Approval is bound to the exact action it saw. If execution fails, that is a durable event — the mission holds until the plan is restated."
+        },
+        {
+          "t": "thesis",
+          "k": "contact",
+          "x": "Evidence that cannot change the decision is decoration."
+        },
+        {
+          "t": "p",
+          "x": "The inspectable artifact is one frozen mission: proposal, evidence, approval boundary, failed execution. The live substrate is not public."
+        }
+      ],
+      "why": "Evidence could accumulate without ever being allowed to stop the work.",
+      "problem": "Evidence needs somewhere to change the decision.",
+      "principle": "An approval is valid only for the exact action it saw.",
+      "solution": "One mission — a proposed action, the evidence, the approval boundary, and what happens when execution fails.",
+      "value": "The operator prototype is frozen. The live execution substrate is not public.",
+      "space": "execution",
+      "sourcePath": "/content/work/specter.md"
+    },
     "synapse": {
       "id": "synapse",
       "kind": "project",
       "cluster": "work",
       "title": "synapse",
       "date": "rebuild",
-      "rank": 1,
-      "weight": 0.95,
+      "rank": 5,
+      "weight": 0.75,
       "links": [
         [
           "the-container",
@@ -564,8 +753,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "the loom",
       "date": "archive",
-      "rank": 7,
-      "weight": 0.6499999999999999,
+      "rank": 11,
+      "weight": 0.44999999999999996,
       "links": [
         [
           "geometry",
@@ -611,8 +800,8 @@ export const generatedPool: Pool = {
       "cluster": "work",
       "title": "wing",
       "date": "pilot",
-      "rank": 4,
-      "weight": 0.8,
+      "rank": 7,
+      "weight": 0.6499999999999999,
       "links": [
         [
           "macroscopic",
@@ -1588,8 +1777,9 @@ export const generatedPool: Pool = {
           "x": "I want to be careful here, because the story where 1960s economists naively believed in a permanent trade-off is a retrospective construction, and historians of the field have spent decades arguing about it. What is not in dispute is the transmission: the figure and its caption became policy furniture, and the two paragraphs qualifying them did not."
         },
         {
-          "t": "p",
-          "x": "**A caveat attached to a usable object is not a caveat. It is decoration on a lever.**"
+          "t": "thesis",
+          "k": "the caveat",
+          "x": "A caveat attached to a usable object is not a caveat. It is decoration on a lever."
         },
         {
           "t": "h",
@@ -1687,7 +1877,12 @@ export const generatedPool: Pool = {
         },
         {
           "t": "p",
-          "x": "That is not measurement corrupting a fact. It is subtler and worse. The curve was never quite the thing it appeared to be — it was missing a term, expectations, that had been dormant across the entire sample because nobody had been leaning on it. **Acting on it is what made the missing term visible.** The lever did not break the fact. The lever revealed that the fact had been describing a world in which no lever existed."
+          "x": "That is not measurement corrupting a fact. It is subtler and worse. The curve was never quite the thing it appeared to be — it was missing a term, expectations, that had been dormant across the entire sample because nobody had been leaning on it."
+        },
+        {
+          "t": "thesis",
+          "k": "the lever",
+          "x": "Acting on it is what made the missing term visible. The lever did not break the fact. The lever revealed that the fact had been describing a world in which no lever existed."
         },
         {
           "t": "p",
@@ -2280,6 +2475,22 @@ export const generatedPool: Pool = {
         850,
         118
       ],
+      "specter": [
+        868,
+        58
+      ],
+      "authored": [
+        978,
+        44
+      ],
+      "fiction": [
+        1088,
+        58
+      ],
+      "greenfield": [
+        1198,
+        74
+      ],
       "geometry": [
         952,
         208
@@ -2373,6 +2584,10 @@ export const generatedPool: Pool = {
         "label": "what are you building",
         "query": "what are you building",
         "nodeIds": [
+          "specter",
+          "authored",
+          "fiction",
+          "greenfield",
           "geometry",
           "codex-fieldwork",
           "macroscopic",

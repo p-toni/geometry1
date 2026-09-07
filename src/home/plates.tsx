@@ -23,7 +23,7 @@ function Frame({ children }: { children: ReactNode }) {
       className="nx-plate"
       role="img"
       aria-hidden="true"
-      preserveAspectRatio="xMidYMid slice"
+      preserveAspectRatio="xMidYMid meet"
     >
       <rect width="400" height="500" fill="var(--plate-ground, #f5f0e7)" />
       <Grain />
@@ -50,44 +50,243 @@ function Grain() {
 /* round pen caps everywhere */
 const PEN = { strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
 
-/* —— the container: eight register slots in a column; the sixth empty; an accent pin marks the waypoint —— */
+/** Two-stroke head at (x,y), pointing along `deg`. Also closes the dashed return arcs. */
+function Head({
+  x,
+  y,
+  deg,
+  stroke,
+  width = 2.4,
+}: {
+  x: number;
+  y: number;
+  deg: number;
+  stroke: string;
+  width?: number;
+}) {
+  const a = (deg * Math.PI) / 180;
+  const h = 9 + width;
+  const wing = (s: number) => `${x - h * Math.cos(a - s)} ${y - h * Math.sin(a - s)}`;
+  return (
+    <path d={`M ${wing(0.42)} L ${x} ${y} L ${wing(-0.42)}`} fill="none" stroke={stroke} strokeWidth={width} {...PEN} />
+  );
+}
+
+/** Straight shaft with a head at the far end. */
+function Arrow({
+  x1,
+  y1,
+  x2,
+  y2,
+  stroke,
+  width = 2.2,
+  dash,
+}: {
+  x1: number;
+  y1: number;
+  x2: number;
+  y2: number;
+  stroke: string;
+  width?: number;
+  dash?: string;
+}) {
+  return (
+    <>
+      <line x1={x1} y1={y1} x2={x2} y2={y2} stroke={stroke} strokeWidth={width} strokeDasharray={dash} {...PEN} />
+      <Head x={x2} y={y2} deg={(Math.atan2(y2 - y1, x2 - x1) * 180) / Math.PI} stroke={stroke} width={width} />
+    </>
+  );
+}
+
+/** Fixed-support hatching under a line — the roof frame everything hangs from. */
+function Hatch({ x1, x2, y }: { x1: number; x2: number; y: number }) {
+  const marks = [];
+  for (let x = x1; x <= x2 - 10; x += 13) marks.push(x);
+  return (
+    <g stroke={SOFT} strokeWidth={1.6}>
+      {marks.map((x) => (
+        <line key={x} x1={x} y1={y} x2={x + 10} y2={y - 11} />
+      ))}
+    </g>
+  );
+}
+
+/* —— the container: eight core sets, every one taken; the ninth job is held outside the wall,
+      and the machine says its own size out loud —— */
 function TheContainer() {
   const slots = [0, 1, 2, 3, 4, 5, 6, 7];
   return (
     <Frame>
+      <rect x={104} y={54} width={188} height={338} fill="none" stroke={INK} strokeWidth={3.6} />
       {slots.map((i) => {
-        const y = 60 + i * 50;
-        const empty = i === 5;
+        const y = 68 + i * 40;
         return (
           <g key={i}>
-            <rect
-              x={140}
-              y={y}
-              width={120}
-              height={34}
-              fill="none"
-              stroke={empty ? FAINT : INK}
-              strokeWidth={empty ? 1.4 : 2.2}
-            />
-            {!empty && (
-              <line
-                x1={168}
-                y1={y + 17}
-                x2={196 + (i % 3) * 12}
-                y2={y + 17}
-                stroke={SOFT}
-                strokeWidth={1.6}
-              />
-            )}
+            {/* the count, on the outside — a wall you can number */}
+            <line x1={84} y1={y + 13} x2={96} y2={y + 13} stroke={SOFT} strokeWidth={1.8} />
+            <rect x={120} y={y} width={156} height={26} fill={FAINT} stroke={SOFT} strokeWidth={1.4} />
           </g>
         );
       })}
-      {/* the pin — the waypoint that continues */}
-      <circle cx={116} cy={60 + 5 * 50 + 17} r={5} fill={ACCENT} />
-      <line x1={121} y1={60 + 5 * 50 + 17} x2={140} y2={60 + 5 * 50 + 17} stroke={ACCENT} strokeWidth={2.5} {...PEN} />
-      <text x={116} y={470} textAnchor="middle" fontSize={13} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="2">
+      {/* the ninth job arrives, and the wall is the whole answer */}
+      <rect x={318} y={228} width={54} height={26} fill="none" stroke={ACCENT} strokeWidth={3} />
+      <line x1={314} y1={241} x2={306} y2={241} stroke={ACCENT} strokeWidth={2.6} {...PEN} />
+      <line x1={302} y1={225} x2={302} y2={257} stroke={ACCENT} strokeWidth={3.2} {...PEN} />
+      <text x={198} y={452} textAnchor="middle" fontSize={28} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="6">
         1202
       </text>
+    </Frame>
+  );
+}
+
+/* —— the cut: one rod, or two. Nothing visible changed and the load at the
+      upper connection doubled —— */
+function TheCut() {
+  return (
+    <Frame>
+      <line x1={200} y1={70} x2={200} y2={418} stroke={LINE} strokeWidth={1.4} strokeDasharray="4 7" />
+
+      {/* as designed — one continuous rod carries both walkways from the roof */}
+      <Hatch x1={48} x2={176} y={86} />
+      <line x1={48} y1={86} x2={176} y2={86} stroke={INK} strokeWidth={3.2} />
+      <line x1={112} y1={86} x2={112} y2={396} stroke={INK} strokeWidth={2.6} />
+      <line x1={66} y1={224} x2={158} y2={224} stroke={INK} strokeWidth={3.6} />
+      <line x1={66} y1={396} x2={158} y2={396} stroke={INK} strokeWidth={3.6} />
+      <rect x={104} y={217} width={16} height={14} fill="var(--plate-ground, #f5f0e7)" stroke={INK} strokeWidth={1.8} />
+
+      {/* as built — the rod stops at the upper walkway and a second one starts beside it */}
+      <Hatch x1={224} x2={352} y={86} />
+      <line x1={224} y1={86} x2={352} y2={86} stroke={INK} strokeWidth={3.2} />
+      <line x1={280} y1={86} x2={280} y2={224} stroke={INK} strokeWidth={2.6} />
+      <line x1={242} y1={224} x2={334} y2={224} stroke={INK} strokeWidth={3.6} />
+      <line x1={300} y1={224} x2={300} y2={396} stroke={INK} strokeWidth={2.6} />
+      <line x1={242} y1={396} x2={334} y2={396} stroke={INK} strokeWidth={3.6} />
+      <rect x={272} y={217} width={16} height={14} fill="var(--plate-ground, #f5f0e7)" stroke={INK} strokeWidth={1.8} />
+
+      {/* the connection that now carries both walkways instead of one */}
+      <circle cx={288} cy={224} r={30} fill="none" stroke={ACCENT} strokeWidth={3.2} />
+      <Arrow x1={300} y1={380} x2={300} y2={262} stroke={ACCENT} width={2.4} dash="6 5" />
+
+      <text x={112} y={448} textAnchor="middle" fontSize={17} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="3">
+        ONE
+      </text>
+      <text x={288} y={448} textAnchor="middle" fontSize={17} fill={SOFT} fontFamily="JetBrains Mono, monospace" letterSpacing="3">
+        TWO
+      </text>
+    </Frame>
+  );
+}
+
+/* —— the contact: three passes heel the deck, the world answers at once,
+      and the answer has nowhere to go —— */
+function TheContact() {
+  /* thirty men, back and forth, three times — the only test the century had */
+  const passes = [226, 250, 274];
+  return (
+    <Frame>
+      {/* the closed wall — no procedure by which a result becomes a decision */}
+      <polyline points="106,140 106,114 306,114 306,140" fill="none" stroke={INK} strokeWidth={3.6} {...PEN} />
+
+      <g transform="rotate(-17.5 268 250)">
+        {passes.map((y, i) => (
+          <Arrow
+            key={y}
+            x1={i % 2 ? 326 : 210}
+            y1={y}
+            x2={i % 2 ? 210 : 326}
+            y2={y}
+            stroke={SOFT}
+            width={2.2}
+          />
+        ))}
+      </g>
+
+      <line x1={40} y1={304} x2={360} y2={304} stroke={FAINT} strokeWidth={1.4} strokeDasharray="4 6" />
+      {/* the deck, heeling under them */}
+      <line x1={74} y1={356} x2={340} y2={272} stroke={INK} strokeWidth={3.6} {...PEN} />
+
+      {/* the world answered, immediately and in front of witnesses */}
+      <circle cx={74} cy={356} r={19} fill="none" stroke={ACCENT} strokeWidth={3} />
+      <circle cx={74} cy={356} r={7} fill={ACCENT} />
+
+      {/* the channel it never had — the result rises and has nowhere to land */}
+      <path
+        d="M 82 336 C 108 292 124 234 150 176"
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={2.6}
+        strokeDasharray="7 6"
+        {...PEN}
+      />
+      <line x1={134} y1={166} x2={168} y2={182} stroke={ACCENT} strokeWidth={3.6} {...PEN} />
+    </Frame>
+  );
+}
+
+/* —— the curve: ninety-six years held in one line, until a point stood on it
+      and the rest came apart —— */
+function TheCurve() {
+  const fitted: [number, number][] = [
+    [100, 152], [118, 216], [140, 268], [168, 306], [196, 336],
+  ];
+  const debris: [number, number, number, number][] = [
+    [238, 328, 256, 314],
+    [250, 272, 268, 258],
+    [274, 246, 294, 232],
+    [268, 196, 288, 184],
+    [296, 212, 316, 196],
+    [302, 156, 324, 142],
+  ];
+  return (
+    <Frame>
+      <polyline points="62,78 62,428 348,428" fill="none" stroke={SOFT} strokeWidth={2} {...PEN} />
+      {/* the fit — and the run it never got to make */}
+      <path d="M 92 118 C 132 268 158 322 214 350" fill="none" stroke={INK} strokeWidth={3.4} {...PEN} />
+      <path
+        d="M 214 350 C 258 368 288 382 322 392"
+        fill="none"
+        stroke={FAINT}
+        strokeWidth={1.8}
+        strokeDasharray="5 7"
+        {...PEN}
+      />
+      {fitted.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={2.8} fill={SOFT} />
+      ))}
+      {debris.map(([x1, y1, x2, y2], i) => (
+        <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={SOFT} strokeWidth={2.4} {...PEN} />
+      ))}
+      {/* somebody stands on it */}
+      <circle cx={214} cy={350} r={13} fill="none" stroke={ACCENT} strokeWidth={3.2} />
+      <circle cx={214} cy={350} r={4.5} fill={ACCENT} />
+    </Frame>
+  );
+}
+
+/* —— marginalia: two borrowed measures held in quotation; one tick still bites —— */
+function Marginalia() {
+  const ticks = [0, 1, 2, 3, 4, 5, 6, 7, 8];
+  const bite = 4;
+  return (
+    <Frame>
+      {/* the line that still does work */}
+      <polyline points="64,172 52,172 52,220 64,220" fill="none" stroke={INK} strokeWidth={2.4} {...PEN} />
+      <polyline points="336,172 348,172 348,220 336,220" fill="none" stroke={INK} strokeWidth={2.4} {...PEN} />
+      <line x1={62} y1={196} x2={338} y2={196} stroke={INK} strokeWidth={2.6} />
+      {ticks.map((i) =>
+        i === bite ? null : (
+          <line key={i} x1={76 + i * 32} y1={181} x2={76 + i * 32} y2={211} stroke={SOFT} strokeWidth={2.2} />
+        ),
+      )}
+      <line x1={76 + bite * 32} y1={156} x2={76 + bite * 32} y2={236} stroke={ACCENT} strokeWidth={5} {...PEN} />
+
+      {/* the line kept for the shape of it */}
+      <polyline points="64,310 54,310 54,350 64,350" fill="none" stroke={FAINT} strokeWidth={1.6} {...PEN} />
+      <polyline points="336,310 346,310 346,350 336,350" fill="none" stroke={FAINT} strokeWidth={1.6} {...PEN} />
+      <line x1={62} y1={330} x2={338} y2={330} stroke={FAINT} strokeWidth={1.8} />
+      {ticks.map((i) => (
+        <line key={i} x1={76 + i * 32} y1={320} x2={76 + i * 32} y2={340} stroke={FAINT} strokeWidth={1.6} />
+      ))}
     </Frame>
   );
 }
@@ -157,23 +356,6 @@ function GeometryRetrieval() {
         <circle key={x} cx={x} cy={[380, 340, 352, 300, 318][i]} r={3.5} fill={SOFT} />
       ))}
       <circle cx={320} cy={262} r={5} fill={ACCENT} />
-    </Frame>
-  );
-}
-
-/* —— marginalia: two quiet horizontal measures; one accent tick still bites —— */
-function Marginalia() {
-  return (
-    <Frame>
-      <line x1={70} y1={190} x2={330} y2={190} stroke={SOFT} strokeWidth={1.8} />
-      {[0, 1, 2, 3, 4, 6, 7].map((i) => (
-        <line key={i} x1={90 + i * 34} y1={182} x2={90 + i * 34} y2={198} stroke={SOFT} strokeWidth={1.6} />
-      ))}
-      <line x1={90 + 5 * 34} y1={174} x2={90 + 5 * 34} y2={206} stroke={ACCENT} strokeWidth={3.5} />
-      <line x1={70} y1={310} x2={330} y2={310} stroke={FAINT} strokeWidth={1.4} />
-      {[0, 1, 2, 4, 5, 6, 7].map((i) => (
-        <line key={i} x1={90 + i * 34} y1={304} x2={90 + i * 34} y2={316} stroke={FAINT} strokeWidth={1.4} />
-      ))}
     </Frame>
   );
 }
@@ -466,6 +648,109 @@ function CodexFieldwork() {
   );
 }
 
+/* —— specter (work): a proposed action reaches an approval gate; beyond it the path is broken —— */
+function Specter() {
+  const pts: [number, number][] = [
+    [70, 360], [130, 300], [190, 320], [250, 250],
+  ];
+  const d = pts.map(([x, y], i) => (i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`)).join(' ');
+  return (
+    <Frame>
+      <rect x={56} y={70} width={72} height={72} fill="none" stroke={INK} strokeWidth={2} />
+      <line x1={70} y1={96} x2={114} y2={96} stroke={SOFT} strokeWidth={1.4} />
+      <line x1={70} y1={112} x2={102} y2={112} stroke={FAINT} strokeWidth={1.2} />
+      <path d={d} fill="none" stroke={SOFT} strokeWidth={1.6} {...PEN} />
+      {pts.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 5 : 3} fill={INK} />
+      ))}
+      <line x1={60} y1={210} x2={340} y2={210} stroke={INK} strokeWidth={2.6} />
+      <line x1={60} y1={210} x2={60} y2={236} stroke={INK} strokeWidth={2.6} />
+      <line x1={340} y1={210} x2={340} y2={236} stroke={INK} strokeWidth={2.6} />
+      <circle cx={250} cy={250} r={7} fill="none" stroke={ACCENT} strokeWidth={2.6} />
+      <line x1={268} y1={232} x2={330} y2={170} stroke={ACCENT} strokeWidth={2} {...PEN} />
+    </Frame>
+  );
+}
+
+/* —— authored (work): two parallel mandates; one field on the lower line is a different colour —— */
+function Authored() {
+  return (
+    <Frame>
+      <line x1={70} y1={180} x2={330} y2={180} stroke={INK} strokeWidth={2.4} />
+      {[0, 1, 2, 3].map((i) => (
+        <rect
+          key={`a${i}`}
+          x={86 + i * 58}
+          y={162}
+          width={44}
+          height={36}
+          fill="none"
+          stroke={SOFT}
+          strokeWidth={1.5}
+        />
+      ))}
+      <line x1={70} y1={320} x2={330} y2={320} stroke={INK} strokeWidth={2.4} />
+      {[0, 1, 2, 3].map((i) => {
+        const altered = i === 2;
+        return (
+          <rect
+            key={`b${i}`}
+            x={86 + i * 58}
+            y={302}
+            width={44}
+            height={36}
+            fill="none"
+            stroke={altered ? ACCENT : SOFT}
+            strokeWidth={altered ? 2.6 : 1.5}
+          />
+        );
+      })}
+      <circle cx={86 + 2 * 58 + 22} cy={320} r={5} fill={ACCENT} />
+    </Frame>
+  );
+}
+
+/* —— fiction (work): a source frame and an offset reconstruction; a second ray misses the solid —— */
+function Fiction() {
+  return (
+    <Frame>
+      <rect x={80} y={90} width={160} height={110} fill="none" stroke={FAINT} strokeWidth={1.4} />
+      <line x1={96} y1={118} x2={220} y2={118} stroke={FAINT} strokeWidth={1.1} />
+      <line x1={96} y1={140} x2={200} y2={140} stroke={FAINT} strokeWidth={1.1} />
+      <rect x={150} y={230} width={170} height={120} fill="none" stroke={INK} strokeWidth={2.2} />
+      <line x1={168} y1={262} x2={300} y2={262} stroke={SOFT} strokeWidth={1.4} />
+      <line x1={168} y1={286} x2={278} y2={286} stroke={SOFT} strokeWidth={1.4} />
+      <line x1={70} y1={430} x2={150} y2={350} stroke={ACCENT} strokeWidth={2} {...PEN} />
+      <circle cx={70} cy={430} r={5} fill={ACCENT} />
+      <circle cx={248} cy={290} r={4} fill="none" stroke={FAINT} strokeWidth={1.4} />
+    </Frame>
+  );
+}
+
+/* —— greenfield (work): a quiet field; one contestable mark; the loop around it does not close —— */
+function Greenfield() {
+  const quiet = Array.from({ length: 28 }, (_, i) => [
+    50 + ((i * 97) % 300),
+    70 + ((i * 131) % 360),
+  ]);
+  return (
+    <Frame>
+      {quiet.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={1.3} fill={FAINT} />
+      ))}
+      <circle cx={200} cy={250} r={78} fill="none" stroke={SOFT} strokeWidth={1.5} strokeDasharray="5 7" />
+      <path
+        d="M 200 172 A 78 78 0 1 1 148 308"
+        fill="none"
+        stroke={INK}
+        strokeWidth={2}
+        {...PEN}
+      />
+      <circle cx={200} cy={250} r={7} fill={ACCENT} />
+    </Frame>
+  );
+}
+
 /* —— the loom (work): a page that re-weaves emphasis without erasing place —— */
 function TheLoom() {
   const warp = [0, 1, 2, 3, 4, 5];
@@ -514,6 +799,9 @@ function Fallback({ id }: { id: string }) {
 
 const PLATES: Record<string, () => ReactNode> = {
   'the-container': TheContainer,
+  'the-cut': TheCut,
+  'the-contact': TheContact,
+  'the-curve': TheCurve,
   'allowed-ignorance': AllowedIgnorance,
   'bounded-me': BoundedMe,
   'geometry-retrieval': GeometryRetrieval,
@@ -523,6 +811,10 @@ const PLATES: Record<string, () => ReactNode> = {
   'tools-need-edges': ToolsNeedEdges,
   'weak-geometry': WeakGeometry,
   geometry: GeometryWork,
+  specter: Specter,
+  authored: Authored,
+  fiction: Fiction,
+  greenfield: Greenfield,
   'human-responsibility-mapping': ResponsibilityMapping,
   macroscopic: Macroscopic,
   wing: Wing,
@@ -533,53 +825,39 @@ const PLATES: Record<string, () => ReactNode> = {
   'the-loom': TheLoom,
 };
 
-/** Drawn plate for a pool node — falls back to a seeded quiet field. */
+/** Drawn plate for a pool node — falls back to a seeded quiet field.
+    Motifs and the fallback each bring their own Frame. */
 export function NodePlate({ id }: { id: string }) {
   const Motif = PLATES[id];
-  return <Frame>{Motif ? <Motif /> : <Fallback id={id} />}</Frame>;
+  if (Motif) return <Motif />;
+  return <Fallback id={id} />;
 }
 
 function WideFrame({ children }: { children: ReactNode }) {
+  const grain: [number, number, number][] = [
+    [34, 22, 0.7], [368, 30, 0.5], [58, 108, 0.6], [316, 112, 0.5],
+    [204, 14, 0.4], [128, 118, 0.5], [388, 74, 0.6], [16, 66, 0.4],
+  ];
   return (
     <svg
       viewBox="0 0 400 126"
       className="nx-plate nx-plate--wide"
       role="img"
       aria-hidden="true"
-      preserveAspectRatio="xMidYMid slice"
+      preserveAspectRatio="xMidYMid meet"
     >
       <rect width="400" height="126" fill="var(--plate-ground, #f5f0e7)" />
+      <g fill={INK} opacity={0.07}>
+        {grain.map(([x, y, r], i) => (
+          <circle key={i} cx={x} cy={y} r={r * 2} />
+        ))}
+      </g>
       {children}
     </svg>
   );
 }
 
-/** Horizontal mark for work cards. Portrait motifs stay on essays and play. */
-function WideFallback({ id }: { id: string }) {
-  let h = 0;
-  for (let i = 0; i < id.length; i++) h = (h * 31 + id.charCodeAt(i)) >>> 0;
-  const ticks = Array.from({ length: 7 }, (_, i) => 40 + ((h + i * 53) % 320));
-  const pin = 64 + (h % 272);
-  return (
-    <>
-      <line x1={20} y1={63} x2={380} y2={63} stroke={LINE} strokeWidth={1.4} />
-      {ticks.map((x, i) => (
-        <line
-          key={i}
-          x1={x}
-          y1={54}
-          x2={x}
-          y2={72}
-          stroke={i === 3 ? SOFT : FAINT}
-          strokeWidth={1.4}
-        />
-      ))}
-      <circle cx={pin} cy={63} r={5} fill={ACCENT} />
-    </>
-  );
-}
-
-/* —— geometry: scatter gathers onto one spine; a pin marks the end —— */
+/* —— geometry: scatter gathers onto one spine, and the spine can be re-entered —— */
 function GeometryWorkWide() {
   const scatter: [number, number, number][] = [
     [36, 28, -18], [52, 96, 22], [70, 22, 12], [88, 104, -14],
@@ -605,143 +883,354 @@ function GeometryWorkWide() {
       {gathered.map((x) => (
         <line key={x} x1={x} y1={54} x2={x} y2={72} stroke={INK} strokeWidth={1.6} />
       ))}
-      <circle cx={356} cy={63} r={5.5} fill={ACCENT} />
+      <circle cx={356} cy={63} r={5} fill={INK} />
+      {/* the way back in — if I cannot re-enter it, I do not own it */}
+      <path
+        d="M 356 72 C 350 108 120 112 62 82"
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={2.2}
+        strokeDasharray="6 5"
+        {...PEN}
+      />
+      <Head x={62} y={82} deg={207} stroke={ACCENT} />
     </>
   );
 }
 
-/* —— synapse: replayable waypoints; authority sits off the path —— */
+/* —— synapse: the run can be replayed; authority sits off the path —— */
 function SynapseWide() {
   const pts: [number, number][] = [
-    [32, 88], [86, 70], [140, 80], [196, 52], [252, 64], [308, 46],
+    [32, 78], [82, 60], [134, 70], [186, 44], [238, 56], [292, 38],
   ];
   const d = pts.map(([x, y], i) => (i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`)).join(' ');
   return (
     <>
-      <path d={d} fill="none" stroke={SOFT} strokeWidth={1.6} {...PEN} />
-      <path
-        d="M 308 46 C 330 108, 60 112, 32 88"
-        fill="none"
-        stroke={FAINT}
-        strokeWidth={1.2}
-        strokeDasharray="3 5"
-        {...PEN}
-      />
+      <path d={d} fill="none" stroke={INK} strokeWidth={2} {...PEN} />
       {pts.map(([x, y], i) => (
-        <circle
-          key={i}
-          cx={x}
-          cy={y}
-          r={i === pts.length - 1 ? 5 : 3}
-          fill={i === pts.length - 1 ? ACCENT : INK}
-        />
+        <circle key={i} cx={x} cy={y} r={i === pts.length - 1 ? 4.5 : 3} fill={INK} />
       ))}
-      <rect x={338} y={18} width={40} height={40} fill="none" stroke={INK} strokeWidth={1.8} />
-      <line x1={348} y1={32} x2={368} y2={32} stroke={SOFT} strokeWidth={1.3} />
-      <line x1={348} y1={44} x2={360} y2={44} stroke={FAINT} strokeWidth={1.2} />
-    </>
-  );
-}
-
-/* —— macroscopic: a quiet field; one small constellation surfaces —— */
-function MacroscopicWide() {
-  const quiet: [number, number][] = [
-    [28, 30], [56, 78], [84, 44], [110, 96], [138, 22], [164, 70],
-    [188, 108], [214, 18], [268, 96], [296, 28], [324, 80], [356, 48],
-    [44, 108], [72, 16], [250, 14], [372, 100],
-  ];
-  const stars: [number, number][] = [
-    [206, 50], [236, 36], [262, 58], [228, 72],
-  ];
-  return (
-    <>
-      {quiet.map(([x, y], i) => (
-        <circle key={i} cx={x} cy={y} r={1.4} fill={FAINT} />
-      ))}
-      <polyline
-        points={stars.map(([x, y]) => `${x},${y}`).join(' ')}
+      {/* run it again — watching is not checking */}
+      <path
+        d="M 292 48 C 300 106 66 112 34 90"
         fill="none"
         stroke={ACCENT}
-        strokeWidth={1.5}
+        strokeWidth={2.2}
+        strokeDasharray="6 5"
         {...PEN}
       />
-      {stars.map(([x, y]) => (
-        <circle key={`${x}-${y}`} cx={x} cy={y} r={3} fill={ACCENT} />
-      ))}
+      <Head x={34} y={90} deg={214} stroke={ACCENT} />
+      {/* authority, kept off the evidence path */}
+      <rect x={328} y={56} width={48} height={48} fill="none" stroke={INK} strokeWidth={2} />
+      <line x1={338} y1={74} x2={366} y2={74} stroke={SOFT} strokeWidth={1.4} />
+      <line x1={338} y1={88} x2={358} y2={88} stroke={FAINT} strokeWidth={1.2} />
     </>
   );
 }
 
-/* —— responsibility mapping: a boundary with a reversible gap; contact in the opening —— */
-function ResponsibilityWide() {
-  return (
-    <>
-      <line x1={24} y1={63} x2={168} y2={63} stroke={INK} strokeWidth={2.4} />
-      <line
-        x1={232}
-        y1={63}
-        x2={376}
-        y2={63}
-        stroke={INK}
-        strokeWidth={2.4}
-        strokeDasharray="6 5"
-      />
-      <line x1={168} y1={48} x2={168} y2={78} stroke={SOFT} strokeWidth={1.6} />
-      <line x1={232} y1={48} x2={232} y2={78} stroke={SOFT} strokeWidth={1.6} />
-      <circle cx={200} cy={63} r={6} fill={ACCENT} />
-    </>
-  );
-}
-
-/* —— wing: a central page; notices sit outside and do not enter —— */
-function WingWide() {
-  const notices: [number, number][] = [
-    [32, 28], [56, 58], [38, 90], [78, 40],
-    [286, 26], [318, 54], [298, 88], [346, 42],
+/* —— macroscopic: remember the whole field, raise only what fits the budget,
+      and ask before crossing it —— */
+function MacroscopicWide() {
+  const remembered = Array.from({ length: 44 }, (_, i) => [
+    16 + ((i * 71) % 372),
+    14 + ((i * 97) % 100),
+  ]);
+  const surfaced: [number, number][] = [
+    [170, 44], [194, 76], [218, 50], [240, 82],
   ];
   return (
     <>
-      <rect x={158} y={20} width={84} height={86} fill="none" stroke={INK} strokeWidth={2} />
-      {[0, 1, 2, 3].map((i) => (
-        <line
-          key={i}
-          x1={170}
-          y1={38 + i * 16}
-          x2={230}
-          y2={38 + i * 16}
-          stroke={SOFT}
-          strokeWidth={1.3}
-        />
+      {remembered.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={1.4} fill={FAINT} />
       ))}
-      {notices.map(([x, y], i) => (
-        <rect
-          key={i}
-          x={x}
-          y={y}
-          width={18}
-          height={12}
-          fill="none"
-          stroke={FAINT}
-          strokeWidth={1.3}
-        />
+      <polyline points="162,20 150,20 150,106 162,106" fill="none" stroke={INK} strokeWidth={2.4} {...PEN} />
+      <polyline points="252,20 264,20 264,106 252,106" fill="none" stroke={INK} strokeWidth={2.4} {...PEN} />
+      {surfaced.map(([x, y]) => (
+        <circle key={`${x}-${y}`} cx={x} cy={y} r={3.4} fill={INK} />
       ))}
+      {/* the one asking to cross the budget */}
+      <circle cx={288} cy={63} r={6.5} fill="none" stroke={ACCENT} strokeWidth={2.6} />
+      <line x1={281} y1={63} x2={270} y2={63} stroke={ACCENT} strokeWidth={2.2} {...PEN} />
+    </>
+  );
+}
+
+/* —— responsibility mapping: a named boundary, the evidence under it,
+      and a gate that opens both ways —— */
+function ResponsibilityWide() {
+  const evidence = [46, 78, 110];
+  return (
+    <>
+      <line x1={24} y1={63} x2={170} y2={63} stroke={INK} strokeWidth={2.8} />
+      <line x1={230} y1={63} x2={376} y2={63} stroke={INK} strokeWidth={2.8} strokeDasharray="6 5" />
+      <line x1={170} y1={40} x2={170} y2={86} stroke={SOFT} strokeWidth={1.8} />
+      <line x1={230} y1={40} x2={230} y2={86} stroke={SOFT} strokeWidth={1.8} />
+      {/* it opens, and it closes again */}
+      <Arrow x1={178} y1={48} x2={222} y2={48} stroke={ACCENT} width={2.4} />
+      <Arrow x1={222} y1={78} x2={178} y2={78} stroke={ACCENT} width={2.4} />
+      {/* what the named side rests on */}
+      {evidence.map((x) => (
+        <g key={x}>
+          <line x1={x + 10} y1={70} x2={x + 10} y2={88} stroke={FAINT} strokeWidth={1.2} />
+          <rect x={x} y={88} width={20} height={14} fill="none" stroke={SOFT} strokeWidth={1.3} />
+        </g>
+      ))}
+    </>
+  );
+}
+
+/* —— wing: notices arrive from every side and stop at the margin;
+      the draft is not handed over —— */
+function WingWide() {
+  const rows = [48, 94];
+  return (
+    <>
+      <line x1={146} y1={14} x2={146} y2={112} stroke={FAINT} strokeWidth={1.3} strokeDasharray="4 5" />
+      <line x1={254} y1={14} x2={254} y2={112} stroke={FAINT} strokeWidth={1.3} strokeDasharray="4 5" />
+      <rect x={160} y={14} width={80} height={98} fill="none" stroke={INK} strokeWidth={2.4} />
+      {[0, 1, 2, 3, 4].map((i) => (
+        <line key={i} x1={172} y1={32 + i * 18} x2={228} y2={32 + i * 18} stroke={SOFT} strokeWidth={1.4} />
+      ))}
+      {rows.map((y) => (
+        <g key={y}>
+          <rect x={30} y={y - 7} width={22} height={14} fill="none" stroke={SOFT} strokeWidth={1.4} />
+          <Arrow x1={58} y1={y} x2={138} y2={y} stroke={FAINT} width={1.6} dash="4 4" />
+          <rect x={348} y={y - 7} width={22} height={14} fill="none" stroke={SOFT} strokeWidth={1.4} />
+          <Arrow x1={342} y1={y} x2={262} y2={y} stroke={FAINT} width={1.6} dash="4 4" />
+        </g>
+      ))}
+      {/* packaged, and left in the margin */}
+      <rect x={136} y={64} width={20} height={14} fill={ACCENT} />
+    </>
+  );
+}
+
+/* —— specter: the gate opens exactly as wide as the action it approved —— */
+function SpecterWide() {
+  const proposed: [number, number][] = [[26, 90], [64, 76], [102, 86], [140, 68]];
+  const executed: [number, number][] = [[206, 66], [248, 58], [290, 52], [328, 46]];
+  const trace = (pts: [number, number][]) =>
+    pts.map(([x, y], i) => (i === 0 ? `M ${x} ${y}` : `L ${x} ${y}`)).join(' ');
+  return (
+    <>
+      <path d={trace(proposed)} fill="none" stroke={INK} strokeWidth={2.2} {...PEN} />
+      {proposed.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={3} fill={INK} />
+      ))}
+      {/* the action nobody approved, arriving at the same gate */}
+      <path
+        d="M 140 68 C 164 78 178 88 188 98"
+        fill="none"
+        stroke={FAINT}
+        strokeWidth={1.6}
+        strokeDasharray="4 4"
+        {...PEN}
+      />
+      <line x1={192} y1={10} x2={192} y2={52} stroke={INK} strokeWidth={3.4} />
+      <line x1={192} y1={76} x2={192} y2={118} stroke={INK} strokeWidth={3.4} />
+      {/* the opening — this much, and no more */}
+      <line x1={182} y1={52} x2={202} y2={52} stroke={ACCENT} strokeWidth={3.2} {...PEN} />
+      <line x1={182} y1={76} x2={202} y2={76} stroke={ACCENT} strokeWidth={3.2} {...PEN} />
+      <path d={trace(executed)} fill="none" stroke={INK} strokeWidth={2.2} {...PEN} />
+      {executed.map(([x, y], i) => (
+        <circle key={i} cx={x} cy={y} r={3} fill={INK} />
+      ))}
+    </>
+  );
+}
+
+/* —— authored: the intent beside the mandate it became, with the one
+      consequential alteration held out of line —— */
+function AuthoredWide() {
+  const fields = [56, 114, 172, 230, 288];
+  const altered = 2;
+  return (
+    <>
+      {fields.map((x, i) => (
+        <g key={x}>
+          <rect x={x} y={26} width={46} height={24} fill="none" stroke={SOFT} strokeWidth={1.6} />
+          {i === altered ? null : (
+            <>
+              <line x1={x + 23} y1={50} x2={x + 23} y2={76} stroke={FAINT} strokeWidth={1.2} />
+              <rect x={x} y={76} width={46} height={24} fill="none" stroke={SOFT} strokeWidth={1.6} />
+            </>
+          )}
+        </g>
+      ))}
+      {/* one field changed on the way through, and it is the one that mattered */}
+      <line
+        x1={fields[altered]! + 23}
+        y1={50}
+        x2={fields[altered]! + 32}
+        y2={84}
+        stroke={ACCENT}
+        strokeWidth={2}
+        strokeDasharray="4 4"
+        {...PEN}
+      />
+      <rect x={fields[altered]! + 9} y={84} width={46} height={24} fill="none" stroke={ACCENT} strokeWidth={2.8} />
+    </>
+  );
+}
+
+/* —— fiction: the source view resolves; the second viewpoint finds no back —— */
+function FictionWide() {
+  const front: [number, number][] = [[172, 34], [172, 63], [172, 92]];
+  const back: [number, number][] = [[274, 24], [274, 52], [250, 96]];
+  return (
+    <>
+      {/* the reconstruction: evidence on one face, nothing behind it */}
+      <rect x={196} y={22} width={78} height={58} fill="none" stroke={FAINT} strokeWidth={1.4} strokeDasharray="4 4" />
+      {[[170, 34, 196, 22], [246, 34, 274, 22], [170, 92, 196, 80], [246, 92, 274, 80]].map(
+        ([x1, y1, x2, y2], i) => (
+          <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke={FAINT} strokeWidth={1.2} strokeDasharray="4 4" />
+        ),
+      )}
+      <rect x={170} y={34} width={76} height={58} fill="none" stroke={INK} strokeWidth={2.4} />
+
+      <path d="M 32 54 L 32 72 L 50 63 Z" fill={INK} />
+      {front.map(([x, y], i) => (
+        <line key={i} x1={50} y1={63} x2={x} y2={y} stroke={SOFT} strokeWidth={1.3} />
+      ))}
+      {/* move the camera and the world stops being one */}
+      <path d="M 368 54 L 368 72 L 350 63 Z" fill={ACCENT} />
+      {back.map(([x, y], i) => (
+        <line key={i} x1={350} y1={63} x2={x} y2={y} stroke={ACCENT} strokeWidth={1.4} strokeDasharray="4 4" />
+      ))}
+    </>
+  );
+}
+
+/* —— greenfield: agents propose, the owner approves, the kernel has no opening —— */
+function GreenfieldWide() {
+  const proposals = [44, 76, 108];
+  return (
+    <>
+      <line x1={24} y1={26} x2={338} y2={26} stroke={FAINT} strokeWidth={1.3} strokeDasharray="4 5" />
+      {proposals.map((x) => (
+        <rect key={x} x={x} y={21} width={11} height={10} fill="none" stroke={SOFT} strokeWidth={1.3} />
+      ))}
+      <Arrow x1={150} y1={32} x2={150} y2={54} stroke={SOFT} width={1.8} />
+
+      <line x1={24} y1={64} x2={204} y2={64} stroke={SOFT} strokeWidth={2.4} />
+      {/* the owner's gate */}
+      <line x1={204} y1={50} x2={204} y2={78} stroke={ACCENT} strokeWidth={3.2} {...PEN} />
+      <line x1={226} y1={50} x2={226} y2={78} stroke={ACCENT} strokeWidth={3.2} {...PEN} />
+      <Arrow x1={230} y1={64} x2={338} y2={64} stroke={ACCENT} width={2.6} />
+
+      {/* and the kernel does not get a vote */}
+      <polyline points="24,92 24,104 376,104 376,92" fill="none" stroke={INK} strokeWidth={3.6} {...PEN} />
+    </>
+  );
+}
+
+/* —— codex fieldwork: five stops, and a loop that is allowed to send it back —— */
+function CodexFieldworkWide() {
+  const stops = [48, 124, 200, 276, 352];
+  return (
+    <>
+      <line x1={48} y1={44} x2={352} y2={44} stroke={INK} strokeWidth={2.2} />
+      {stops.map((x, i) => (
+        <circle key={x} cx={x} cy={44} r={i === stops.length - 1 ? 5.5 : 4.5} fill={INK} />
+      ))}
+      {stops.slice(0, -1).map((x) => (
+        <path key={x} d={`M ${x + 32} 38 L ${x + 40} 44 L ${x + 32} 50`} fill="none" stroke={SOFT} strokeWidth={1.8} {...PEN} />
+      ))}
+      {/* rejection is the whole point of having a loop */}
+      <path
+        d="M 352 54 C 344 106 92 110 52 60"
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={2.4}
+        strokeDasharray="6 5"
+        {...PEN}
+      />
+      <Head x={52} y={60} deg={230} stroke={ACCENT} width={2.6} />
+    </>
+  );
+}
+
+/* —— media atlas: the layers stay apart; one object stays the same object —— */
+function MediaAtlasWide() {
+  const layers: [number, number, string, number][] = [
+    [58, 16, FAINT, 1.3],
+    [88, 50, SOFT, 1.5],
+    [118, 84, INK, 1.8],
+  ];
+  return (
+    <>
+      {layers.map(([x, y, tone, w], i) => (
+        <g key={i}>
+          <rect x={x} y={y} width={210} height={26} fill="none" stroke={tone} strokeWidth={w} />
+          <line x1={x + 14} y1={y + 13} x2={x + 74} y2={y + 13} stroke={tone} strokeWidth={1} />
+          <line x1={x + 138} y1={y + 13} x2={x + 196} y2={y + 13} stroke={tone} strokeWidth={1} />
+        </g>
+      ))}
+      {/* the anchor — the thing you are actually looking at */}
+      <line x1={204} y1={8} x2={204} y2={118} stroke={ACCENT} strokeWidth={2.4} />
+      {[29, 63, 97].map((y) => (
+        <circle key={y} cx={204} cy={y} r={4.2} fill={ACCENT} />
+      ))}
+    </>
+  );
+}
+
+/* —— spec v1: the fossil, struck out and kept where it can be seen —— */
+function SpecV1Wide() {
+  const bars = [20, 50, 80];
+  return (
+    <>
+      {bars.map((y) => (
+        <g key={y}>
+          <rect x={70} y={y} width={260} height={24} fill="none" stroke={SOFT} strokeWidth={1.4} />
+          <line x1={84} y1={y + 12} x2={188} y2={y + 12} stroke={FAINT} strokeWidth={1.1} />
+        </g>
+      ))}
+      <line x1={58} y1={110} x2={304} y2={28} stroke={ACCENT} strokeWidth={3.2} {...PEN} />
+    </>
+  );
+}
+
+/* —— the loom: emphasis lifts, and the warp underneath does not move —— */
+function TheLoomWide() {
+  const warp = Array.from({ length: 15 }, (_, i) => 40 + i * 24);
+  return (
+    <>
+      {warp.map((x) => (
+        <line key={x} x1={x} y1={12} x2={x} y2={114} stroke={LINE} strokeWidth={1.2} />
+      ))}
+      <line x1={28} y1={34} x2={372} y2={34} stroke={SOFT} strokeWidth={1.6} />
+      <line x1={28} y1={92} x2={372} y2={92} stroke={SOFT} strokeWidth={1.6} />
+      <path
+        d="M 28 63 C 116 63 136 40 200 40 C 264 40 284 63 372 63"
+        fill="none"
+        stroke={ACCENT}
+        strokeWidth={2.6}
+        {...PEN}
+      />
+      <circle cx={200} cy={40} r={4.5} fill={ACCENT} />
     </>
   );
 }
 
 const WIDE_PLATES: Record<string, () => ReactNode> = {
+  authored: AuthoredWide,
+  'codex-fieldwork': CodexFieldworkWide,
+  fiction: FictionWide,
   geometry: GeometryWorkWide,
-  synapse: SynapseWide,
-  macroscopic: MacroscopicWide,
+  greenfield: GreenfieldWide,
   'human-responsibility-mapping': ResponsibilityWide,
+  macroscopic: MacroscopicWide,
+  'media-atlas': MediaAtlasWide,
+  'spec-v1': SpecV1Wide,
+  specter: SpecterWide,
+  synapse: SynapseWide,
+  'the-loom': TheLoomWide,
   wing: WingWide,
 };
 
+/** Horizontal mark for a work node. Portrait motifs stay on essays and play. */
 export function WorkPlate({ id }: { id: string }) {
   const Motif = WIDE_PLATES[id];
-  return (
-    <WideFrame>
-      {Motif ? <Motif /> : <WideFallback id={id} />}
-    </WideFrame>
-  );
+  return <WideFrame>{Motif ? <Motif /> : null}</WideFrame>;
 }

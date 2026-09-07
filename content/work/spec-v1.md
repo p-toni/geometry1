@@ -5,7 +5,7 @@ cluster: work
 space: map
 title: spec v1
 date: archive
-rank: 8
+rank: 12
 why: I needed the retired stack to stay visible so it couldn't sneak back in as taste.
 problem: Warm grids, JSON canvases, MDX widgets. A surface that wanted to be rearranged more than read.
 solution: This is the fossil. v2 is one home and typed blocks.

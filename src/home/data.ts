@@ -33,18 +33,20 @@ const POSTERS = [
 /** Spatial event used to generate the poster — becomes the image alt. */
 const POSTER_EVENT: Record<string, string> = {
   'the-contact':
-    'A deck heeled under thirty running marks; the ship holds at anchor.',
+    'A closed frame; a probe leaves, touches a sienna contact, and returns.',
   'the-cut':
-    'One rod becomes two at a quiet diagonal; the load at the seam doubles.',
+    'One rod becomes two at a quiet diagonal; a sienna pin marks the seam.',
   'the-container':
-    'Eight register slots in a column; the sixth is empty; a blue pin marks the waypoint that continues.',
+    'Eight register slots in a column; the sixth is empty; a sienna pin marks the waypoint.',
+  'the-curve':
+    'A clean curve holds until a sienna point stands on it; beyond the point the line fragments.',
   'allowed-ignorance':
     'A dense field of ticks collapses through a cut; a crack returns on the remaining plane.',
   'bounded-me':
     'A hard circular envelope; inner loops still move; a blue contact sits on the wall.',
   'geometry-retrieval':
     'An empty source ring above a graph that still stands, with one blue node.',
-  marginalia: 'Two quiet horizontal measures; one blue tick still bites.',
+  marginalia: 'Two quiet horizontal measures; one sienna tick still bites.',
   'me-plus-ai': 'Six stacked gates; a stream threads some of them and stops.',
   'the-world-answers': 'A closed map; a probe leaves and returns from below.',
   'tools-need-edges':
@@ -52,6 +54,14 @@ const POSTER_EVENT: Record<string, string> = {
   'weak-geometry':
     'Three sides of a frame; the bottom is missing; one blue corner is load-bearing.',
   geometry: 'Scattered ticks gather onto one spine; a blue pin marks the end.',
+  specter:
+    'Hairlines pinch at a vertical gate and stop; a sienna pin sits in the opening.',
+  authored:
+    'Two parallel measures; one tick on the lower line is displaced and sienna.',
+  fiction:
+    'A faint silhouette and unfilled rectangles fail to cover a vertical rise; a mark pin in the gap.',
+  greenfield:
+    'Concentric rings around a center node; a sienna pin sits on the middle ring.',
   'human-responsibility-mapping':
     'A boundary with a reversible gap and a blue contact in the opening.',
   macroscopic: 'A quiet field; one small constellation surfaces.',
@@ -185,25 +195,44 @@ export function homeWork(): HomeListItem[] {
     .map(toListItem);
 }
 
-/** The five work cards on the home. The rest of the pool stays addressable at `/work/:id`. */
+/** The four work cards on the home. The rest of the pool stays addressable at `/work/:id`. */
 export const WORK_HIGHLIGHT_IDS = [
-  'geometry',
+  'specter',
+  'authored',
+  'fiction',
+  'greenfield',
+] as const;
+
+/** Case studies kept reachable from the work room without taking a featured slot. */
+export const WORK_SUPPORT_IDS = [
+  'human-responsibility-mapping',
   'synapse',
   'macroscopic',
-  'human-responsibility-mapping',
   'wing',
 ] as const;
 
+function workItemsById(): Map<string, HomeListItem> {
+  return new Map(homeWork().map((w) => [w.id, w]));
+}
+
 export function homeWorkHighlight(): HomeListItem[] {
-  const byId = new Map(homeWork().map((w) => [w.id, w]));
+  const byId = workItemsById();
   return WORK_HIGHLIGHT_IDS.flatMap((id) => {
     const item = byId.get(id);
     return item ? [item] : [];
   });
 }
 
-/** The play door. Recovered stubs stay at `/read/:id`. */
-export const PLAY_DOOR_IDS = ['lanterns', 'fold', 'tsubuyaki'] as const;
+export function homeWorkSupport(): HomeListItem[] {
+  const byId = workItemsById();
+  return WORK_SUPPORT_IDS.flatMap((id) => {
+    const item = byId.get(id);
+    return item ? [item] : [];
+  });
+}
+
+/** The play door. Tsubuyaki leads; recovered stubs stay at `/read/:id`. */
+export const PLAY_DOOR_IDS = ['tsubuyaki', 'lanterns', 'fold'] as const;
 
 export function homePlay(): HomeListItem[] {
   const byId = new Map(

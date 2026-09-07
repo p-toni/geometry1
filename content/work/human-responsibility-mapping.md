@@ -5,7 +5,7 @@ cluster: work
 space: boundary
 title: responsibility mapping
 date: public
-rank: 3
+rank: 4
 why: Delegation decisions were being made on vibes.
 problem: Nobody could say what the model may do, what the human retains, or what would make a release honest.
 principle: An unnamed boundary is not a decision.

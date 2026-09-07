@@ -5,7 +5,7 @@ cluster: work
 space: loop
 title: codex fieldwork
 date: method
-rank: 6
+rank: 10
 why: Agents move the build faster than I can trust it.
 problem: Work lands without a loop that can reject it. Taste arrives too late.
 solution: A fieldwork loop — recover, decide, tune, test, commit. The agent is inspectable; judgment stays mine.

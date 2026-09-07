@@ -113,8 +113,8 @@ shot('01-home.png');
 const DOORS = [
   ['WHO', /bounded learner|ape_toni/i, '/who'],
   ['ESSAYS', /the container|the cut/i, '/essays'],
-  ['WORK', /geometry|synapse/i, '/work'],
-  ['PLAY', /lanterns|fold|tsubuyaki/i, '/play'],
+  ['WORK', /specter|authored|fiction|greenfield/i, '/work'],
+  ['PLAY', /tsubuyaki|lanterns|fold/i, '/play'],
   ['NOW', /updated/i, '/now'],
   ['HI', /hi@toni\.ltd/i, '/hi'],
 ];
@@ -141,7 +141,7 @@ goto('/play');
 assert('cold /play opens play', /lanterns|fold|tsubuyaki/i.test(pageText()));
 assert('cold /play stays on /play', new URL(ab('get url')).pathname === '/play', ab('get url'));
 goto('/work');
-assert('cold /work opens work', /geometry|synapse/i.test(pageText()));
+assert('cold /work opens work', /specter|authored|fiction|greenfield/i.test(pageText()));
 assert(
   'cold /work has no dialog',
   /false/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")),
@@ -263,18 +263,18 @@ assert('unknown route falls home', new URL(ab('get url')).pathname === '/', ab('
 /* work items are a home modal at /work/:id, not the reader */
 goto('/');
 clickNamed('\\bWORK$');
-clickNamed('Open geometry');
-assert('work plate opens the item', ab('get url').includes('/work/geometry'), ab('get url'));
+clickNamed('Open specter');
+assert('work plate opens the item', ab('get url').includes('/work/specter'), ab('get url'));
 assert(
   'work dialog is open',
   /true/i.test(evaljs("String(Boolean(document.querySelector('dialog')?.open))")),
 );
-assert('work dialog carries the spec', /re-enter it|p-toni\/geometry/i.test(pageText()));
+assert('work dialog carries the spec', /approval is valid|evidence needs somewhere/i.test(pageText()));
 clickNamed(/^close$/i);
 assert('closing work returns to /work', new URL(ab('get url')).pathname === '/work', ab('get url'));
 assert(
   'work door stays open after close',
-  /geometry/i.test(pageText()),
+  /specter/i.test(pageText()),
 );
 goto('/read/geometry');
 assert(

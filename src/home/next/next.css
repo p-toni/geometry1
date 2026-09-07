@@ -73,7 +73,9 @@ html.nx-dark body {
 .nx-root .nx-footer__note a { display: inline-block; min-height: 24px; line-height: 24px; }
 .nx-root .nxp-spec__go,
 .nx-root .nxp-work-sheet__close,
-.nx-root .nxp-work-sheet__proof {
+.nx-root .nxp-work-sheet__proof,
+.nx-root .nxp-work-support a,
+.nx-root .nxp-work-colophon a {
   min-height: 24px;
 }
 
@@ -272,6 +274,7 @@ html.nx-dark body {
   aspect-ratio: 4 / 5;
   overflow: hidden;
   border-radius: var(--radius-sm);
+  background: var(--plate-ground);
   box-shadow: var(--shadow-card);
   transition: box-shadow var(--motion-focus) ease;
 }
@@ -333,6 +336,7 @@ html.nx-dark body {
   border: 1px solid var(--line);
   border-radius: 4px;
   overflow: hidden;
+  background: var(--plate-ground);
   box-shadow: var(--shadow-card);
   transition: opacity var(--motion-micro) ease;
 }
@@ -372,11 +376,14 @@ html.nx-dark body {
   height: 97px;
   border-radius: var(--radius-sm);
   overflow: hidden;
+  background: var(--plate-ground);
   box-shadow: var(--shadow-card);
   outline: 1px solid var(--plate-outline);
   outline-offset: -1px;
 }
 .nxp-spec__plate .nx-plate { display: block; width: 100%; height: 100%; }
+/* Plates are composed whole, so they fit rather than crop — the letterbox is paper. */
+.nx-plate { background: var(--plate-ground); }
 .nxp-spec__plate:focus-visible,
 .nxp-spec__go:focus-visible,
 .nxp-work-sheet__close:focus-visible,
@@ -413,6 +420,39 @@ html.nx-dark body {
 
 .nxp-spec__plate[data-morphing],
 .nxp-play__plate[data-morphing] { visibility: hidden; }
+
+.nxp-work-support {
+  margin-top: 12px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line-hair);
+}
+.nxp-work-support .nx-kicker { display: block; margin-bottom: 4px; }
+.nxp-work-support ul { list-style: none; margin: 0; padding: 0; }
+.nxp-work-support li + li { border-top: 1px solid var(--line-hair); }
+.nxp-work-support a {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 24px;
+  padding: 10px 0;
+}
+.nxp-work-support__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+}
+.nxp-work-support a:hover .nxp-work-support__title { color: var(--accent); }
+.nxp-work-colophon {
+  margin: 18px 0 0;
+  font-size: 12px;
+  color: var(--meta);
+}
+.nxp-work-colophon a {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.nxp-work-colophon a:hover { color: var(--accent); }
 
 .nxp-work-dialog {
   width: min(560px, calc(100vw - 32px));
@@ -550,7 +590,7 @@ html.nx-dark .nxp-work-dialog::backdrop {
   font-size: 16px;
   line-height: 1;
   color: var(--meta);
-  background: var(--paper);
+  background: var(--plate-ground);
   border-radius: 4px;
   box-shadow: var(--shadow-card);
 }
@@ -622,6 +662,7 @@ html.nx-dark .nxp-work-dialog::backdrop {
   border: 1px solid var(--line);
   border-radius: 4px;
   overflow: hidden;
+  background: var(--plate-ground);
   opacity: 0.85;
 }
 .nxp-play a:hover .nxp-play__plate { opacity: 1; }

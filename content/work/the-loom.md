@@ -5,7 +5,7 @@ cluster: work
 space: map
 title: the loom
 date: archive
-rank: 7
+rank: 11
 why: I wanted a page that could re-weave emphasis without erasing place.
 problem: Fixed grids couldn't move. Free layouts forgot where anything lived.
 solution: Blocks carried weight, freshness, and neighborhood. Geometry kept the useful part.

@@ -5,7 +5,7 @@ cluster: work
 space: center
 title: wing
 date: pilot
-rank: 4
+rank: 7
 why: High-stakes writing kept getting treated as text generation.
 problem: The artifact lost the center. Claims, sources, and next moves lived somewhere else.
 principle: If the page is not the work, the work has already been handed over.

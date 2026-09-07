@@ -4,7 +4,7 @@ kind: project
 cluster: work
 title: geometry
 date: live
-rank: 0
+rank: 8
 why: I needed one place that could hold unfinished essays, tools, and studies without pretending they were shipped.
 problem: Work fell into different rooms. I had to pan a surface instead of reading a home.
 principle: If I cannot re-enter it, I do not own it.

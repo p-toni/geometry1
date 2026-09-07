@@ -65,7 +65,8 @@ The menu travelled. The warning did not.
 
 I want to be careful here, because the story where 1960s economists naively believed in a permanent trade-off is a retrospective construction, and historians of the field have spent decades arguing about it. What is not in dispute is the transmission: the figure and its caption became policy furniture, and the two paragraphs qualifying them did not.
 
-**A caveat attached to a usable object is not a caveat. It is decoration on a lever.**
+> [thesis|the caveat]
+> A caveat attached to a usable object is not a caveat. It is decoration on a lever.
 
 ## December 1967
 
@@ -113,7 +114,10 @@ Robert Lucas published the general case in 1976, in a conference volume titled, 
 
 Strip the register and it says: **the regularity you fitted was people's behaviour under the old policy. Change the policy and you change the behaviour, which means you change the regularity you were relying on to choose the policy.**
 
-That is not measurement corrupting a fact. It is subtler and worse. The curve was never quite the thing it appeared to be — it was missing a term, expectations, that had been dormant across the entire sample because nobody had been leaning on it. **Acting on it is what made the missing term visible.** The lever did not break the fact. The lever revealed that the fact had been describing a world in which no lever existed.
+That is not measurement corrupting a fact. It is subtler and worse. The curve was never quite the thing it appeared to be — it was missing a term, expectations, that had been dormant across the entire sample because nobody had been leaning on it.
+
+> [thesis|the lever]
+> Acting on it is what made the missing term visible. The lever did not break the fact. The lever revealed that the fact had been describing a world in which no lever existed.
 
 And this is where I have to stop writing about economists.
 

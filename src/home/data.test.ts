@@ -3,6 +3,7 @@ import {
   homePlay,
   homeWork,
   homeWorkHighlight,
+  homeWorkSupport,
   homeWriting,
   proofLabel,
   writingNode,
@@ -35,9 +36,9 @@ describe('home data', () => {
 
   it('lists the finished play door in order', () => {
     expect(homePlay().map((p) => p.id)).toEqual([
+      'tsubuyaki',
       'lanterns',
       'fold',
-      'tsubuyaki',
     ]);
   });
 
@@ -55,31 +56,46 @@ describe('home data', () => {
   it('lists every work item as a card, rank first', () => {
     const work = homeWork();
     expect(work.map((w) => w.id)).toEqual([
-      'geometry',
+      'specter',
+      'authored',
+      'fiction',
+      'greenfield',
+      'human-responsibility-mapping',
       'synapse',
       'macroscopic',
-      'human-responsibility-mapping',
       'wing',
+      'geometry',
       'media-atlas',
       'codex-fieldwork',
       'the-loom',
       'spec-v1',
     ]);
-    const geometry = work[0]!;
-    expect(geometry.why?.length).toBeGreaterThan(0);
-    expect(geometry.proof).toMatch(/^https:\/\//);
-    expect(geometry.spec.length).toBeGreaterThan(0);
+    const specter = work[0]!;
+    expect(specter.why?.length).toBeGreaterThan(0);
+    expect(specter.spec.length).toBeGreaterThan(0);
     expect(work.every((w) => w.spec.length > 0)).toBe(true);
+    const geometry = work.find((w) => w.id === 'geometry');
+    expect(geometry?.proof).toMatch(/^https:\/\//);
   });
 
-  it('highlights five work cards on the home', () => {
+  it('highlights four work cards on the home', () => {
     expect(homeWorkHighlight().map((w) => w.id)).toEqual([
-      'geometry',
+      'specter',
+      'authored',
+      'fiction',
+      'greenfield',
+    ]);
+  });
+
+  it('keeps organizational case studies in support, geometry as colophon', () => {
+    expect(homeWorkSupport().map((w) => w.id)).toEqual([
+      'human-responsibility-mapping',
       'synapse',
       'macroscopic',
-      'human-responsibility-mapping',
       'wing',
     ]);
+    expect(homeWorkHighlight().some((w) => w.id === 'geometry')).toBe(false);
+    expect(homeWorkSupport().some((w) => w.id === 'geometry')).toBe(false);
   });
 
   it('gives highlight work a five-part spec', () => {

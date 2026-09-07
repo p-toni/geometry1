@@ -19,6 +19,7 @@ import {
   homePlay,
   homeWork,
   homeWorkHighlight,
+  homeWorkSupport,
   homeWriting,
   proofLabel,
   type HomeListItem
@@ -355,6 +356,7 @@ function PlayModal({ item, onClose }: { item: HomeListItem; onClose: () => void 
 
 function WorkPanel() {
   const work = homeWorkHighlight();
+  const support = homeWorkSupport();
   return (
     <div className="nxp nxp--work">
       <div className="nxp-specs">
@@ -394,6 +396,23 @@ function WorkPanel() {
           </article>
         ))}
       </div>
+      <div className="nxp-work-support">
+        <span className="nx-kicker">supporting</span>
+        <ul>
+          {support.map((w) => (
+            <li key={w.id}>
+              <Link to={workPath(w.id)}>
+                <span className="nxp-work-support__title">{w.title}</span>
+                {w.space ? <span className="nxp-spec__space">{w.space}</span> : null}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <p className="nxp-work-colophon">
+        <Link to={workPath('geometry')}>geometry</Link>
+        {' '}is this site
+      </p>
     </div>
   );
 }

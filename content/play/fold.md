@@ -4,7 +4,7 @@ kind: sketch
 cluster: play
 title: fold
 date: 2026-09-01
-rank: 1
+rank: 2
 excerpt:
   - "A folding map. Each point is the next state of the last — one body, a seed that shears and refolds."
 links:

@@ -5,7 +5,7 @@ cluster: work
 space: replay
 title: synapse
 date: rebuild
-rank: 1
+rank: 5
 why: I couldn't trust an agent I could only watch from the outside.
 problem: Behavior is too slippery to inspect after the fact.
 principle: If I cannot replay it, I am watching, not checking.

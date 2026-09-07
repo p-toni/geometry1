@@ -4,7 +4,7 @@ kind: sketch
 cluster: play
 title: lanterns
 date: 2026-08-31
-rank: 0
+rank: 1
 excerpt:
   - "Five related bodies from one generator. Family id nests the radius and offsets the phase — siblings, not copies."
 links:
